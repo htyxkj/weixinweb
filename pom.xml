@@ -7,6 +7,7 @@
   <version>1.0-SNAPSHOT</version>
   <name>weixinweb Maven Webapp</name>
   <url>http://maven.apache.org</url>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -116,7 +117,49 @@
       <version>1.3.1</version>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <!-- 动态配置环境 -->
+      <id>dev</id>
+      <properties>
+        <profiles.active>dev</profiles.active>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+    <profile>
+      <!-- 动态配置环境 -->
+      <id>test</id>
+      <properties>
+        <profiles.active>test</profiles.active>
+      </properties>
+    </profile>
+    <profile>
+      <!-- 动态配置环境 -->
+      <id>prod</id>
+      <properties>
+        <profiles.active>prod</profiles.active>
+      </properties>
+    </profile>
+  </profiles>
+
   <build>
-    <finalName>weixinweb</finalName>
+    <finalName>ligia</finalName>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>dev/*</exclude>
+          <exclude>prod/*</exclude>
+          <exclude>test/*</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <!--<directory>src/main/resources/${profiles.active}</directory>-->
+        <directory>src/main/resources/${env.SPRING.PROFILES.ACTIVE}</directory>
+      </resource>
+    </resources>
   </build>
 </project>

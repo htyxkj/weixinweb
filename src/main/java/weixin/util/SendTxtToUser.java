@@ -73,12 +73,13 @@ public class SendTxtToUser extends BaseDao{
 	public String tosend(String keyid,String weixinid,String wxscmid,String appid,String scm){
 		String zt="";
 		try {
-			if(weixinid.indexOf("@")==-1){
-				OperateUsers oU=new OperateUsers();
-				String email=oU.getEmail(weixinid, wxscmid);
-				if(email!=null&&!email.equals("")&&!email.equals("null")&&!email.equals("\"null\""))
-					weixinid=email;
-			}
+			//使用erpcode作为微信账号 不检测邮箱账号
+//			if(weixinid.indexOf("@")==-1){
+//				OperateUsers oU=new OperateUsers();
+//				String email=oU.getEmail(weixinid, wxscmid);
+//				if(email!=null&&!email.equals("")&&!email.equals("null")&&!email.equals("\"null\""))
+//					weixinid=email;
+//			}
 			ShowData show=new ShowData();
 			TokenThread tokenThread=new TokenThread();
 			String str[]=weixinid.split("\\|");
