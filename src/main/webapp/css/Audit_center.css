@@ -1,0 +1,132 @@
+/*内容body*/
+.audit_body{
+	background-color: white;
+}
+/*内容盒子*/
+.audit_content{
+	padding: 0 4%;
+}
+/*选项卡*/
+.audit_tab_control{
+	overflow: hidden;
+	border-bottom:1px solid #ddd;
+}
+/*选项卡导航内容标签*/
+.audit_tab_control>li{
+	float: left;
+	line-height: 48px;
+	width: 33%;
+	text-align: center;
+}
+/*导航a标签*/
+.audit_tab_control>li>a{
+	display: block;
+	color: #333;
+	font-size: 16px;
+	font-family: "微软雅黑";
+	border-bottom: 4px solid #fff;
+}
+/*点击样式*/
+.audit_tabcon_click{
+	border-color: #0088dd !important;
+	color: #0088dd !important;
+}
+/*切换盒子*/
+.audit_list_container{
+	padding-top: 20px;	
+}
+/*列表盒子*/
+.audit_list_box{
+	border-left: 1px solid #ddd;
+	margin-left: 4%;
+	position: relative;
+	padding-bottom:20px;
+}
+/*icon_watch*/
+.audit_list_box>i{
+	display: block;
+	position: absolute;
+	width: 10%;
+	height: 20%;
+	left: -5%;
+	top: 0;
+	background-image:url(../img/icon_grey_watch.jpg);
+	background-position:center;
+	background-repeat: no-repeat;
+	background-size:contain;
+}
+/*head portrait img*/
+.audit_list_box>img{
+	display: block;
+	position: absolute;
+	width: 10%;
+	height: 20%;
+	left: -5%;
+	top: 0;
+	border-radius: 50%;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+}
+/*icon_blue*/
+.audit_blue_watch{
+	background-image:url(../img/icon_blue_watch.jpg) !important;
+}
+/*虚线盒子*/
+.audit_dashed_box{
+	border-bottom: 1px dashed #ccc;
+	margin-left: 8%;
+	overflow: hidden;
+	padding-bottom: 16px;
+	padding-top: 2px;
+}
+/*左面文本盒子*/
+.audit_dsd_lbox{
+	float: left;
+	width:70%;
+}
+/*合同立项文本*/
+.audit_dsd_lbox>div:nth-of-type(1){
+	font-size: 16px;
+	color: #333;
+}
+/*日期文本*/
+.audit_dsd_lbox>div:nth-of-type(2){
+	font-size: 16px;
+	color: #0088dd;
+	margin-top: 10px;
+}
+/*提交人*/
+.audit_dsd_lbox>div:nth-of-type(3){
+	font-size: 16px;
+	color: #333;
+	margin-top: 10px;
+}
+/*制单人*/
+.audit_dsd_lbox>div:nth-of-type(4){
+	font-size: 16px;
+	color: #333;
+	margin-top: 10px;
+}
+/*制单人*/
+.audit_dsd_lbox>div:nth-of-type(5){
+	font-size: 16px;
+	color: #333;
+	margin-top: 10px;
+}
+.audit_dsd_rbox{
+	float: right;
+	width:30%;
+}
+/*详情按钮*/
+.audit_btn{
+	display: block;
+	padding: 0 20px;
+	height: 28px;
+	background-color: #0088dd;
+	font-size: 14px;
+	color: #fff;
+	line-height: 28px;
+	text-align: center;
+	border-radius: 3px;
+	margin-top: 30px;
+}
