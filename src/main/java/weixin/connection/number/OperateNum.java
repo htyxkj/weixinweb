@@ -25,7 +25,7 @@ public class OperateNum extends BaseDao {
 		java.sql.Date sqlDate = new java.sql.Date(num.getTime().getTime());
 		Object[] params = new Object[] { num.getW_corpid(), num.getAppid(),
 				num.getScm(), num.getWeixinid(), sqlDate,num.getContent()};
-		String sql = "insert into countNUM (w_corpid,appid,scm,weixinid,time,content) values (?,?,?,?,?,?);";
+		String sql = "insert into countnum (w_corpid,appid,scm,weixinid,time,content) values (?,?,?,?,?,?);";
 		try {
 			log.info(sql);
 			statement = connection.prepareStatement(sql);

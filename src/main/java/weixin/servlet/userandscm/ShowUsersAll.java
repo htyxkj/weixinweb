@@ -1,6 +1,7 @@
 package weixin.servlet.userandscm;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import weixin.connection.accessToken.AccessTokenDo;
 import weixin.pojo.AccessToken;
 import weixin.pojo.Users;
 import weixin.thread.TokenThread;

@@ -9,6 +9,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;  
   
 import java.net.URLEncoder;
+import java.util.List;
+
+import weixin.pojo.Message;
+import weixin.pojo.PageInfo;
 
 public class test {
 	/**  

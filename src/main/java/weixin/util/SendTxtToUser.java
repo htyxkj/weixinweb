@@ -30,7 +30,7 @@ public class SendTxtToUser extends BaseDao{
 			if(weixinid.indexOf("@")==-1){
 				OperateUsers oU=new OperateUsers();
 				String email=oU.getEmail(weixinid, wxscmid);
-				if(email!=null&&!email.equals("")&&!email.equals("\"null\""))
+				if(email!=null&&!email.equals("")&&!email.equals("null")&&!email.equals("\"null\""))
 					weixinid=email;
 			}
 			TokenThread tokenThread=new TokenThread();
@@ -76,7 +76,7 @@ public class SendTxtToUser extends BaseDao{
 			if(weixinid.indexOf("@")==-1){
 				OperateUsers oU=new OperateUsers();
 				String email=oU.getEmail(weixinid, wxscmid);
-				if(email!=null&&!email.equals("")&&!email.equals("\"null\""))
+				if(email!=null&&!email.equals("")&&!email.equals("null")&&!email.equals("\"null\""))
 					weixinid=email;
 			}
 			ShowData show=new ShowData();

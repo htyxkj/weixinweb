@@ -77,8 +77,8 @@ public class UpdateStateServlet extends HttpServlet {
 				message.setState(2);
 				rows =up.BipUpdate(message);
 				rows = up.BipTuiHui(message);
-				String name=sh.showName(w_corpid,scm,documentsid);
-				sendTxt.tosend("您有一条被驳回消息,请去平台处理！", name,jsonObject.getString("w_corpid"),jsonObject.getString("appid"),scm);
+//				String name=sh.showName(w_corpid,scm,documentsid);
+//				sendTxt.tosend("您有一条被驳回消息,请去平台处理！", name,jsonObject.getString("w_corpid"),jsonObject.getString("appid"),scm);
 				for(Message m :lm){
 					sendTxt.tosend(null, m.getSpname(),jsonObject.getString("w_corpid"),jsonObject.getString("appid"),scm);
 				}

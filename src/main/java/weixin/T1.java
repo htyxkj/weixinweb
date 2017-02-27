@@ -4,6 +4,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import weixin.connection.message.ShowData;
+import weixin.pojo.Message;
+import weixin.pojo.PageInfo;
 
 public class T1 {
 	public static void main(String[] args) {

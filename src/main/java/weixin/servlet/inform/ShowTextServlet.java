@@ -1,6 +1,9 @@
 package weixin.servlet.inform;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -12,9 +15,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.sf.json.JSONObject;
+import weixin.connection.message.ShowData;
 import weixin.connection.text.OperateTextData;
+import weixin.connection.users.OperateUsers;
 import weixin.pojo.AccessToken;
+import weixin.pojo.Message;
 import weixin.pojo.Text;
+import weixin.pojo.Users;
 import weixin.thread.TokenThread;
 import weixin.util.WeixinUtil;
 

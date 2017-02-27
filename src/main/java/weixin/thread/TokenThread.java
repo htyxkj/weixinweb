@@ -22,7 +22,7 @@ public class TokenThread implements Runnable{
 	    public static AccessToken accessToken = null;  
 	    public Map<String, AccessToken> map=null;
 	    public static Map<String, AccessToken> maplist=new HashMap<String, AccessToken>();
-	    public void run() {  
+	    public void run() {
 	    	while (true) {  
 	            try {
 	            	//从数据库里拿每个公司微信配置信息

@@ -91,11 +91,11 @@ public class TestServlet extends HttpServlet {
 		SendTxtToUser sendTxt=new SendTxtToUser();
 		String[] array=str.split("\\|");
 		UpdateDate up=new UpdateDate();
-		for(String string : array) {
+		for(String spweixinid : array) {
 			mess.setTitle(jsonObject.getString("title"));//标题**/
 			mess.setName(jsonObject.getString("name"));//提交人姓名**/
-			mess.setSpweixinid(string);//审批人微信**/
-			mess.setSpname(string);//审批人姓名**/
+			mess.setSpweixinid(spweixinid);//审批人微信**/
+			mess.setSpname(spweixinid);//审批人姓名**/
 			mess.setContent(jsonObject.getString("content"));// 审批内容 **/
 			mess.setTjtime(new Date());//提交时间**/
 			mess.setGs(jsonObject.getString("scm"));//公司**/
@@ -111,11 +111,11 @@ public class TestServlet extends HttpServlet {
 			mess.setAppid(jsonObject.getString("appid"));//应用id**/
 			mess.setWapno(jsonObject.getString("wapno"));//平台定义应用id**/
 			mess.setW_corpid(jsonObject.getString("w_corpid"));//微信企业号标识**/
-//			mess.setSmake(jsonObject.getString("smake"));//制单人
+			mess.setSmake(jsonObject.getString("smake"));//制单人
 			//录入数据
 			zt=r.jieshou(mess);
 			//通知微信端
-			zt=sendTxt.tosend(null,string,mess.getW_corpid(),mess.getAppid(),mess.getScm());
+			zt=sendTxt.tosend(null,spweixinid,mess.getW_corpid(),mess.getAppid(),mess.getScm());
 		}
 		//统计发送记录
 //		up.ToHistory(mess.getDocumentsid(), mess.getW_corpid(), "0", mess.getState1(),null);

@@ -4,7 +4,8 @@ package weixin.servlet;
 import javax.servlet.ServletException;  
 import javax.servlet.http.HttpServlet;  
 
-import weixin.thread.TokenThread;
+import weixin.thread.TokenThread;  
+import weixin.util.WeixinUtil;  
 
 import org.slf4j.Logger;  
 import org.slf4j.LoggerFactory;  

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import weixin.pojo.Message;
 import weixin.pojo.Text;
 import weixin.util.BaseDao;
 

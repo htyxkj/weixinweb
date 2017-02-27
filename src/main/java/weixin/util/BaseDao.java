@@ -1,8 +1,13 @@
 package weixin.util;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class BaseDao<T> {
 	String path = getClass().getClassLoader().getResource("/").getPath();
