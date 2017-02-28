@@ -120,7 +120,6 @@
 
   <profiles>
     <profile>
-      <!-- 动态配置环境 -->
       <id>dev</id>
       <properties>
         <profiles.active>dev</profiles.active>
@@ -130,14 +129,12 @@
       </activation>
     </profile>
     <profile>
-      <!-- 动态配置环境 -->
       <id>test</id>
       <properties>
         <profiles.active>test</profiles.active>
       </properties>
     </profile>
     <profile>
-      <!-- 动态配置环境 -->
       <id>prod</id>
       <properties>
         <profiles.active>prod</profiles.active>
@@ -157,8 +154,8 @@
         </excludes>
       </resource>
       <resource>
-        <!--<directory>src/main/resources/${profiles.active}</directory>-->
-        <directory>src/main/resources/${env.SPRING.PROFILES.ACTIVE}</directory>
+        <directory>src/main/resources/${profiles.active}/</directory>
+        <!--<directory>src/main/resources/${env.SPRING.PROFILES.ACTIVE}</directory>-->
       </resource>
     </resources>
   </build>
