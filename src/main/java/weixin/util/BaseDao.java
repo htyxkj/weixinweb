@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class BaseDao<T> {
-	String path = getClass().getClassLoader().getResource("/").getPath();
+	String path = getClass().getClassLoader().getResource("").getPath();
 	Locale locale = Locale.getDefault();  
 	ResourceBundle bundle = ResourceBundle.getBundle("db", locale);
 	public Connection getConnection() {
