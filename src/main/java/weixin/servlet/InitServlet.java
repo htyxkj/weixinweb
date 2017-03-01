@@ -17,7 +17,8 @@ public class InitServlet extends HttpServlet {
     /**
      * 获取access_token标识（链接令牌）
      */
-    public void init() throws ServletException {  
+    public void init() throws ServletException {
+            log.info("InitServlet init() 启动初始化方法...");
         	new Thread(new TokenThread()).start();
     }
 }  
