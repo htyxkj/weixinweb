@@ -187,7 +187,7 @@ public class ShowData extends BaseDao {
 					+ w_corpid
 					+ "' and t1.sptime>='"
 					+ sptime
-					+ "' and t1.id IN (SELECT MAX(id) FROM  message where state <>0 GROUP BY documentsid )  ORDER BY t1.sptime DESC";
+					+ "' and t1.id IN (SELECT MAX(id) FROM  message where state <>0 and spweixinid='"+spweixinid+"' GROUP BY documentsid )  ORDER BY t1.sptime DESC";
 //			sql = "select * FROM message WHERE id in(" 
 //					+"select max(id) FROM message WHERE documentsid in("
 //						+"select documentsid FROM message where spweixinid = '"+spweixinid
