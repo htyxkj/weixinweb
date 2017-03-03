@@ -228,7 +228,7 @@ html,body {
 	function bh() {
 		document.getElementById("results").value = "2";
 		if ($("textarea[name='yjcontent']").val() == '') {
-			document.getElementById("yjcontent").value = "驳回";
+//			document.getElementById("yjcontent").value = "驳回";
 		}
 		getId("2");
 	}
