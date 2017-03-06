@@ -253,8 +253,9 @@ public class ShowData extends BaseDao {
 					+ "' and t1.id IN (SELECT MAX(id) FROM  message where state <>0 and spweixinid='"+ spweixinid +"' GROUP BY documentsid )  ORDER BY t1.sptime DESC " +
 					"  LIMIT ? OFFSET ? ";
 		if (state.equals("3"))
-			sql = " select t1.*,'' as submit,t2.state as lastState from " +
+			sql = " select t1.*,ifnull(t3.username,t2.NAME) as submit,t2.state as lastState from " +
 					" message t1 left join v_message_last t2 on t1.documentsid = t2.documentsid " +
+					" left join v_users t3 on t1.name = t3.userid " +
 					" where t1.name='"+ spweixinid +"' and t1.tjtime>= '"+ sptime +"' and t1.w_corpid='"+ w_corpid +"' " +
 					" and t1.id IN (SELECT MIN(id) FROM  message GROUP BY documentsid )  ORDER BY t1.tjtime DESC " +
 					"  LIMIT ? OFFSET ? ";

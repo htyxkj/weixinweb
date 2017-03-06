@@ -19,9 +19,9 @@
     <meta http-equiv="Expires" content="0"/>
     <title>${title}</title>
     <link href='css/basics.css' rel="stylesheet"/>
-    <link href='css/Audit_center.css' rel="stylesheet"/>
+    <link href='css/Audit_center20170306.css' rel="stylesheet"/>
     <script src='js/jquery-2.1.4.js'></script>
-    <script src='js/Audit_center.js'></script>
+    <script src='js/Audit_center20170306.js'></script>
     <script src="js/iscroll.js"></script>
     <script src="js/pullToRefresh.js"></script>
 </head>
@@ -74,7 +74,7 @@
                         '<div style="margin-top:20px">' + data[i].title + '</div>',
                         '<div>' + data[i].tjtimeStr + '</div>',
 //                        '<div>' + stateStr + '</div>',
-                        '<div style="margin-bottom:9px">提交人:' + data[i].name + '</div>',
+                        '<div style="margin-bottom:9px">提交人:' + data[i].submit + '</div>',
                         '</div>',
                         '<div class="audit_dsd_rbox">',
                         '<a href="' + xqurl + data[i].id + sateurl + url2 + '" class="audit_btn">详情</a></div>',
