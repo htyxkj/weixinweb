@@ -91,6 +91,12 @@
     <servlet-name>ShowUsersAll</servlet-name>
     <servlet-class>weixin.servlet.userandscm.ShowUsersAll</servlet-class>
   </servlet>
+  <servlet>
+    <description>PageDataServlet</description>
+    <display-name>PageDataServlet</display-name>
+    <servlet-name>PageDataServlet</servlet-name>
+    <servlet-class>weixin.servlet.examine.PageDataServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>OAuthServlet</servlet-name>
     <url-pattern>/OAuthServlet</url-pattern>
@@ -146,6 +152,10 @@
   <servlet-mapping>
     <servlet-name>ShowUsersAll</servlet-name>
     <url-pattern>/ShowUsersAll</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PageDataServlet</servlet-name>
+    <url-pattern>/PageDataServlet</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>SubscribeServlet</welcome-file>

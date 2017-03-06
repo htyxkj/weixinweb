@@ -2,7 +2,7 @@ package weixin.pojo;
 
 import java.util.Date;
 
-public class Message {
+public class Message extends BasePojo {
 	private Integer id;/** 主键  777**/
 	private String title;/** 标题 **/
 	private String name;/** 提交人 姓名（编号） **/
