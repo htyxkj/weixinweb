@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +40,14 @@ public class ButtonServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String state = request.getParameter("state");// 0待审 1//已审(通过) 2//驳回 3再见提交的记录
-		String currentPage=request.getParameter("currentPage");
-		log.info("currentPage"+currentPage);
-		if(currentPage==null)
-			currentPage="1";
-		String pageSize=request.getParameter("pageSize");
-		log.info("pageSize"+pageSize);
-		if(pageSize==null)
-			pageSize="10";
+//		String currentPage=request.getParameter("currentPage");
+//		log.info("currentPage"+currentPage);
+//		if(currentPage==null)
+//			currentPage="1";
+//		String pageSize=request.getParameter("pageSize");
+//		log.info("pageSize"+pageSize);
+//		if(pageSize==null)
+//			pageSize="10";
 		log.info("state"+state);
 		if (state == null || state.equals(""))
 			state = "0";
@@ -58,8 +59,12 @@ public class ButtonServlet extends HttpServlet {
 		AccessToken accessToken = map.get(wxscmid);
 		//用户同意授权后，能获取到code
 		String code = request.getParameter("code");
+		//----
+//		code = "asd";
+		//----
 		try {
 			if (!"authdeny".equals(code) && code != null) {
+				//----
 				String requestUrl = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token="
 						+ accessToken.getToken()
 						+"&code="
@@ -72,6 +77,11 @@ public class ButtonServlet extends HttpServlet {
 					OperateUsers oU=new OperateUsers();
 					userid=oU.getUserID(userid, wxscmid);
 				}
+				//----
+//				String userid = "0980036";
+				HttpSession session = request.getSession();
+				session.setAttribute("userId",userid);
+				session.setAttribute("wxscmid",wxscmid);
 				ShowData show = new ShowData();
 				//
 //				Message msg=new Message();
@@ -84,8 +94,8 @@ public class ButtonServlet extends HttpServlet {
 //				page.setCondition(msg);
 //				PageInfo<Message> pageinfo = show.showState1(page);
 //				List<Message> listM = pageinfo.getRows();
-				//查询某个  状态  下用户的记录条数
-				List<Message> listM = show.showState(userid, state, wxscmid);
+				//查询获取某个状态下用户的记录 offset是记录起始位置
+				List<Message> listM = show.showStateByPage(userid, state, wxscmid,0);
 				log.info("条数"+listM.size()+"id"+userid+"状态"+state+"企业号标识"+wxscmid);
 				List<Message> listMNew = new ArrayList<Message>();
 				for (Message message : listM) {
@@ -97,7 +107,6 @@ public class ButtonServlet extends HttpServlet {
 						if(u.getImgurl()!=null&&!u.getImgurl().equals(""))
 						message.setTuUrl(u.getImgurl());
 					}
-					message.setTjtimeStr(StringUtil.timePass(message.getTjtime(), 4));
 					listMNew.add(message);
 				}
 				//详情 按钮链接
@@ -126,9 +135,9 @@ public class ButtonServlet extends HttpServlet {
 				request.setAttribute("bu_url0", bu_url0);
 				request.setAttribute("bu_url2", bu_url2);
 
-				String currentPageStr="&currentPage=";
-				currentPageStr = URLEncoder.encode(currentPageStr, "UTF-8");
-				request.setAttribute("currentPageStr", currentPageStr);
+//				String currentPageStr="&currentPage=";
+//				currentPageStr = URLEncoder.encode(currentPageStr, "UTF-8");
+//				request.setAttribute("currentPageStr", currentPageStr);
 				request.setAttribute("title", title);
 				request.setAttribute("listM", listMNew);
 //				request.setAttribute("page", page);

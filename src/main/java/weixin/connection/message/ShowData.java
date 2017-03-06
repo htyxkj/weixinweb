@@ -13,9 +13,14 @@ import org.slf4j.LoggerFactory;
 import weixin.pojo.Message;
 import weixin.pojo.PageInfo;
 import weixin.util.BaseDao;
+import weixin.util.StringUtil;
 
 public class ShowData extends BaseDao {
 	private static Logger log = LoggerFactory.getLogger(ShowData.class);
+	//页面数据条数常量 --期望值
+	private static Integer PAGE_SIZE = 10;
+	//滚动加载数据每次加载数据数量 --期望值
+	private static Integer RESULT_SIZE = 10;
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	/**
@@ -135,6 +140,164 @@ public class ShowData extends BaseDao {
 		return list;
 	}
 
+	//获得最大行数
+	public Integer getStateDataCount(String spweixinid,String state,String w_corpid){
+		Connection connection = getConnection();
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		Calendar ca = Calendar.getInstance();// 得到一个Calendar的实例
+		ca.setTime(new Date()); // 设置时间为当前时间
+		ca.add(Calendar.MONTH, -1); // 月份减1
+		Date lastMonth = ca.getTime(); // 结果
+		String sptime = sdf.format(lastMonth);
+		//防错 参数错误的话 默认查询返回零
+		String sql = "select 0 as countnum";
+		if(state.equals("0")){
+			sql = "select count(1) as countnum from " +
+					" message t1 left join v_message_start t2 on t1.documentsid = t2.documentsid " +
+					" left join users t3 on t3.userid =  t2.NAME and t3.w_corpid = t2.w_corpid " +
+					" where t1.w_corpid = '" + w_corpid + "' and t1.state = '" + state + "' and t1.spweixinid = '" + spweixinid+"'";
+		}else if(state.equals("1")){
+			sql = "select count(1) as countnum from  message t1 "
+					+ " left join v_message_start t2 on t1.documentsid = t2.documentsid "
+					+ " left join users t3 on t3.userid =  t2.NAME and t3.w_corpid = t2.w_corpid "
+					+ " left join v_message_last t4 on t1.documentsid = t4.documentsid "
+					+ "where t1.spweixinid='"
+					+ spweixinid
+					+ "' and t1.state in('"+state+"','2') and t1.w_corpid='"
+					+ w_corpid
+					+ "' and t1.sptime>='"
+					+ sptime
+					+ "' and t1.id IN (SELECT MAX(id) FROM  message where  state <>0 and spweixinid='"+ spweixinid +"' GROUP BY documentsid )";
+		}else if(state.equals("3")){
+			sql = " select count(1) as countnum from " +
+					" message t1 left join v_message_last t2 on t1.documentsid = t2.documentsid " +
+					" where t1.name='"+ spweixinid +"' and t1.tjtime>= '"+ sptime +"' and t1.w_corpid='"+ w_corpid +"' " +
+					" and t1.id IN (SELECT MIN(id) FROM  message GROUP BY documentsid )";
+		}
+		log.info(sql);
+		try {
+			statement = connection.prepareStatement(sql);
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				return resultSet.getInt("countnum");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		} finally {
+			closeAll(connection, statement, resultSet);
+		}
+		return 0;
+	}
+	//规范页码输入，超过最大页码就返回最大页码，页码小于1就等于1；
+	public Integer checkPageIndex(Integer pageIndex,Integer maxCountnum){
+		//pageIndex 从1开始
+		Integer remaindernum = maxCountnum%PAGE_SIZE;
+		Integer maxPageIndex = maxCountnum/PAGE_SIZE;
+		log.info(remaindernum.toString());
+		log.info(maxPageIndex.toString());
+		log.info(pageIndex.toString());
+		if(remaindernum>0){
+			maxPageIndex = maxPageIndex+1;
+		}
+		if(pageIndex > maxPageIndex){
+			return  maxPageIndex;
+		}
+		if(pageIndex < 1){
+			return 1;
+		}
+		return pageIndex;
+	}
+	/**
+	 * 查询 某人 的某个状态的数据，根据offset 偏移量和 RESULT_SIZE 期望返回结果数量
+	 *
+	 * @param spweixinid
+	 *            某人的微信编号
+	 * @param state
+	 *            状态 (0:待审,1:已审,2:驳回,3:本人提交记录)
+	 * @param w_corpid
+	 *            企业号标识
+	 * @return List<Message>
+	 */
+	public List<Message> showStateByPage(String spweixinid,String state,String w_corpid,Integer offset){
+		//pageIndex 从1开始
+		Connection connection = getConnection();
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		List<Message> list = new ArrayList<Message>();
+		Message mess = null;
+		Calendar ca = Calendar.getInstance();// 得到一个Calendar的实例
+		ca.setTime(new Date()); // 设置时间为当前时间
+		ca.add(Calendar.MONTH, -1); // 月份减1
+		Date lastMonth = ca.getTime(); // 结果
+		String sql = "";
+		String sptime = sdf.format(lastMonth);
+		if (state.equals("0"))
+			sql = " select t1.*,ifnull(t3.username,t2.NAME) as submit,'-1' as lastState from " +
+					" message  t1 left join v_message_start t2 on t1.documentsid = t2.documentsid " +
+					" left join users t3 on t3.userid =  t2.NAME and t3.w_corpid = t2.w_corpid " +
+					" where t1.w_corpid = '" + w_corpid + "' and t1.state = '" + state + "' and t1.spweixinid = '" + spweixinid + "' ORDER BY t1.tjtime "+
+					" LIMIT ? OFFSET ? ";
+		if (state.equals("1"))
+			sql = "select t1.*,ifnull(t3.username,t2.NAME) as submit, t4.state as lastState from  message t1 "
+					+ " left join v_message_start t2 on t1.documentsid = t2.documentsid "
+					+ " left join users t3 on t3.userid =  t2.NAME and t3.w_corpid = t2.w_corpid "
+					+ " left join v_message_last t4 on t1.documentsid = t4.documentsid "
+					+ "where t1.spweixinid='"
+					+ spweixinid
+					+ "' and t1.state in('"+state+"','2') and t1.w_corpid='"
+					+ w_corpid
+					+ "' and t1.sptime>='"
+					+ sptime
+					+ "' and t1.id IN (SELECT MAX(id) FROM  message where state <>0 and spweixinid='"+ spweixinid +"' GROUP BY documentsid )  ORDER BY t1.sptime DESC " +
+					"  LIMIT ? OFFSET ? ";
+		if (state.equals("3"))
+			sql = " select t1.*,'' as submit,t2.state as lastState from " +
+					" message t1 left join v_message_last t2 on t1.documentsid = t2.documentsid " +
+					" where t1.name='"+ spweixinid +"' and t1.tjtime>= '"+ sptime +"' and t1.w_corpid='"+ w_corpid +"' " +
+					" and t1.id IN (SELECT MIN(id) FROM  message GROUP BY documentsid )  ORDER BY t1.tjtime DESC " +
+					"  LIMIT ? OFFSET ? ";
+		log.info(sql);
+		try {
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1,RESULT_SIZE);
+			statement.setInt(2,offset);
+			resultSet = statement.executeQuery();
+			resultSet.last(); //移到最后一行
+			Integer rowCount = resultSet.getRow(); //得到当前行号 记录最大数据
+			resultSet.beforeFirst();
+			Integer resultOffset = offset + rowCount;
+			while (resultSet.next()) {
+				mess = new Message();
+				mess.setId(resultSet.getInt("id"));//主键 **/
+				mess.setTitle(resultSet.getString("title"));//标题 **/
+				mess.setName(resultSet.getString("name"));//提交人 姓名（编号） **/
+				mess.setSpweixinid(resultSet.getString("spweixinid"));//审批人 微信企业号 UserID **/
+				mess.setSpname(resultSet.getString("spname"));//审批人 姓名（编号） **/
+				mess.setContent(resultSet.getString("content"));//审批内容 **/
+				mess.setYjcontent(resultSet.getString("yjcontent"));//审批意见 **/
+				mess.setTjtime(sdf.parse(resultSet.getString("tjtime")));// 提交时间 **/
+				mess.setDocumentsid(resultSet.getString("documentsid"));//单据编号 **/
+				mess.setDocumentstype(resultSet.getString("documentstype"));//单据类型 **/
+				mess.setTablename(resultSet.getString("tablename"));//单据表名 **/
+				mess.setState(resultSet.getInt("state"));//状态 0未审批 1审批通过 2驳回申请 **/
+				mess.setScm(resultSet.getString("scm"));
+				mess.setW_corpid(resultSet.getString("w_corpid"));
+				mess.setSmake(resultSet.getString("smake"));//制单人
+				mess.setSubmit(resultSet.getString("submit"));//制单人
+				mess.setLastState(resultSet.getString("lastState"));
+				mess.setTjtimeStr(StringUtil.timePass(mess.getTjtime(), 4));
+				mess.setOffset(resultOffset);
+				list.add(mess);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(connection, statement, resultSet);
+		}
+		return list;
+	}
 	/**
 	 * 查询 某人 的某个状态的数据内容
 	 * 
