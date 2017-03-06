@@ -47,7 +47,7 @@
         })
     })
     function addItems(data) {
-        var sateurl = "&state=3"; //详情url 拼接串
+        var sateurl = "&state=0"; //详情url 拼接串
         var xqurl = $("#xqurl").val(); //详情url 拼接串
         var url2 = $("#url2").val();  //详情url 拼接串
         var dataLength = data.length;
