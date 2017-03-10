@@ -415,7 +415,8 @@ html,body {
 				</tr>
 				<tr class="tr" style="color:#999;margin: 0px;padding:0px;">
 					<td valign="top">
-						<p style="font-size:14px;">${data.contenthuanhang}</p>
+						<p>${data.contenthuanhang}</p>
+						<%--<p style="font-size:14px;">${data.contenthuanhang}</p>--%>
 					</td>
 				</tr>
 				<tr class="tr" style="color:#999;font-size:14px;">
