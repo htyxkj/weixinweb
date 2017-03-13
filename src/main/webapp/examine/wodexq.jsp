@@ -434,7 +434,7 @@ html,body {
 				<c:if test="${fn:length(listM)>0}">
 					<a id="showjilu" onclick="showjilu()">查看流程</a>
 				</c:if>
-				<c:if test="${data.documentstype eq 'C10901' || data.documentstype eq 'C10309' || data.doucmentstype eq 'C10912'}">
+				<c:if test="${data.documentstype eq 'C10901' || data.documentstype eq 'C10309' || data.documentstype eq 'C10912'}">
 					<a id="showfl" onclick="showfl();">查看单据分录</a>
 				</c:if>
 				<a id="hidejilu" onclick="hidejilu()">收起</a>
