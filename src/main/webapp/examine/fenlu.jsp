@@ -69,7 +69,17 @@
 </head>
 <body>
 	<div class="list-body">
-		<h1 class="list-title">${documentstype eq 'C10901'?'借款单分录':'费用报销单分录' }</h1>
+		<h1 class="list-title">
+			<c:if test="${documentstype eq 'C10901'}">
+				借款单分录
+			</c:if>
+			<c:if test="${documentstype eq 'C10309'}">
+				费用报销单分录
+			</c:if>
+			<c:if test="${documentstype eq 'C10912'}">
+				付款单分录
+			</c:if>
+		</h1>
 		<div id="list" class="list-con">
             
         </div>
