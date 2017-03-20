@@ -249,7 +249,7 @@ html,body {
 			dataType : "JSON",
 			success : function(data) {
 				if (data.success == 'ok') {
-					sp(state);
+                    submit(state);
 				} else {
 					alert("此消息已被 其他审批人审批！");
 				}
@@ -277,9 +277,9 @@ html,body {
 			},
 			dataType : "JSON",
 			success : function(data) {
-				if (data.success == 'ok') {
-					submit(state);
-				}
+//				if (data.success == 'ok') {
+//					submit(state);
+//				}
 			},
 			error : function(err) {
 				alert("系统错误，请联系系统管理员！3"+$("input[name='serverurl']")
@@ -323,6 +323,7 @@ html,body {
 			dataType : "JSON",
 			success : function(data) {
 				if (data.success == 'ok') {
+                    sp(state);
 					window.location.href = 'ResultServlet?success=ok&wxscmid='+$("input[name='w_corpid']").val();
 				} else {
 					window.location.href = 'ResultServlet?success=no&wxscmid='+$("input[name='w_corpid']").val();
