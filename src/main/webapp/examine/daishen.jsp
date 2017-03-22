@@ -71,7 +71,7 @@
                 html = html + ['<li><div class="audit_list_box"><img src="img/point.png"/>',
                         '<div class="audit_dashed_box">',
                         '<div class="audit_dsd_lbox">',
-                        '<div style="margin-top:20px">' + data[i].title + '</div>',
+                        '<div style="margin-top:20px">' + data[i].title + "  " + data[i].documentsid + '</div>',
                         '<div>' + data[i].tjtimeStr + '</div>',
 //                        '<div>' + stateStr + '</div>',
                         '<div style="margin-bottom:9px">提交人:' + data[i].submit + '</div>',
