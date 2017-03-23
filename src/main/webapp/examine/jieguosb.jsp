@@ -34,7 +34,7 @@
 					</h2>
 			</div>
 			<div class="weui-msg__text-area">
-					<h2 class="weui-msg__title">操作失败！</h2>
+					<h2 class="weui-msg__title">系统运行中出现错误</h2>
 			</div>
 			<div class="weui-msg__opr-area">
 				<p class="weui-btn-area">
