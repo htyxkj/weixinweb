@@ -29,9 +29,11 @@
     var loading = false;  //状态标记
     var headPage = 0;
     $(function(){
+        loading = true;
         $.ajax({
             url:"PageDataServlet",
             type:"post",
+//            async:false,
             data:{
                 pageType: "daishen",
                 offset: headPage
@@ -43,7 +45,12 @@
                     pullDownAction:Refresh,
                     pullUpAction:Load
                 });
+                loading = false;
             },
+            error: function (error) {
+                loading = false;
+//                alert("error"+JSON.stringify(error));
+            }
         })
     })
     function addItems(data) {
@@ -152,6 +159,7 @@
             $.ajax({
                 url: "PageDataServlet",
                 type: "POST",
+//                async:false,
                 data: {
                     pageType: pageType,
                     offset: offset
