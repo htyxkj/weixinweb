@@ -29,9 +29,11 @@
     var loading = false;  //状态标记
     var headPage = 0;
     $(function(){
+        loading = true;
         $.ajax({
             url:"PageDataServlet",
             type:"post",
+//            async:false,
             data:{
                 pageType: "daishen",
                 offset: headPage
@@ -43,7 +45,12 @@
                     pullDownAction:Refresh,
                     pullUpAction:Load
                 });
+                loading = false;
             },
+            error: function (error) {
+                loading = false;
+//                alert("error"+JSON.stringify(error));
+            }
         })
     })
     function addItems(data) {
@@ -71,7 +78,7 @@
                 html = html + ['<li><div class="audit_list_box"><img src="img/point.png"/>',
                         '<div class="audit_dashed_box">',
                         '<div class="audit_dsd_lbox">',
-                        '<div style="margin-top:20px">' + data[i].title + '</div>',
+                        '<div style="margin-top:20px">' + data[i].title + "  " + data[i].documentsid + '</div>',
                         '<div>' + data[i].tjtimeStr + '</div>',
 //                        '<div>' + stateStr + '</div>',
                         '<div style="margin-bottom:9px">提交人:' + data[i].submit + '</div>',
@@ -152,6 +159,7 @@
             $.ajax({
                 url: "PageDataServlet",
                 type: "POST",
+//                async:false,
                 data: {
                     pageType: pageType,
                     offset: offset

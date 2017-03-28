@@ -43,7 +43,12 @@
 						}else if(data.labers[oneValue]=="附件路径"){
 						
 						}else{
-							html += "<div class='list-aa'><span class='list-bt'>"+data.labers[oneValue]+"：</span><span class='list-hk'>"+va[oneValue]+"</span></div>";
+						    var baseValue = va[oneValue];
+						    var checkValue = '';
+						    if(baseValue){
+                                checkValue = baseValue;
+							}
+							html += "<div class='list-aa'><span class='list-bt'>"+data.labers[oneValue]+"：</span><span class='list-hk'>"+checkValue+"</span></div>";
 						}
 					}
 					html += "</div>";
