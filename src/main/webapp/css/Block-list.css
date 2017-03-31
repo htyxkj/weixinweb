@@ -23,7 +23,8 @@
 }
 .list-aa{
     margin-bottom: 5px;
-    overflow: hidden;
+    /*overflow: hidden;*/
+    white-space: pre-wrap;
 }
 .list-aa span{
     float: left;
