@@ -84,6 +84,15 @@
 			<c:if test="${documentstype eq 'C10912'}">
 				付款单分录
 			</c:if>
+			<c:if test="${documentstype eq '3050'}">
+				差旅费报销单
+			</c:if>
+			<c:if test="${documentstype eq '3060'}">
+				出差申请单
+			</c:if>
+			<c:if test="${documentstype eq '3075'}">
+				印章申请
+			</c:if>
 		</h1>
 		<div id="list" class="list-con">
             
