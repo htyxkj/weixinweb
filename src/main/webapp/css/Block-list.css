@@ -16,23 +16,23 @@
     float: left;
     font-size: 12px;
     box-shadow: 1px 1px 10px #d3d3d3;
-    padding: 10px;
+    padding: 4%;
     color: #333;
     min-height: 111px;
 
 }
 .list-aa{
     margin-bottom: 5px;
-    overflow: hidden;
+    overflow: auto;
 }
 .list-aa span{
     float: left;
 }
 .list-bt{
-    width: 30%;
+    width: 26%;
 }
 .list-hk{
-    width: 70%;
+    width: 66%;
 }
 
 

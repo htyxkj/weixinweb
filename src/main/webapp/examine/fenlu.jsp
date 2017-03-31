@@ -48,6 +48,47 @@
 						    if(baseValue){
                                 checkValue = baseValue;
 							}
+                            <% if(documentstype.equals("3060")){%>
+                            	if(data.labers[oneValue]=="交通工具"){
+                                    if(checkValue == '0'){
+                                        checkValue = "飞机";
+									}
+                                    if(checkValue == '1'){
+                                        checkValue = "轮船";
+                                    }
+                                    if(checkValue == '2'){
+                                        checkValue = "汽车";
+                                    }
+                                    if(checkValue == '3'){
+                                        checkValue = "高铁";
+                                    }
+                                    if(checkValue == '4'){
+                                        checkValue = "其他";
+                                    }
+                                    if(checkValue == '5'){
+                                        checkValue = "火车";
+                                    }
+                            	}
+							<%}%>
+                            <% if(documentstype.equals("3075")){%>
+                            if(data.labers[oneValue]=="印章类别"){
+                                if(checkValue == '0'){
+                                    checkValue = "公章";
+                                }
+                                if(checkValue == '1'){
+                                    checkValue = "法人章";
+                                }
+                                if(checkValue == '2'){
+                                    checkValue = "合同章";
+                                }
+                                if(checkValue == '3'){
+                                    checkValue = "财务专用章";
+                                }
+                                if(checkValue == '4'){
+                                    checkValue = "其他";
+                                }
+                            }
+                            <%}%>
 							html += "<div class='list-aa'><span class='list-bt'>"+data.labers[oneValue]+"：</span><span class='list-hk'>"+checkValue+"</span></div>";
 						}
 					}
@@ -83,6 +124,15 @@
 			</c:if>
 			<c:if test="${documentstype eq 'C10912'}">
 				付款单分录
+			</c:if>
+			<c:if test="${documentstype eq '3050'}">
+				差旅费报销单
+			</c:if>
+			<c:if test="${documentstype eq '3060'}">
+				出差申请单
+			</c:if>
+			<c:if test="${documentstype eq '3075'}">
+				印章申请
 			</c:if>
 		</h1>
 		<div id="list" class="list-con">
