@@ -237,7 +237,7 @@ public class ShowData extends BaseDao {
 			sql = " select DISTINCT t1.*,ifnull(t3.username,t2.NAME) as submit,'-1' as lastState from " +
 					" message  t1 left join v_message_start t2 on t1.documentsid = t2.documentsid " +
 					" left join users t3 on t3.userid =  t2.NAME and t3.w_corpid = t2.w_corpid " +
-					" where t1.w_corpid = '" + w_corpid + "' and t1.state = '" + state + "' and t1.spweixinid = '" + spweixinid + "' ORDER BY t1.tjtime "+
+					" where t1.w_corpid = '" + w_corpid + "' and t1.state = '" + state + "' and t1.spweixinid = '" + spweixinid + "' ORDER BY t1.tjtime DESC"+
 					" LIMIT ? OFFSET ? ";
 		if (state.equals("1"))
 			sql = "select DISTINCT t1.*,ifnull(t3.username,t2.NAME) as submit, t4.state as lastState from  message t1 "
