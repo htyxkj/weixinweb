@@ -112,15 +112,23 @@ public class TestServlet extends HttpServlet {
 			mess.setWapno(jsonObject.getString("wapno"));//平台定义应用id**/
 			mess.setW_corpid(jsonObject.getString("w_corpid"));//微信企业号标识**/
 			mess.setSmake(jsonObject.getString("smake"));//制单人
+			//为解决上级审批可能出现的垃圾数据，进行数据清洗
+			updateState(mess);
 			//录入数据
 			zt=r.jieshou(mess);
 			//通知微信端
-			zt=sendTxt.tosend(null,spweixinid,mess.getW_corpid(),mess.getAppid(),mess.getScm());
+			zt=sendTxt.tosend(null,spweixinid,mess.getW_corpid(),mess.getScm());
 		}
 		//统计发送记录
 //		up.ToHistory(mess.getDocumentsid(), mess.getW_corpid(), "0", mess.getState1(),null);
 		return zt;
 	}
+
+	private void updateState(Message mess) {
+		ReceiveData r=new ReceiveData();
+		r.updateState(mess);
+	}
+
 	/**
 	 *退回方法
 	 **/
@@ -140,7 +148,7 @@ public class TestServlet extends HttpServlet {
 		if(str.equals(""))
 			str=jsonObject.getString("spname");
 		for (String string : array) {
-			sendTxt.tosend(null, string, jsonObject.getString("w_corpid"),jsonObject.getString("appid"),jsonObject.getString("scm"));
+			sendTxt.tosend(null, string, jsonObject.getString("w_corpid"),jsonObject.getString("scm"));
 		}
 		return num;
 	}

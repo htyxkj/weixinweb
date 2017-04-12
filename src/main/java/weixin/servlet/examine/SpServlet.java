@@ -63,7 +63,7 @@ public class SpServlet extends HttpServlet {
 			upDate.BipTuiHui(message);
 			if (rows != 0) {
 				for(Message m :lm){
-					sendTxt.tosend(null, m.getSpname(),m.getW_corpid(),m.getAppid(),m.getScm());
+					sendTxt.tosend(null, m.getSpname(),m.getW_corpid(),m.getScm());
 				}
 				String str="{\"success\":\"ok\"}";
 				out = response.getWriter();

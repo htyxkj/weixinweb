@@ -255,9 +255,13 @@
                         alert("此消息已被 其他审批人审批！");
                     }
                 },
-                error: function (err) {
-                    alert("系统错误，请联系系统管理员！校验审批节点出现错误：SelectOneMessage！" + $("input[name='serverurl']")
-                            .val());
+                error: function(jqXHR, textStatus, errorThrown) {
+                    if(textStatus = 'timeout'){
+                         alert("网络超时，请稍后重试");
+                    }else {
+                        alert("系统错误，请联系系统管理员！校验审批节点出现错误：SelectOneMessage！" + $("input[name='serverurl']")
+                                        .val());
+                    }
                 }
             });
         }
@@ -290,6 +294,7 @@
                 }
             });
         }
+        var send = 0;
         //3.34提交或者退回
         function submit(state) {
             $.ajax({
@@ -332,8 +337,13 @@
                     }
                 },
                 error: function (err) {
-                    alert("系统错误，请联系系统管理员！服务器返回异常：weixinInf!" + $("input[name='serverurl']")
-                            .val());
+                    if(send == 0){
+                        submit(state);
+                        send = 1;
+                    }else {
+                        alert("系统错误，请联系系统管理员！服务器返回异常：weixinInf!" + $("input[name='serverurl']")
+                                        .val());
+                    }
                 }
             });
         }
