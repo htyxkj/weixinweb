@@ -45,4 +45,24 @@ public class ReceiveData extends BaseDao{
 		}
 		return zt;
 	}
+
+	public void updateState(Message mess) {
+		Connection connection = getConnection();
+		PreparedStatement statement=null;
+		ResultSet resultSet=null;
+		String state = "1";
+		if("1".equals(mess.getState0())) {
+			state = "2";
+		}
+		String sql = "UPDATE message set state = '"+state+"' WHERE state='0' and tjtime=(SELECT * FROM (SELECT MAX(tjtime) FROM message WHERE documentsid = '"+mess.getDocumentsid()+"') as v)" +
+				"and documentsid = '"+mess.getDocumentsid()+"' ";
+		try {
+			statement=connection.prepareStatement(sql, statement.RETURN_GENERATED_KEYS);
+			statement.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			closeAll(connection, statement, resultSet);
+		}
+	}
 }

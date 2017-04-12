@@ -127,6 +127,7 @@ public class AddUserServlet extends HttpServlet {
 			Users us=o.showUserName(users.getUserid(),users.getScm(),users.getW_corpid());
 			if(us!=null){
 				o.uodateUsers(users);
+				o.uodateUsersImgUrl(users);
 			}else if(us==null){
 				o.insertUser(users);
 			}
