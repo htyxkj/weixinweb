@@ -80,7 +80,7 @@ public class UpdateStateServlet extends HttpServlet {
 //				String name=sh.showName(w_corpid,scm,documentsid);
 //				sendTxt.tosend("您有一条被驳回消息,请去平台处理！", name,jsonObject.getString("w_corpid"),jsonObject.getString("appid"),scm);
 				for(Message m :lm){
-					sendTxt.tosend(null, m.getSpname(),jsonObject.getString("w_corpid"),jsonObject.getString("appid"),scm);
+					sendTxt.tosend(null, m.getSpname(),jsonObject.getString("w_corpid"),scm);
 				}
 			}else{
 				//同意
@@ -91,7 +91,7 @@ public class UpdateStateServlet extends HttpServlet {
 				rows = up.BipTuiHui(message);
 				log.info(lm.size()+"");
 				for(Message m :lm){
-					sendTxt.tosend(null, m.getSpname(),jsonObject.getString("w_corpid"),jsonObject.getString("appid"),scm);
+					sendTxt.tosend(null, m.getSpname(),jsonObject.getString("w_corpid"),scm);
 				}
 			}
 			isr.close();
@@ -119,7 +119,7 @@ public class UpdateStateServlet extends HttpServlet {
 		message.setW_corpid(jsonObject.getString("w_corpid"));
 		String num=up.ToWeiDu(message);
 		SendTxtToUser sendTxt=new SendTxtToUser();
-		sendTxt.tosend(null, jsonObject.getString("spweixinid"),jsonObject.getString("w_corpid"),jsonObject.getString("appid"),jsonObject.getString("scm"));
+		sendTxt.tosend(null, jsonObject.getString("spweixinid"),jsonObject.getString("w_corpid"),jsonObject.getString("scm"));
 //		up.ToHistory(message.getDocumentsid(), message.getW_corpid(), null,message.getState1()+"",message.getSpname());
 		return num;
 	}

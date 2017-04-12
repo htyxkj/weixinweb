@@ -70,7 +70,7 @@ public class SendTxtToUser extends BaseDao{
 	/**
 	 * 执行 发送 消息 并统计待审数据条数
 	 */
-	public String tosend(String keyid,String weixinid,String wxscmid,String appid,String scm){
+	public String tosend(String keyid,String weixinid,String wxscmid,String scm){
 		String zt="";
 		try {
 			//使用erpcode作为微信账号 不检测邮箱账号
@@ -99,7 +99,7 @@ public class SendTxtToUser extends BaseDao{
 					String requestUrl="https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token="+acc.getToken();
 					String outputStr="{\"touser\": \""+string+"\","//
 							+ "\"msgtype\": \"text\",  "
-							+ "\"agentid\": "+appid+", "
+							+ "\"agentid\":5,"
 							+ "\"text\": { \"content\": \""+content+"\" },"
 							+ " \"safe\":0}";
 					String requestMethod="POST";
@@ -109,7 +109,7 @@ public class SendTxtToUser extends BaseDao{
 					OperateNum num=new OperateNum();
 					if(jsonObject.getInt("errcode")==0){
 						Num m=new Num();
-						m.setAppid(appid);
+						m.setAppid("5");
 						m.setW_corpid(wxscmid);
 						m.setWeixinid(weixinid);
 						m.setScm(scm);
