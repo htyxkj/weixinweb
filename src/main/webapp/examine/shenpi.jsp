@@ -244,6 +244,7 @@
         }
 
         function ty() {
+            loading();
             if ($("input[name='state2']").val() == '') {
                 alert("请选择下一审批人");
                 return;
