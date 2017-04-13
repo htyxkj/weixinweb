@@ -20,6 +20,7 @@
     <title>${dateks.name}的${dateks.title}</title>
     <link href='css/bootstrap.min.css' rel="stylesheet"/>
     <link href='css/jilu.css' rel="stylesheet"/>
+    <link href='css/reset.css' rel="stylesheet"/>
     <script src='js/jquery-3.0.0.js'></script>
     <script src='js/bootstrap.min.js'></script>
     <style type="text/css">
@@ -144,6 +145,7 @@
             $('#ty')
                 .click(
                     function () {
+                        loading();
                         $.ajax({
                             type: "POST",
                             //contentType: "application/json;charset=utf-8",   //内容类型
@@ -178,6 +180,7 @@
                             },
                             dataType: "JSON",
                             success: function (data) {
+                                removeloading();
                                 var trstr = "";
                                 for (var i = 0; i < data.nextusers.length; i++) {
                                     var item = data.nextusers[i];
@@ -212,12 +215,34 @@
                                 }
                             },
                             error: function (err) {
+                                removeloading();
                                 alert("系统错误，请联系系统管理员！获取下级审批人错误：weixinInf" + $("input[name='serverurl']")
                                         .val());
                             }
                         });
                     });
         });
+        function loading(){
+            var body = $("body");
+            var str = "<div class='det_anibox'>";
+            str += "<div class='spinner det_lod_ani'>";
+            str += "<div class='rect1'></div>";
+            str += "<div class='rect2'></div>";
+            str += "<div class='rect3'></div>";
+            str += "<div class='rect4'></div>";
+            str += "<div class='rect5'></div>";
+            str += "</div>";
+            str += "</div>";
+            body.prepend(str);
+        }
+
+        function removeloading(){
+            var body = $("body");
+            if(body.find(".det_anibox").is(":visible")){
+                body.find(".det_anibox").remove();
+            }
+        }
+
         function ty() {
             if ($("input[name='state2']").val() == '') {
                 alert("请选择下一审批人");
@@ -227,6 +252,7 @@
             getId("1");
         }
         function bh() {
+            loading();
             document.getElementById("results").value = "2";
             if ($("textarea[name='yjcontent']").val() == '') {
 //			document.getElementById("yjcontent").value = "驳回";
@@ -252,16 +278,13 @@
                     if (data.success == 'ok') {
                         submit(state);
                     } else {
+                        removeloading();
                         alert("此消息已被 其他审批人审批！");
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    if(textStatus = 'timeout'){
-                         alert("网络超时，请稍后重试");
-                    }else {
-                        alert("系统错误，请联系系统管理员！校验审批节点出现错误：SelectOneMessage！" + $("input[name='serverurl']")
-                                        .val());
-                    }
+                    removeloading();
+                    alert("网络超时，请稍后重试");
                 }
             });
         }
@@ -289,6 +312,7 @@
                     }
                 },
                 error: function (err) {
+                    removeloading();
                     alert(err + "系统错误，请联系系统管理员！更新审批中心节点出现系统异常：SpServlet!" + $("input[name='serverurl']")
                             .val());
                 }
@@ -337,13 +361,9 @@
                     }
                 },
                 error: function (err) {
-                    if(send == 0){
-                        submit(state);
-                        send = 1;
-                    }else {
-                        alert("系统错误，请联系系统管理员！服务器返回异常：weixinInf!" + $("input[name='serverurl']")
-                                        .val());
-                    }
+                    removeloading();
+                    alert("系统错误，请联系系统管理员！服务器返回异常：weixinInf!" + $("input[name='serverurl']")
+                                    .val());
                 }
             });
         }
