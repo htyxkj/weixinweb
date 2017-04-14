@@ -439,7 +439,7 @@ html,body {
 					<a id="showjilu" onclick="showjilu()">查看流程</a>
 				</c:if>
 				<c:if test="${data.documentstype eq 'C10901' || data.documentstype eq 'C10309' || data.documentstype eq 'C10912'|| data.documentstype eq '3050'
-            || data.documentstype eq '3060' || data.documentstype eq '3075'}">
+            || data.documentstype eq '3060' || data.documentstype eq '3075' || data.documentstype eq '303503'}">
 					<a id="showfl" onclick="showfl();">查看单据分录</a>
 				</c:if>
 				<a id="hidejilu" onclick="hidejilu()">收起</a>
