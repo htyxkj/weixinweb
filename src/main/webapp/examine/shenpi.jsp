@@ -190,16 +190,26 @@
                                     } else if (item.state == -1) {
                                         alert("未定义下一审批人！");
                                     } else {
-                                        var usrcode = "'"
-                                            + item.usrcode
-                                            + "'";
-                                        trstr += '<tr  style="width:100%;text-align: center;font-size:20px; height:40px"><td><input type="radio" name="nextName" onclick="javascript:xuanName('
-                                            + item.state
-                                            + ","
-                                            + usrcode
-                                            + ')" value="">'
-                                            + item.name
-                                            + '</td></tr>';
+                                        if(data.nextusers.length==1){
+                                            var usrcode = "'"
+                                                    + item.usrcode
+                                                    + "'";
+                                            xuanName("'"+item.state+"'","'"+usrcode+"'");
+                                            trstr += '<tr  style="width:100%;text-align: center;font-size:20px; height:40px"><td><input type="radio" name="nextName" checked value="">'
+                                                    + item.name
+                                                    + '</td></tr>';
+                                        }else {
+                                            var usrcode = "'"
+                                                    + item.usrcode
+                                                    + "'";
+                                            trstr += '<tr  style="width:100%;text-align: center;font-size:20px; height:40px"><td><input type="radio" name="nextName" onclick="javascript:xuanName('
+                                                    + item.state
+                                                    + ","
+                                                    + usrcode
+                                                    + ')" value="">'
+                                                    + item.name
+                                                    + '</td></tr>';
+                                        }
                                     }
                                 }
                                 trstr += '<tr  style="width:100%;text-align: center;font-size:20px; height:40px"><td><a onclick="javascript:ty()" class="sel_btn">确定</a></td> </tr>';

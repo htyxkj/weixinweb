@@ -39,11 +39,6 @@
             },dataType: "json",
             success: function (res) {
                 addItems(res);
-                refresher.init({
-                    id:"audit_list",
-                    pullDownAction:Refresh,
-                    pullUpAction:Load
-                });
                 loading = false;
             },
             error: function (error) {
@@ -86,9 +81,14 @@
                         '<a href="' + xqurl + data[i].id + sateurl + url2 + '" class="audit_btn">详情</a></div>',
                         '</div></div></li>'].join("");
             }
+            refresher.init({
+                id:"audit_list",
+                pullDownAction:Refresh,
+                pullUpAction:Load
+            });
             $("#audit_list_container").append($(html));
         } else {
-            //处理没有数据的情况
+            $("#audit_list_container").append("<div style='text-align: center;'>暂无数据</div>");
         }
         return dataLength;
     }

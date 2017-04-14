@@ -40,11 +40,6 @@
             },dataType: "json",
             success: function (res) {
                 addItems(res);
-                refresher.init({
-                    id:"audit_list",
-                    pullDownAction:Refresh,
-                    pullUpAction:Load
-                });
                 loading = false;
             },
             error: function (error) {
@@ -88,8 +83,13 @@
                         '</div></div></li>'].join("");
             }
             $("#audit_list_container").append($(html));
+            refresher.init({
+                id:"audit_list",
+                pullDownAction:Refresh,
+                pullUpAction:Load
+            });
         } else {
-            //处理没有数据的情况
+            $("#audit_list_container").append("<div style='text-align: center;'>暂无数据</div>");
         }
         return dataLength;
     }
