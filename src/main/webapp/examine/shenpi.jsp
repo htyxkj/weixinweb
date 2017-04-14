@@ -363,8 +363,7 @@
                 },
                 error: function (err) {
                     removeloading();
-                    alert("系统错误，请联系系统管理员！服务器返回异常：weixinInf!" + $("input[name='serverurl']")
-                                    .val());
+                    alert("网络超时，请稍后重试");
                 }
             });
         }
