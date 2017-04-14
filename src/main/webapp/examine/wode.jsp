@@ -38,7 +38,7 @@
                 offset: headPage
             },dataType: "json",
             success: function (res) {
-                addItems(res);
+                addItemsByFirst(res);
                 loading = false;
             },
             error: function (error) {
@@ -46,7 +46,55 @@
 //                alert("error"+JSON.stringify(error));
             }
         })
-    })
+    });
+    function addItemsByFirst(data) {
+        var sateurl = "&state=3"; //详情url 拼接串
+        var xqurl = $("#xqurl").val(); //详情url 拼接串
+        var url2 = $("#url2").val();  //详情url 拼接串
+        var dataLength = data.length;
+        var html = '';
+        if (data && dataLength > 0) {
+            for (var i = 0; i < dataLength; i++) {
+                if (i == 0) {
+                    $("#offset").val(data[i].offset);
+                    if(data[i].offset==10){
+                        refresher.init({
+                            id:"audit_list",
+                            pullDownAction:Refresh,
+                            pullUpAction:Load
+                        });
+                    }
+                }
+                var state = data[i].lastState;
+                var stateStr;
+                if (state == 0) {
+                    stateStr = "待审批";
+                }
+                if (state == 1) {
+                    stateStr = "审批通过";
+                }
+                if (state == 2) {
+                    stateStr = "驳回";
+                }
+                html = html + ['<li><div class="audit_list_box"><img src="img/point.png"/>',
+                            '<div class="audit_dashed_box">',
+                            '<div class="audit_dsd_lbox">',
+                            '<div>' + data[i].title + "  " + data[i].documentsid + '</div>',
+                            '<div>' + data[i].tjtimeStr + '</div>',
+                            '<div>' + stateStr + '</div>',
+                            '<div>提交人:' + data[i].submit + '</div>',
+                            '</div>',
+                            '<div class="audit_dsd_rbox">',
+                            '<a href="' + xqurl + data[i].id + sateurl + url2 + '" class="audit_btn">详情</a></div>',
+                            '</div></div></li>'].join("");
+            }
+            $("#audit_list_container").append($(html));
+        } else {
+            $("#audit_list_container").append("<div style='text-align: center;'>暂无数据</div>");
+            loading=true;
+        }
+        return dataLength;
+    }
     function addItems(data) {
         var sateurl = "&state=3"; //详情url 拼接串
         var xqurl = $("#xqurl").val(); //详情url 拼接串
@@ -57,6 +105,13 @@
             for (var i = 0; i < dataLength; i++) {
                 if (i == 0) {
                     $("#offset").val(data[i].offset);
+                    if(data[i].offset==10){
+                        refresher.init({
+                            id:"audit_list",
+                            pullDownAction:Refresh,
+                            pullUpAction:Load
+                        });
+                    }
                 }
                 var state = data[i].lastState;
                 var stateStr;
@@ -81,14 +136,9 @@
                         '<a href="' + xqurl + data[i].id + sateurl + url2 + '" class="audit_btn">详情</a></div>',
                         '</div></div></li>'].join("");
             }
-            refresher.init({
-                id:"audit_list",
-                pullDownAction:Refresh,
-                pullUpAction:Load
-            });
             $("#audit_list_container").append($(html));
         } else {
-            $("#audit_list_container").append("<div style='text-align: center;'>暂无数据</div>");
+
         }
         return dataLength;
     }
