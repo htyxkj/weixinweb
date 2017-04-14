@@ -314,8 +314,7 @@
                 },
                 error: function (err) {
                     removeloading();
-                    alert(err + "系统错误，请联系系统管理员！更新审批中心节点出现系统异常：SpServlet!" + $("input[name='serverurl']")
-                            .val());
+                    alert("网络超时，请稍后重试");
                 }
             });
         }
