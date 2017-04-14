@@ -244,6 +244,7 @@
         }
 
         function ty() {
+            loading();
             if ($("input[name='state2']").val() == '') {
                 alert("请选择下一审批人");
                 return;
@@ -313,8 +314,7 @@
                 },
                 error: function (err) {
                     removeloading();
-                    alert(err + "系统错误，请联系系统管理员！更新审批中心节点出现系统异常：SpServlet!" + $("input[name='serverurl']")
-                            .val());
+                    alert("网络超时，请稍后重试");
                 }
             });
         }
@@ -362,8 +362,7 @@
                 },
                 error: function (err) {
                     removeloading();
-                    alert("系统错误，请联系系统管理员！服务器返回异常：weixinInf!" + $("input[name='serverurl']")
-                                    .val());
+                    alert("网络超时，请稍后重试");
                 }
             });
         }
