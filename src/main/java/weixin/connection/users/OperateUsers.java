@@ -253,6 +253,13 @@ public class OperateUsers extends BaseDao{
 		}
 		return listS;
 	}
+	/**
+	 * 获取公告通知员工ID
+	 * @param scm
+	 * @param w_corpID
+	 * @return
+	 * @throws Exception
+	 */
 	public List<String> getListUid(String scm,String w_corpID)throws Exception{
 		Connection connection=getConnection();
 		PreparedStatement statement=null;
@@ -276,5 +283,27 @@ public class OperateUsers extends BaseDao{
 			closeAll(connection, statement, resultSet);
 		}
 		return listUI;
+	}
+	/**
+	 * 删除用户
+	 * @param userid
+	 * @param w_corpID
+	 * @throws Exception
+	 */
+	public void delUser(String userid,String w_corpID)throws Exception{
+		Connection connection=getConnection();
+		PreparedStatement statement=null;
+		ResultSet resultSet=null;
+		String sql = "delete from users where userid=? and w_corpid=?";
+		try {
+			statement=connection.prepareStatement(sql);
+			statement.setString(1, userid);
+			statement.setString(2, w_corpID);
+			statement.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			closeAll(connection, statement, resultSet);
+		}
 	}
 }

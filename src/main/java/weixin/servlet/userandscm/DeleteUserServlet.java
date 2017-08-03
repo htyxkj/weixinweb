@@ -18,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import weixin.connection.users.OperateUsers;
 import weixin.pojo.AccessToken;
 import weixin.thread.TokenThread;
 import weixin.util.WeixinUtil;
@@ -35,33 +36,42 @@ public class DeleteUserServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
-		String zt="";
-		//流里面拿
-		String jsonstr = "";
-		InputStream is = request.getInputStream();
-		InputStreamReader isr = new InputStreamReader(is, "utf-8");
-		BufferedReader br = new BufferedReader(isr);
-		jsonstr=br.readLine();
-		jsonstr=URLDecoder.decode(jsonstr,"UTF-8");
- 		isr.close();
-		is.close();
-		JSONObject jsonObject = JSONObject.fromObject(jsonstr);
-		log.info(jsonstr);
-		String userid=jsonObject.getString("userid");//集团编码
-		String wxscmid=jsonObject.getString("corpid");//企业号标识
-		TokenThread tokenThread=new TokenThread();
-	 	Map<String, AccessToken> map=tokenThread.maplist;
-	 	AccessToken acc=map.get(wxscmid+"-00");
-	 	String requestUrl="https://qyapi.weixin.qq.com/cgi-bin/user/delete?access_token="+acc.getToken()+"&userid="+userid;
-	 	JSONObject jsonobj=WeixinUtil.httpRequest(requestUrl, "GET", null);
-	 	log.info(jsonobj);
-	 	String _out="";
-	 	System.out.println(jsonobj);
-	 	if(jsonobj.get("errcode").equals("0"))
-	 		_out="1;删除成功";
-	 	else
-	 		_out="-1;删除失败";
-        PrintWriter out = response.getWriter();  
-        out.write(_out);  
+		log.info("收到删除用户请求！");
+		try {
+			//流里面拿
+			String jsonstr = "";
+			InputStream is = request.getInputStream();
+			InputStreamReader isr = new InputStreamReader(is, "utf-8");
+			BufferedReader br = new BufferedReader(isr);
+			jsonstr=br.readLine();
+			jsonstr=URLDecoder.decode(jsonstr,"UTF-8");
+			isr.close();
+			is.close();
+			JSONObject jsonObject = JSONObject.fromObject(jsonstr);
+			log.info(jsonstr);
+			String userid=jsonObject.getString("userid");//集团编码
+			String wxscmid=jsonObject.getString("corpid");//企业号标识
+			TokenThread tokenThread=new TokenThread();
+			Map<String, AccessToken> map=tokenThread.maplist;
+			AccessToken acc=map.get(wxscmid+"-00");
+			String requestUrl="https://qyapi.weixin.qq.com/cgi-bin/user/delete?access_token="+acc.getToken()+"&userid="+userid;
+			JSONObject jsonobj=WeixinUtil.httpRequest(requestUrl, "GET", null);
+			log.info(jsonobj);
+			String _out="";
+			OperateUsers oU=new OperateUsers();
+			if(jsonobj.getString("errcode").equals("0")){
+				oU.delUser(userid, wxscmid);
+				_out="1;删除成功!";
+			}else if(jsonobj.getString("errcode").equals("60111")){
+				oU.delUser(userid, wxscmid);
+				_out="1;删除成功!";
+			}else{
+				_out="-1;删除失败!";
+			}
+			PrintWriter out = response.getWriter();
+			out.write(_out);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
