@@ -23,13 +23,15 @@
        background: red;
        opacity: 0.6;
        color: black;
+       
    }
 </style>
 
 <body>
 
      <div class="box" id="box">dssdfsdfsdffffffffffffffffffffffffffffffffs</div>
-
+	 <input type="button" value="按钮" onclick="hh()"/>
+	 <input type="button" value="按钮" onclick="hh()"/>
 </body>
 
 <script type="text/javascript">

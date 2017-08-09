@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
 import com.opslab.util.StringUtil;
 
 import net.sf.json.JSONObject;
@@ -31,6 +32,7 @@ import weixin.util.WeixinUtil;
 
 public class OAuthServlet extends HttpServlet {
     private static String SERVER_PATH_BODY = "mydoc/db_";
+    public final static char DIV_CELL = (char) 0x1F;//单元分隔
     private static Logger log = LoggerFactory.getLogger(OAuthServlet.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -122,9 +124,28 @@ public class OAuthServlet extends HttpServlet {
                             }
                         }
                         if (!StringUtil.isEmpty(noFJcontent)) {
-                            data.setContenthuanhang(noFJcontent.replaceAll(";", "<\\br>"));
+                        	String bStr=noFJcontent;
+                        	int i = bStr.indexOf(DIV_CELL);
+                    		while (i>0) {
+                    			noFJcontent+=bStr.substring(0,i)+"<br/>";
+                    			bStr = bStr.substring(i+1);
+                    			i = bStr.indexOf(DIV_CELL);
+                    		}
+                    		noFJcontent+=bStr;
+                    		noFJcontent=noFJcontent.replaceAll("\r\n", "<br/>");
+                            data.setContenthuanhang(noFJcontent);
                         } else {
-                            data.setContenthuanhang(data.getContent().replaceAll(";", "<\\br>"));
+                        	String aStr="";
+                        	String bStr=data.getContent();
+                        	int i = bStr.indexOf(DIV_CELL);
+                    		while (i>0) {
+                    			aStr+=bStr.substring(0,i)+"<br/>";
+                    			bStr = bStr.substring(i+1);
+                    			i = bStr.indexOf(DIV_CELL);
+                    		}
+                    		aStr+=bStr;
+                    		aStr=aStr.replaceAll("\r\n", "<br/>");
+                            data.setContenthuanhang(aStr);
                         }
                     }
                     if (u != null) {

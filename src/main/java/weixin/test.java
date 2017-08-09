@@ -24,12 +24,23 @@ public class test {
      * @param outputStr 提交的数据  
      * @return JSONObject(通过JSONObject.get(key)的方式获取json对象的属性值)  
 	 * @throws Exception
-     */
+     */    
+	public final static char DIV_CELL = (char) 0x1F;
 	public static void main(String[] args) throws Exception {
-		SRegServ t=new SRegServ();
-		Object[] obj=(Object[]) t.processOperator("isReg","10");
-		System.out.println(obj[0]);
-		System.out.println(obj[1]);
+		String bbbString="1:1002:1013:1024:1035:1046:1057:1068:1079:10810:109";
+		int i = bbbString.indexOf(DIV_CELL);
+		while (i>0) {
+			System.out.println(bbbString.substring(0,i));
+			bbbString = bbbString.substring(i+1);
+			i = bbbString.indexOf(DIV_CELL);
+		}
+		System.out.println(bbbString);
+//		bb.replaceAll(regex, replacement);
+//		bb.charAt(index);
+//		SRegServ t=new SRegServ();
+//		Object[] obj=(Object[]) t.processOperator("isReg","10");
+//		System.out.println(obj[0]);
+//		System.out.println(obj[1]);
 //			String a="{\"type\":\"1\",\"title\":\"通知加查看\",\"content\":\"居然为我而体育阿斯顿法傻大个撒快乐玩儿体育哦划局快乐玩规划局快乐\",\"users\":\"0990006\",\"w_corpid\":\"wx33a1a7296219a4fb\",\"appid\":\"10\",\"bipappid\":\"03\",\"scm\":\"03\"}";
 //			a=URLEncoder.encode(a, "UTF-8");
 ////			String  requestUrl="http://192.168.0.104:9999/jd/weixinInf?tip=99&dbid=40";

@@ -18,6 +18,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="description" content="">
 	<link href="css/bootstrap.css" rel="stylesheet" media="screen">
 	<link href="css/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
+ 
 	<script src='js/jquery-2.1.4.js'></script>
 	<script src='js/bootstrap.js'></script>
 	<script src='js/bootstrap-datetimepicker.js'></script>
@@ -28,43 +29,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("#add").click(function(){
 				var html = '';
 				//初始化
-                html = html + [ '<ul class="ul1">'+
-                                '<li class="li2">序&nbsp;&nbsp;&nbsp;&nbsp;号&nbsp;&nbsp;&nbsp;&nbsp;:'+id+'<input type="button" name="del" value="删除" style="float:right;"  onClick="delmx(this)" ></li>'+
-							    '<li class="li2">报销项目:'+
-							    '<select name="idxno" class="input2">'+
-		  						'<c:forEach items="${BXXM}" var="bxxm">'+
-			        			'<option value="${bxxm.sid}">${bxxm.name}</option>'+
-			        			'</c:forEach></select></li>'+
-							    '<li class="li2">发票编号:<input class="input2" type="text" name="inv_no"/></li>'+
-							    '<li class="li2">可抵扣否:'+
-		    				    '<select name="deduction" class="input2">'+
-    						    '<option value="0" selected="selected" >可抵扣</option>'+  
-    						    '<option value="1" >不可抵扣</option></select></li>'+
-								'<li class="li2">发票类别:'+
-								'<select name="inv_type" class="input2">'+
-								'<c:forEach items="${FPLB}" var="fplb">'+
-						        '<option value="${fplb.sid}">${fplb.name}'+  
-						        '</option></c:forEach>'+
-								'</select></li>'+
-								'<li class="li2">特殊票别:'+
-								'<select name="sp_tax" class="input2">  '+
-    							'<option value="1" selected="selected" >正常</option>  '+
-    							'<option value="2" >高速公路费</option>'+
-    							'<option value="3" >农副产品</option>'+
-								'</select></li>'+
-								'<li class="li2">金&nbsp;&nbsp;&nbsp;&nbsp;额&nbsp;&nbsp;&nbsp;&nbsp;:<input class="input2" type="text" name="fcys"  oninput="jine(this)"/></li>'+
-								'<li class="li2">增值税率:<input class="input2" type="text" name="addtaxrt"   oninput="shuil(this)"/></li>'+
-								'<li class="li2">增值税金:<input class="input2" type="text" name="addtax" readOnly="true" /></li>'+
-								'<li class="li2">无税金额:<input class="input2" type="text" name="rmbhs" readOnly="true" /></li>'+
-								'<li class="li2">摘&nbsp;&nbsp;&nbsp;&nbsp;要&nbsp;&nbsp;&nbsp;&nbsp;:<input class="input2" type="text" name="remarks"/></li>'+
-								'</ul>'
+                html = html + [ '<div class="dvi2">'+
+		  	 					'<div><a style="text-decoration:none;">&nbsp;&nbsp;&nbsp;&nbsp;发票明细'+convertToChinese(id)+'</a><a style="float:right;text-decoration:none;"  onClick="showNo(this)">收　起　</a></div>'+
+		  	 					'<div class="fpmx1" style="height:auto;margin-top:10px;">'+
+		  	 					'<ul class="ul2">'+
+		  	 					'<li class="li2">报销项目:　<select class="input2" name="idxno">'+
+								'<c:forEach items="${BXXM}" var="bxxm">'+
+			     				'<option value="${bxxm.sid}">${bxxm.name}</option>'+
+			     				'</c:forEach>'+
+			     	    		'</select></li>'+
+			     				'<li class="li2">发票编号:　<input class="input2" type="text" name="inv_no"/></li>'+
+			     				'<li class="li2"> 可抵扣否:　<select class="input2" name="deduction">'+
+								'<option value="0" selected="selected" >可抵扣</option>'+  
+								'<option value="1" >不可抵扣</option>'+
+				       			'</select></li>'+
+			     				'<li class="li2"> 发票类别:　<select class="input2" name="inv_type">'+
+								'<c:forEach items="${FPLB}" var="fplb">'+							
+				        		'<option value="${fplb.sid}">${fplb.name}'+  
+				        		'</option></c:forEach>'+
+					  			'</select></li>'+
+			     				'<li class="li2"> 特殊票别:　<select class="input2" name="sp_tax">'+
+								'<option value="1" selected="selected" >正常</option>'+
+								'<option value="2" >高速公路费</option>'+
+								'<option value="3" >农副产品</option>'+
+					   			'</select></li>'+
+			     				'<li class="li2">金额　　:　<input class="input2" type="text" name="fcys"  oninput="jine(this)"/></li>'+
+			     				'<li class="li2">增值税率:　<input class="input2" type="text" name="addtaxrt"   oninput="shuil(this)"/></li>'+
+			     				'<li class="li2">增值税金:　<input class="input2" type="text" name="addtax" readOnly="true"  value="0" style="border:0px;width:auto;"/></li>'+
+			     				'<li class="li2">无税金额:　<input class="input2" type="text" name="rmbhs" readOnly="true"  value="0" style="border:0px;width:auto;"/></li>'+
+			     				'<li class="li2">摘要　　:　<input class="input2" type="text" name="remarks"/><a  name="del" style="float:right;text-decoration:none;"  onClick="delmx(this)">删除&nbsp;&nbsp;&nbsp;</a></li>'+
+			     				'<li>&nbsp;</li></ul></div></div>'
 							].join("");
-				$("#div1").append($(html));
-				id++;
+						$("#div1").append($(html));
+						id++;
 			});
 		});
 		function delmx(obj){
 			var j=0;
+			//var objinput=$(obj).parent().siblings().children().children().children('input');
 			var objinput=$(obj).parent().siblings().children('input');
 			for(var i=0;i<objinput.size();i++){
 				if(objinput[i].value!=""){
@@ -72,11 +74,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				};
 			};
 			if(j==0){
-				$(obj).parent().parent().remove();
+				$(obj).parent().parent().parent().parent().remove();
 			}else{
 				var msg='您真的确定要删除吗？\n\n请确认！';
 				if (confirm(msg)==true){ 
-					$(obj).parent().parent().remove();
+					$(obj).parent().parent().parent().parent().remove();
 				 }else{
 					return false; 
 				 }
@@ -164,32 +166,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 	</script>
 	<style type="text/css">
-		.ul1{margin:0px;padding:0px;width:80%;margin-left:10%;margin-top:30px;}
+		.fpmx1 { height:300px;overflow:hidden;display:show;}
+		.ul1{margin:0px;padding:0px;width:80%;margin-left:10%;margin-top:15px;}
+		.ul2{margin:0px;padding:0px;margin-left:10%;font-size:12px;}
+		.dvi2{margin:0px;padding:0px;width:80%;margin-left:10%;margin-top:15px;color:#7E7E7E;border:1px solid;padding-top:4px;padding-bottom:4px;}
 		li{list-style-type:none;margin:0px;padding:0px;color:#7E7E7E;}
 		.li1{margin-top:10px;}
 		.li2{margin-top:10px;}
 		.input1{width:100%;height:25px;}
-		.input2{width:100%;height:30px;}
+		.input2{height:25px;}
+		.input3{width:100%;height:25px;}
 	</style>
   </head>
   <body>
   <form action="InsertExpServlet" method="post">
 	  <input class="input1" type="hidden" name="smake" value="${user.userid}"/>
 	  <input class="input1" type="hidden" name="sopr" value="${user.userid}"/>
+	  <input class="input1" type="hidden" name="p_bank" value=""/>
+	  <input class="input1" type="hidden" name="p_account" value=" "/>
 	  <div>
 	  	<ul class="ul1">
 	  		<li class="li1">报销类别:</li>
-	  		<li><select name="bxlb" class="input2">
+	  		<li><select name="bxlb" class="input3">
 		  		<c:forEach items="${BXLB}" var="bxlb">  
-			        <option value="${bxlb.sid}">  
-			            ${bxlb.name}  
-			        </option>  
-    			</c:forEach>  
+			        <option value="${bxlb.sid}">
+			            ${bxlb.name}
+			        </option>
+    			</c:forEach>
 				</select></li>
-	  		<li class="li1">收款人开户行:</li>
-	  		<li><input class="input1" type="text" name="p_bank"/></li>
-	  		<li class="li1">收款人账号:</li>
-	  		<li><input class="input1" type="text" name="p_account"/></li>
 	  		<li class="li1">金额:</li>
 	  		<li><input class="input1" type="text" name="fcy" readOnly="true"/></li>
 	  		<li class="li1">日期:</li>
@@ -198,40 +202,40 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  		<li><input class="input1" type="text" name="remark"/></li>
 	  	</ul>
 	  </div>
-
 	  <div id="div1">
-	  	  <ul class="ul1">
-	                          <li class="li2">序&nbsp;&nbsp;&nbsp;&nbsp;号&nbsp;&nbsp;&nbsp;&nbsp;:1</li>
-		    <li class="li2">报销项目:
-		    <select name="idxno" class="input2">
-					<c:forEach items="${BXXM}" var="bxxm">
-	     			<option value="${bxxm.sid}">${bxxm.name}</option>
-	     			</c:forEach>
-	     	</select>
-	     	</li>
-		    <li class="li2">发票编号:<input class="input2" type="text" name="inv_no"/></li>
-		    <li class="li2">可抵扣否:
-					    <select name="deduction" class="input2">
-					    <option value="0" selected="selected" >可抵扣</option>  
-					    <option value="1" >不可抵扣</option></select></li>
-			<li class="li2">发票类别:
-			<select name="inv_type" class="input2">
-			<c:forEach items="${FPLB}" var="fplb">
-	        <option value="${fplb.sid}">${fplb.name}  
-	        </option></c:forEach>
-			</select></li>
-			<li class="li2">特殊票别:
-			<select name="sp_tax" class="input2">
-						<option value="1" selected="selected" >正常</option>
-						<option value="2" >高速公路费</option>
-						<option value="3" >农副产品</option>
-			</select></li>
-			<li class="li2">金&nbsp;&nbsp;&nbsp;&nbsp;额&nbsp;&nbsp;&nbsp;&nbsp;:<input class="input2" type="text" name="fcys"  oninput="jine(this)"/></li>
-			<li class="li2">增值税率:<input class="input2" type="text" name="addtaxrt"   oninput="shuil(this)"/></li>
-			<li class="li2">增值税金:<input class="input2" type="text" name="addtax" readOnly="true" /></li>
-			<li class="li2">无税金额:<input class="input2" type="text" name="rmbhs" readOnly="true" /></li>
-			<li class="li2">摘&nbsp;&nbsp;&nbsp;&nbsp;要&nbsp;&nbsp;&nbsp;&nbsp;:<input class="input2" type="text" name="remarks"/></li>
-		</ul>
+		  <div class="dvi2">
+		  	 <div><a style="text-decoration:none;">&nbsp;&nbsp;&nbsp;&nbsp;发票明细一</a><a style="float:right;text-decoration:none;"  onClick="showNo(this)">收　起　</a></div>
+		  	 <div class="fpmx1" style="height:auto;margin-top:10px;">
+		  	 	<ul class="ul2">
+		  	 		<li class="li2">报销项目:　<select class="input2" name="idxno">
+							<c:forEach items="${BXXM}" var="bxxm">
+			     			<option value="${bxxm.sid}">${bxxm.name}</option>
+			     			</c:forEach>
+			     	    </select></li>
+			     	<li class="li2">发票编号:　<input class="input2" type="text" name="inv_no"/></li>
+			     	<li class="li2"> 可抵扣否:　<select class="input2" name="deduction">
+							<option value="0" selected="selected" >可抵扣</option>  
+							<option value="1" >不可抵扣</option>
+				       </select></li>
+			     	<li class="li2"> 发票类别:　<select class="input2" name="inv_type">
+							<c:forEach items="${FPLB}" var="fplb">
+				        	<option value="${fplb.sid}">${fplb.name}  
+				        	</option></c:forEach>
+					  </select></li>
+			     	<li class="li2"> 特殊票别:　<select class="input2" name="sp_tax">
+							<option value="1" selected="selected" >正常</option>
+							<option value="2" >高速公路费</option>
+							<option value="3" >农副产品</option>
+					   </select></li>
+			     	<li class="li2">金额　　:　<input class="input2" type="text" name="fcys"  oninput="jine(this)"/></li>
+			     	<li class="li2">增值税率:　<input class="input2" type="text" name="addtaxrt"   oninput="shuil(this)"/></li>
+			     	<li class="li2">增值税金:　<input class="input2" type="text" name="addtax" readOnly="true" value="0" style="border:0px;width:auto;"/></li>
+			     	<li class="li2">无税金额:　<input class="input2" type="text" name="rmbhs" readOnly="true"  value="0" style="border:0px;width:auto;"/></li>
+			     	<li class="li2">摘要　　:　<input class="input2" type="text" name="remarks"/> <a  name="del" style="float:right;text-decoration:none;"  onClick="delmx(this)">删除&nbsp;&nbsp;&nbsp;</a></li>
+			     	<li>&nbsp;</li>
+		  	 	</ul>
+		  	 </div>
+		  </div>
 	  </div>
 	  <div>
 	  	<ul class="ul1">
@@ -241,16 +245,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  </div>
   </form>
   <script type="text/javascript">
-  $.fn.datetimepicker.dates['zh-CN'] = {  
-          days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],  
-          daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],  
-          daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],  
-          months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],  
-          monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],  
-          today: "今天",
-          suffix: [],
-          meridiem: ["上午", "下午"]
-  };
+  	  //设置日期选择框
+	  $.fn.datetimepicker.dates['zh-CN'] = {
+	          days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],  
+	          daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],  
+	          daysMin:  ["日", "一", "二", "三", "四", "五", "六", "日"],  
+	          months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],  
+	          monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],  
+	          today: "今天",
+	          suffix: [],
+	          meridiem: ["上午", "下午"]
+	  };
 	 $('.form_date').datetimepicker({
 	        weekStart: 7,
 			todayHighlight: 1,
@@ -262,6 +267,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			initialDate: new Date(),//初始化当前日期 
 			autoclose: true,//选中自动关闭 
 	    });
-	 </script>
+	 //收缩隐藏  
+	 function showNo(obj){
+		 $(obj).parent().siblings().slideToggle("slow","swing");
+		 $(obj).text($(obj).text()=='展　开　'?'收　起　':'展　开　');
+	 }
+	 //将阿拉伯数字转换成一二三
+	 var N = [  
+              "零", "一", "二", "三", "四", "五", "六", "七", "八", "九"  
+          ];  
+     function convertToChinese(num){  
+         var str = num.toString();  
+         var len = num.toString().length;  
+         var C_Num = [];  
+         for(var i = 0; i < len; i++){  
+             C_Num.push(N[str.charAt(i)]);  
+         }  
+         return C_Num.join('');  
+     }
+  </script>
   </body>
 </html>

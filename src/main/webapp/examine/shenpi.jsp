@@ -406,6 +406,10 @@
 				data :  {"VARID":"sql:select count(csysno) a,slabel from insaid where sid='"+$("input[name='documentstype']").val()+"FL' GROUP BY slabel ","DBID":""+$("input[name='dbid']").val()+"","USRCODE":""+$("input[name='userCode']").val()+"","CONT":""+$("input[name='documentsid']").val()+""},
 				dataType : "JSON",
 				success : function(data) { 
+					if(data.values==null){
+						$("#showfl").hide();
+						return;
+					}
 					var num=data.values[0][0];
 					if(num==0){
 						$("#showfl").hide();

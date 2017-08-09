@@ -56,10 +56,9 @@ public class TestServlet extends HttpServlet {
 	 		isr.close();
 			is.close();
 			//去除数据中的换行符
-			jsonstr=jsonstr.replaceAll("\r\n", "");
-			jsonstr=jsonstr.replaceAll("\r", "");
-			jsonstr=jsonstr.replaceAll("\n", "");
-			jsonstr=jsonstr.replaceAll("\t", "");
+			jsonstr=jsonstr.replaceAll("\r\n", "%0d%0a");
+			jsonstr=jsonstr.replaceAll("\r", "%0d");
+			jsonstr=jsonstr.replaceAll("\n", "%0a");
 			jsonstr=jsonstr.replaceAll("null", "");
 			
 			JSONObject jsonObject = JSONObject.fromObject(jsonstr);
@@ -91,7 +90,7 @@ public class TestServlet extends HttpServlet {
 	/**
 	 *提交方法
 	 **/
-	public String tj(JSONObject jsonObject) throws ParseException{
+	public String tj(JSONObject jsonObject) throws Exception{
 		Message mess=new Message();
 		String str=jsonObject.getString("spname");
 		String zt="";
@@ -104,7 +103,9 @@ public class TestServlet extends HttpServlet {
 			mess.setName(jsonObject.getString("name"));//提交人姓名**/
 			mess.setSpweixinid(spweixinid);//审批人微信**/
 			mess.setSpname(spweixinid);//审批人姓名**/
-			mess.setContent(jsonObject.getString("content"));// 审批内容 **/
+			
+			
+			mess.setContent(URLDecoder.decode(jsonObject.getString("content"),"UTF-8"));// 审批内容 **/
 			mess.setTjtime(new Date());//提交时间**/
 			mess.setGs(jsonObject.getString("scm"));//公司**/
 			mess.setScm(jsonObject.getString("scm"));//公司**/

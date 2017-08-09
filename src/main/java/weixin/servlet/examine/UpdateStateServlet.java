@@ -45,6 +45,11 @@ public class UpdateStateServlet extends HttpServlet {
 			jsonstr=br.readLine();
 			jsonstr=URLDecoder.decode(jsonstr,"UTF-8");
 			log.info(jsonstr);
+			jsonstr=jsonstr.replaceAll("\r\n", "");
+			jsonstr=jsonstr.replaceAll("\r", "");
+			jsonstr=jsonstr.replaceAll("\n", "");
+			jsonstr=jsonstr.replaceAll("\t", "");
+			jsonstr=jsonstr.replaceAll("null", "");
 			JSONObject jsonObject = JSONObject.fromObject(jsonstr);
 			String w_corpid,scm,documentsid;
 			w_corpid=jsonObject.getString("w_corpid");
