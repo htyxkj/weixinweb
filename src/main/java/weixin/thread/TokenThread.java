@@ -36,6 +36,7 @@ public class TokenThread implements Runnable{
 		            		accessToken.setCorpIDid(atd.get(i).getCorpIDid());//企业号标识
 		            		accessToken.setDomainName(atd.get(i).getDomainName());//访问域名
 		            		accessToken.setServerurl(atd.get(i).getServerurl());//信息来源地址
+		            		accessToken.setDbid(atd.get(i).getDbid());//数据库连接标识
 		                    log.info("获取access_token成功,获取时间:"+sdf.format(new Date())+",有效时长"+accessToken.getExpiresIn()+"秒 token:"+accessToken.getToken()+"");
 		                }else {
 		                	 //未获得链接令牌  休眠5秒后重新获取

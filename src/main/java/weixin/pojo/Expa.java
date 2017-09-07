@@ -99,4 +99,11 @@ public class Expa {
 	public void setCorpid(String corpid) {
 		this.corpid = corpid;
 	}
+	public String toString(){
+		return "{\"sid_w\":"+"\""+sid_w+"\",\"sid_b\":"+"\""+sid_b+"\",\"cid\":"+"\""+cid+"\""
+			+ ",\"idxno\":"+"\""+idxno+"\",\"inv_no\":"+"\""+inv_no+"\",\"deduction\":"+"\""+deduction+"\""
+			+ ",\"inv_type\":"+"\""+inv_type+"\",\"sp_tax\":"+"\""+sp_tax+"\",\"fcy\":"+"\""+fcy+"\""
+			+ ",\"addtaxrt\":"+"\""+addtaxrt+"\",\"addtax\":"+"\""+addtax+"\",\"rmbhs\":"+"\""+rmbhs+"\""
+			+ ",\"remark\":"+"\""+remark+"\",\"corpid\":"+"\""+corpid+"\"}";
+	}
 }

@@ -176,7 +176,7 @@ public class AddScmServlet extends HttpServlet {
 		}
 		//报销中心
 		if(bipAppid.equals("05")){
-			url=redirect_domain+"/weixinweb/ExpServlet?w_appod="+appid+"&wxscmid="+wxscmid;
+			url=redirect_domain+"/weixinweb/ExpServlet?w_appid="+appid+"&wxscmid="+wxscmid;
 		}
 		url=URLEncoder.encode(url,"UTF-8");
 		home_url+=url;

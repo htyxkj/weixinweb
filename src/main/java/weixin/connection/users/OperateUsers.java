@@ -306,4 +306,30 @@ public class OperateUsers extends BaseDao{
 			closeAll(connection, statement, resultSet);
 		}
 	}
+	/**
+	 * 修改用户报销信息
+	 * @param pank 开户行
+	 * @param countion 账号
+	 * @param w_corpid 微信企业号标识
+	 * @param userid 员工编号
+	 * @throws Exception
+	 */
+	public void upUser(String bank,String countion,String w_corpid,String userid) throws Exception{
+		Connection connection=getConnection();
+		PreparedStatement statement=null;
+		ResultSet resultSet=null;
+		String sql = "update users  set exp_account=?,exp_bank=? where userid=?  and w_corpid=? ";
+		try {
+			statement=connection.prepareStatement(sql);
+			statement.setString(1, countion);
+			statement.setString(2, bank);
+			statement.setString(3, userid);
+			statement.setString(4, w_corpid);
+			statement.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			closeAll(connection, statement, resultSet);
+		}
+	}
 }

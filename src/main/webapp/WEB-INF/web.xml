@@ -163,6 +163,20 @@
     <servlet-name>InsertExpServlet</servlet-name>
     <servlet-class>weixin.servlet.exp.InsertExpServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description>SelectExpServlet</description>
+    <display-name>SelectExpServlet</display-name>
+    <servlet-name>SelectExpServlet</servlet-name>
+    <servlet-class>weixin.servlet.exp.SelectExpServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>SelectExpServlet</description>
+    <display-name>SelectExpServlet</display-name>
+    <servlet-name>SelectExpaServlet</servlet-name>
+    <servlet-class>weixin.servlet.exp.SelectExpaServlet</servlet-class>
+  </servlet>
+
+
 
 
 
@@ -273,6 +287,14 @@
   <servlet-mapping>
     <servlet-name>InsertExpServlet</servlet-name>
     <url-pattern>/InsertExpServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SelectExpServlet</servlet-name>
+    <url-pattern>/SelectExpServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SelectExpaServlet</servlet-name>
+    <url-pattern>/SelectExpaServlet</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>SubscribeServlet</welcome-file>

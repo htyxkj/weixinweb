@@ -110,7 +110,7 @@ public class UpdateStateServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.info(e+"");
-		} 
+		}
 	}
 	/**
 	 *将审批数据重置为未读状态

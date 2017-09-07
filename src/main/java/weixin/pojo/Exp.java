@@ -95,5 +95,12 @@ public class Exp {
 	public void setCorpid(String corpid) {
 		this.corpid = corpid;
 	}
+	public String toString(){
+		return "{\"sid_w\":"+"\""+sid_w+"\","+"\"sid_b\":"+"\""+sid_b+"\","+"\"mkdate\":"+"\""+mkdate+"\""
+				+ ","+"\"state\":"+"\""+state+"\","+"\"sopr\":"+"\""+sopr+"\","+"\"smake\":"+"\""+smake+"\""
+				+ ","+"\"p_account\":"+"\""+p_account+"\","+"\"p_bank\":"+"\""+p_bank+"\","+"\"remark\":"+"\""+remark+"\""
+				+ ","+"\"fcy\":"+"\""+fcy+"\","+"\"hpdate\":"+"\""+hpdate+"\","+"\"bxlb\":"+"\""+bxlb+"\""
+				+ ","+"\"corpid\":"+"\""+corpid+"\"}";
+	}
 	
 }

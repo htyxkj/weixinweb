@@ -32,7 +32,7 @@ public class WeixinUtil {
     public static JSONObject httpRequest(String requestUrl, String requestMethod, String outputStr) {
         JSONObject jsonObject = null;  
         StringBuffer buffer = new StringBuffer();  
-        try {  
+        try {
             //创建SSLContext对象,并使用我们指定的信任管理器初始化
             TrustManager[] tm = { new Certificate() };  
             SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");  
@@ -49,7 +49,7 @@ public class WeixinUtil {
             httpUrlConn.setUseCaches(false);  
             // 设置请求方式（GET/POST）  
             httpUrlConn.setRequestMethod(requestMethod);  
-  
+
             if ("GET".equalsIgnoreCase(requestMethod))  
                 httpUrlConn.connect();  
   

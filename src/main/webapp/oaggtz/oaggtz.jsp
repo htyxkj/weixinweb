@@ -11,12 +11,10 @@
             + request.getServerName() + ":" + request.getServerPort()
             + path + "/";
 %>
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
-    <meta http-equiv="Pragma" content="no-cache"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta http-equiv="Expires" content="0"/>
     <title>公告列表</title>
     <link href='css/basics.css' rel="stylesheet"/>
     <link href='css/Audit_center20170306.css' rel="stylesheet"/>
@@ -29,8 +27,7 @@
 			background-color:#EBEBEB;
 		}
     </style>
-</head>
-<script type="text/javascript">
+    <script type="text/javascript">
     var loading = false;  //状态标记
     var headPage = 0;
     $(function(){
@@ -136,6 +133,8 @@
 	    return date.getFullYear() +"-" +month +"-" +currentDate;
     }
 </script>
+</head>
+
 <body ontouchstart>
 <input id="basePath" type="hidden" value="<%=basePath%>">
 <input id="path" type="hidden" value="<%=path%>">

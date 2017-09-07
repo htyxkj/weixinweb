@@ -11,6 +11,8 @@ public class AccessToken {
 	private String secret;//管理组标识
 	private String domainName;//访问域名
 	private String serverurl;/**来源服务器地址**/
+	private String dbid;/** 数据库访问编码 **/
+	
     public String getDomainName() {
 		return domainName;
 	}
@@ -58,5 +60,11 @@ public class AccessToken {
 	}
 	public void setServerurl(String serverurl) {
 		this.serverurl = serverurl;
+	}
+	public String getDbid() {
+		return dbid;
+	}
+	public void setDbid(String dbid) {
+		this.dbid = dbid;
 	}
 }
