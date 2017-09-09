@@ -39,7 +39,7 @@ public class AccessTokenDo  extends BaseDao{
 				String[] arr=this.geturl(resultSet.getString("w_corpid"));
 				acc.setDomainName(arr[0]);
 				acc.setServerurl(arr[1]);
-				acc.setDbid("ZT1");
+				acc.setDbid(resultSet.getString("dbid"));
 				list.add(acc);
 			}
 		}catch(Exception e){

@@ -19,6 +19,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src='js/bootstrap-datetimepicker.js'></script>
 	<script type="text/javascript">
 		$(function(){
+			//登录所需信息
+			var url="http://192.168.0.104:9999/jd/";
+			var outlogin = {"dbid": "01","usercode": "0050004","apiId": "outlogin"};
+			//进行登录
+			$.ajax({
+				type: 'post',
+				url: url+"api/",
+				data: outlogin,
+				contentType: 'application/x-www-form-urlencoded',
+				dataType: 'json',
+				async: true,
+				success: function (data) { 
+					if(data.id!=0){
+						alert("系统错误请联系管理员,谢谢。");
+						return;
+					}
+				}
+	        });
 			var message=$('input[name="message"]').val();
 			if(message!=""&&message!=null){
 				alert(message);
@@ -200,7 +218,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 			if(bl){
-				$('#insertExp').submit();
+				 $('#insertExp').submit();//apiId=savedata&dbid="+dbid+"&usercode="+userid+"&datatype=1&pcell="+pcell	
 			}
 		};
 	</script>

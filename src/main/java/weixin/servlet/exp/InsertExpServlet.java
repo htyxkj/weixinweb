@@ -1,18 +1,34 @@
 package weixin.servlet.exp;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import net.sf.json.JSONObject;
 import weixin.connection.exp.OperateBasres;
@@ -125,20 +141,26 @@ public class InsertExpServlet extends HttpServlet {
 			if(_zi.indexOf(";")==-1){
 				json.put(_zi, "["+ea+"]");
 			}else{
-				
 			}
 			String serverUrl=accessToken.getServerurl();
 			String dbid=accessToken.getDbid();
-			serverUrl=serverUrl+"weixinInf?apiid=savedata&dbid="+dbid+"&usercode="+userid+"&pcell="+pcell;
-			JSONObject jsonobj=wxutil.httpRequest(serverUrl, "POST", json.toString());
-			//{"message":"操作成功！","id":0,"data":{"sid":"BXQ0000517090012"}}
+			String info = URLEncoder.encode(json.toString(),"utf-8");
+			Map map2=new HashMap<String, String>();
+			map2.put("apiId", "savedata");
+			map2.put("dbid", dbid);
+			map2.put("usercode", userid);
+			map2.put("datatype", "1");
+			map2.put("pcell", pcell);
+			map2.put("jsonstr", info);
+			
+			String outInfo=WeixinUtil.httpclient(serverUrl+"api/",map2);
+			
 			String message="操作失败！";
-			if(jsonobj.getInt("id")==0){
-				message=jsonobj.getString("message");
+			JSONObject json_1=JSONObject.fromObject(outInfo);  
+			if(json_1!=null&&json_1.getInt("id")==0){
+				message=json_1.getString("message");
 			}
 			request.setAttribute("message", message);
-			
-			
 			String _url="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+wxscmid+"&redirect_uri=";
 			String url="";
 			url=""+accessToken.getDomainName()+"/weixinweb/ExpServlet?w_appid="+w_appid+"&wxscmid="+wxscmid+"&message="+message;

@@ -26,6 +26,7 @@
     	body {
 			background-color:#EBEBEB;
 		}
+		a{text-align: none;}
     </style>
     <script type="text/javascript">
     var loading = false;  //状态标记

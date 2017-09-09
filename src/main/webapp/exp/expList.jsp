@@ -63,7 +63,7 @@
         });
     });
     function selectzhu(qk) {
-    	
+
     	var j=0;
 		var zucheng=$('select[name="zucheng"]').val();
 		if(zucheng==""||zucheng==null)
@@ -92,12 +92,17 @@
 			contentType: 'application/x-www-form-urlencoded',
 			dataType: 'json',
 			async: false,
-			success: function (data) { 
-				 console.log(data);
+			success: function (data) {
+				console.log(data);
 				//子表标签名
 				cels=data.data.layCels.subLayCells[j].cels;
 				//总页数
 				totalPage=data.data.pages.totalPage; 
+				if(totalPage==0){
+					$("#wusj").show();
+				}else{
+					$("#wusj").hide();
+				}
 				if(totalPage==1){
 					$("#jiazhai").hide();
 				}
@@ -182,8 +187,10 @@
                                 '</div>'+
                             	'</li>'].join("");
 				}
-				html+=['<a onClick="javascript:fanhui()"><li><div class="div1" style="text-align:center">返回</div></li></a>'].join("");
+				var fh=['<a onClick="javascript:fanhui()"><li><div class="div1" style="text-align:center">返回</div></li></a>'].join("");
 				$("#ziul").append($(html));
+				if(tf)
+				$("#fanhui").append($(fh));
 			}
         });
 		$("#jiazhai").hide();
@@ -194,6 +201,7 @@
 		zhuzi=true;
 		$("#zi").hide();
 		$("#zhu").show();
+		$('#fanhui').html("");
 	}
 </script>
 </head>
@@ -218,9 +226,13 @@
 		 <ul id="zhuul">
 	 		 
 		 </ul>
+		 <div id="wusj" style="display: none;" class="weui-infinite-scroll">暂无数据</div>
     </div>
     <div id="zi">
 	  	 <ul id="ziul">
+	  	 	
+	  	 </ul>
+	  	 <ul id="fanhui">
 	  	 	
 	  	 </ul>
  	 </div>
