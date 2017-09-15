@@ -175,15 +175,6 @@
     <servlet-name>SelectExpaServlet</servlet-name>
     <servlet-class>weixin.servlet.exp.SelectExpaServlet</servlet-class>
   </servlet>
-
-
-
-
-
-
-
-
-
   <servlet-mapping>
     <servlet-name>OAuthServlet</servlet-name>
     <url-pattern>/OAuthServlet</url-pattern>

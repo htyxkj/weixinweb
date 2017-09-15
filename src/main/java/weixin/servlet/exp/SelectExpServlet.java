@@ -66,6 +66,18 @@ public class SelectExpServlet extends HttpServlet {
 //					response.sendRedirect(_url);
 //					return;
 //				}
+				String luUrl="";
+				String cxUrl="";
+				String _url="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+wxscmid+"&redirect_uri=";
+				String _url1="&response_type=code&scope=snsapi_base#wechat_redirect";
+				luUrl=""+accessToken.getDomainName()+"/weixinweb/ExpServlet?w_appid="+w_appid+"&wxscmid="+wxscmid;
+				luUrl=URLEncoder.encode(luUrl, "UTF-8");
+				luUrl=_url+luUrl+_url1;
+				cxUrl=""+accessToken.getDomainName()+"/weixinweb/SelectExpServlet?w_appid="+w_appid+"&wxscmid="+wxscmid;
+				cxUrl=URLEncoder.encode(luUrl, "UTF-8");
+				cxUrl=_url+cxUrl+_url1;
+				request.setAttribute("luUrl",luUrl);
+				request.setAttribute("cxUrl",cxUrl);
 				OperateBasres ob=new OperateBasres();
 				List<Basres> listfplb=ob.getListB("BXLB", wxscmid);
 				request.setAttribute("BXLB",listfplb);

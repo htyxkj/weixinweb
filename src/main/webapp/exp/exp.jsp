@@ -14,14 +14,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link href="css/bootstrap.css" rel="stylesheet" media="screen">
 	<link href="css/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
  
+    <link href='css/Audit_center20170306.css' rel="stylesheet"/>
+    
 	<script src='js/jquery-2.1.4.js'></script>
 	<script src='js/bootstrap.js'></script>
 	<script src='js/bootstrap-datetimepicker.js'></script>
 	<script type="text/javascript">
+		var dbid1='<%=request.getAttribute("dbid")%>';
+		var userid1='<%=request.getAttribute("userid")%>';
+		var url ='<%=request.getAttribute("url")%>';
 		$(function(){
 			//登录所需信息
-			var url="http://192.168.0.104:9999/jd/";
-			var outlogin = {"dbid": "01","usercode": "0050004","apiId": "outlogin"};
+			var outlogin = {"dbid": dbid1,"usercode": userid1,"apiId": "outlogin"};
 			//进行登录
 			$.ajax({
 				type: 'post',
@@ -249,6 +253,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  <input type="hidden" name="regdate" value="${regdate}"/>
 	  
 	  <div>
+	  	<ul class="audit_tab_control">
+            <li style="width: 49%;"><a href="${luUrl}" style="text-decoration:none;" class="audit_tabcon_click">报销录入</a></li>
+            <li style="width: 49%;"><a href="${cxUrl}" style="text-decoration:none;" class="">报销查询</a></li>
+        </ul>
 	  	<ul class="ul1">
 	  		<li class="li1">报销类别:</li>
 	  		<li><select name="sid" class="input3">

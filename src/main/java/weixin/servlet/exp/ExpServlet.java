@@ -86,6 +86,23 @@ public class ExpServlet extends HttpServlet {
 					request.getRequestDispatcher("exp/expError.jsp").forward(request, response);
 					return;
 				}
+				
+				String luUrl="";
+				String cxUrl="";
+				String _url="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+wxscmid+"&redirect_uri=";
+				String _url1="&response_type=code&scope=snsapi_base#wechat_redirect";
+				luUrl=""+accessToken.getDomainName()+"/weixinweb/ExpServlet?w_appid="+w_appid+"&wxscmid="+wxscmid;
+				luUrl=URLEncoder.encode(luUrl, "UTF-8");
+				luUrl=_url+luUrl+_url1;
+				cxUrl=""+accessToken.getDomainName()+"/weixinweb/SelectExpServlet?w_appid="+w_appid+"&wxscmid="+wxscmid;
+				cxUrl=URLEncoder.encode(cxUrl, "UTF-8");
+				cxUrl=_url+cxUrl+_url1;
+				 
+				request.setAttribute("userid", userid);
+				request.setAttribute("dbid", accessToken.getDbid());
+				request.setAttribute("url", accessToken.getServerurl());
+				request.setAttribute("luUrl",luUrl);
+				request.setAttribute("cxUrl",cxUrl);
 				request.setAttribute("user",user);
 				request.setAttribute("FPLB",listfplb);
 				request.setAttribute("BXLB",listbxlb);

@@ -10,19 +10,15 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1,user-scalable=0">
-<meta http-equiv="Cache-Control"
-	content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
 <title>提示</title>
-<link rel="stylesheet" href="css/weui.css" />
+<link rel="stylesheet" href="../css/weui/weui.css" />
 <link rel="stylesheet" href="css/example.css" />
 <script type="text/javascript">
- 
+
 </script>
 </head>
 <body>

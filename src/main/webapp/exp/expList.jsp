@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/weui/weui.min.css">
 	<link rel="stylesheet" href="css/weui/jquery-weui.css">
 	<link rel="stylesheet" href="css/weui/demos.css">
+ 	<link href='css/Audit_center20170306.css' rel="stylesheet"/>
     <script src='js/jquery-2.1.4.js'></script> 
     <style type="text/css">
 		body {background-color:#EBEBEB;}
@@ -30,11 +31,11 @@
 	var currentPage=1;//当前页数
 	var totalPage;//总页数
 	var cels={};
-	var dbid = "01";
-	var userid ="0050004"; 
-	var dbid1='<%=request.getAttribute("dbid")%>';
-	var userid1='<%=request.getAttribute("userid")%>';
-	var url ='<%=request.getAttribute("url")%>';
+	//var dbid = "01";
+	//var userid ="0050004"; 
+	//var dbid1='%<=request.getAttribute("dbid")%>';
+	//var userid1='%<=request.getAttribute("userid")%>';
+	//var url ='%<=request.getAttribute("url")%>';
 
     var loading = false;  //状态标记
     $(function(){
@@ -43,7 +44,7 @@
 			alert(regdate);
 		}
         $("#zi").hide();
-		//登录所需信息
+		/*//登录所需信息
 		var outlogin = {"dbid": dbid,"usercode": userid,"apiId": "outlogin"};
 		//进行登录
 		$.ajax({
@@ -60,7 +61,7 @@
 				}
 				selectzhu(true);
 			}
-        });
+        });*/
     });
     function selectzhu(qk) {
 
@@ -208,7 +209,12 @@
 <body>
 <input id="regdate" name="date" type="hidden" value="${regdate}"/>
 <input id="sid" name="sid" type="hidden" value=""/>
+	 <ul class="audit_tab_control" style="margin-top:0px;background-color:white;padding: 0px;">
+         <li style="width: 49%;"><a href="${luUrl}" style="text-decoration:none;" >报销录入</a></li>
+         <li style="width: 49%;"><a href="${cxUrl}" style="text-decoration:none;" class="audit_tabcon_click">报销查询</a></li>
+     </ul>
 	 <div id="zhu">
+	 	
 	  	<ul>
 	 		<li style="margin-left: 25px;padding-bottom: 20px; font-size:18px; width:88%;margin-left:5%">
 	 		<div style="">
