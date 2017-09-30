@@ -1,19 +1,12 @@
 package weixin.servlet;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URLDecoder;
-import java.text.ParseException;
 import java.util.Date;
-import java.util.Locale;
-import java.util.Properties;
-import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,10 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.sf.json.JSONObject;
-import weixin.T1;
 import weixin.connection.message.ReceiveData;
 import weixin.connection.message.UpdateDate;
-import weixin.key.SRegServ;
 import weixin.pojo.Message;
 import weixin.util.SendTxtToUser;
 
