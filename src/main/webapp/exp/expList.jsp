@@ -33,10 +33,10 @@
 	var cels={};
 	//var dbid = "01";
 	//var userid ="0050004"; 
-	//var dbid1='%<=request.getAttribute("dbid")%>';
-	//var userid1='%<=request.getAttribute("userid")%>';
-	//var url ='%<=request.getAttribute("url")%>';
-
+	var dbid='<%=request.getAttribute("dbid")%>';
+	var userid='<%=request.getAttribute("userid")%>';
+	//var url ='<%=request.getAttribute("url")%>';
+	var url='http://127.0.0.1:9999/jd/'
     var loading = false;  //状态标记
     $(function(){
     	var regdate= $("#regdate").val();
@@ -114,6 +114,7 @@
 					$('#zhuul').html("");
 					var dataval=obj.data.pages.celData;
 					var html = ''; 
+					alert(html);
 					for (var i=0;i<dataval.length;i++){
 						//初始化
 						html  += ['<li><div class="div1">'+

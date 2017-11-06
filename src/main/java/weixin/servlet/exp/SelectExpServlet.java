@@ -1,7 +1,6 @@
 package weixin.servlet.exp;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
@@ -11,13 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
 import weixin.connection.exp.OperateBasres;
 import weixin.key.SRegServ;
 import weixin.pojo.AccessToken;
 import weixin.pojo.Basres;
 import weixin.thread.TokenThread;
-import weixin.util.WeixinUtil;
 
 public class SelectExpServlet extends HttpServlet {
 

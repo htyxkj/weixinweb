@@ -13,9 +13,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
 	<link href="css/bootstrap.css" rel="stylesheet" media="screen">
 	<link href="css/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
- 
     <link href='css/Audit_center20170306.css' rel="stylesheet"/>
-    
 	<script src='js/jquery-2.1.4.js'></script>
 	<script src='js/bootstrap.js'></script>
 	<script src='js/bootstrap-datetimepicker.js'></script>
