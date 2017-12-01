@@ -8,8 +8,15 @@ public class Inswaplist {
 	private String w_wapurl;/**微信URL**/
 	private String w_corpid;/**微信企业号id**/
 	private String w_appsecret;/**微信应用Secret**/
+	private String dbid;/**数据库连接标识**/
 	public String getWapno() {
 		return wapno;
+	}
+	public String getDbid() {
+		return dbid;
+	}
+	public void setDbid(String dbid) {
+		this.dbid = dbid;
 	}
 	public String getOrgcode() {
 		return orgcode;

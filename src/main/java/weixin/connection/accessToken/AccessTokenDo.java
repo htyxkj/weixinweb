@@ -225,16 +225,17 @@ public class AccessTokenDo  extends BaseDao{
 	public int updateApp(Inswaplist list){
 		Connection connection=getConnection();
 		PreparedStatement statement=null;
-		String sql="update  inswaplist set w_applyid=?,w_wapurl=?,w_appsecret=? where wapno=? and orgcode=? and w_corpid=?;";
+		String sql="update  inswaplist set w_applyid=?,w_wapurl=?,w_appsecret=?,dbid=? where wapno=? and orgcode=? and w_corpid=?;";
 		int row=0;
 		try{
 			statement=connection.prepareStatement(sql);
 			statement.setString(1, list.getW_applyid());
 			statement.setString(2, list.getW_wapurl());
 			statement.setString(3, list.getW_appsecret());
-			statement.setString(4, list.getWapno());
-			statement.setString(5, list.getOrgcode());
-			statement.setString(6, list.getW_corpid()); 
+			statement.setString(4, list.getDbid());
+			statement.setString(5, list.getWapno());
+			statement.setString(6, list.getOrgcode());
+			statement.setString(7, list.getW_corpid()); 
 			row=statement.executeUpdate();
 		}catch(Exception e){
 			e.printStackTrace();
@@ -248,7 +249,7 @@ public class AccessTokenDo  extends BaseDao{
 	public int insertApp(Inswaplist list){
 		Connection connection=getConnection();
 		PreparedStatement statement=null;
-		String sql="insert into  inswaplist  (orgcode,w_applyid,w_wapurl,wapname,wapno,w_corpid,w_appsecret) values(?,?,?,?,?,?,?)";
+		String sql="insert into  inswaplist  (orgcode,w_applyid,w_wapurl,wapname,wapno,w_corpid,w_appsecret,dbid) values(?,?,?,?,?,?,?,?)";
 		int row=0;
 		try{
 			statement=connection.prepareStatement(sql);
@@ -259,6 +260,7 @@ public class AccessTokenDo  extends BaseDao{
 			statement.setString(5, list.getWapno());
 			statement.setString(6, list.getW_corpid());
 			statement.setString(7, list.getW_appsecret());
+			statement.setString(8, list.getDbid());
 			row=statement.executeUpdate();
 		}catch(Exception e){
 			e.printStackTrace();

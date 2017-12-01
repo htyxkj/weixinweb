@@ -57,6 +57,7 @@ public class AddScmServlet extends HttpServlet {
 		//String json = "{\"w_corpid\": \"微信企业号ID\",\"w_secret\": \"secret序列号\",\"companyid\": \"公司标识\",\"w_trusturl\": \"移动端地址串（域名）\",\"app\": [{\"wapno\": \"平台应用编号  01  02 \",\"w_applyid\": \"微信应用ID\"},{\"wapno\": \"平台应用编号  01  02 \",\"w_applyid\": \"微信应用ID\"},{\"wapno\": \"平台应用编号  01  02 \",\"w_applyid\": \"微信应用ID\"}]}";
 		JSONObject jsonObject = JSONObject.fromObject(jsonstr);
 		log.info(jsonstr);
+		String dbid=jsonObject.getString("dbid");
 		String c_corp=jsonObject.getString("c_corp");//集团编码
 		String CorpIDid=jsonObject.getString("w_corpid");//企业号标识
 //		String Secret=jsonObject.getString("w_secret");//管理组标识
@@ -117,6 +118,7 @@ public class AddScmServlet extends HttpServlet {
 			inswaplist.setOrgcode(json.getString("companyid"));
 			inswaplist.setW_corpid(CorpIDid);
 			inswaplist.setW_appsecret(Secret);
+			inswaplist.setDbid(dbid);
 			String str[]=null;
 				String requestUrl="https://qyapi.weixin.qq.com/cgi-bin/agent/get?access_token="+accessToken.getToken()+"&agentid="+json.getString("w_applyid");
 				JSONObject jsobj=wu.httpRequest(requestUrl, "GET", null);

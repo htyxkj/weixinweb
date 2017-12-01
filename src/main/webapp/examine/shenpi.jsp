@@ -153,6 +153,7 @@
                 .click(
                     function () {
                         loading();
+                        
                         $.ajax({
                             type: "POST",
                             //contentType: "application/json;charset=utf-8",   //内容类型
@@ -417,7 +418,8 @@
 					$("#flname").val(data.values[0][1]);			
 				},
 				error : function(err) {
-					alert("系统错误，请联系系统管理员！416行");
+					$("#showfl").hide();
+					//alert("系统错误，请联系系统管理员！416行");
 				}
 			});
         }
