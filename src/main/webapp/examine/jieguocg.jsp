@@ -15,7 +15,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
 <title>提示</title>
-<link rel="stylesheet" href="../css/weui/weui.css" />
+<link rel="stylesheet" href="css/weui/weui.css" />
 <link rel="stylesheet" href="css/example.css" />
 <script type="text/javascript">
 

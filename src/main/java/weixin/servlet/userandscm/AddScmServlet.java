@@ -140,7 +140,7 @@ public class AddScmServlet extends HttpServlet {
 				        outputStream.close(); 
 				        return;
 			        }
-					if(str[0].equals("0")||inswaplist.getW_applyid().equals("0")){
+					if(str[0].equals("0")||inswaplist.getW_applyid().equals("00")){
 						inswaplist.setW_wapurl(str[1]);
 						acd.SelectApp(inswaplist);
 						zt="0;完成";
