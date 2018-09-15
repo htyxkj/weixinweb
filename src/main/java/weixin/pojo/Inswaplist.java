@@ -1,6 +1,7 @@
 package weixin.pojo;
 
 public class Inswaplist {
+	private String uuid;
 	private String orgcode;/**公司编码**/
 	private String wapno;/**应用编码**/
 	private String wapname;/**应用名称**/
@@ -8,6 +9,8 @@ public class Inswaplist {
 	private String w_wapurl;/**微信URL**/
 	private String w_corpid;/**微信企业号id**/
 	private String w_appsecret;/**微信应用Secret**/
+	private String d_applyid;/**钉钉应用ID**/
+	private String d_wapurl;/**钉钉URL**/
 	private String dbid;/**数据库连接标识**/
 	public String getWapno() {
 		return wapno;
@@ -56,5 +59,23 @@ public class Inswaplist {
 	}
 	public void setW_appsecret(String w_appsecret) {
 		this.w_appsecret = w_appsecret;
+	}
+	public String getD_applyid() {
+		return d_applyid;
+	}
+	public void setD_applyid(String d_applyid) {
+		this.d_applyid = d_applyid;
+	}
+	public String getD_wapurl() {
+		return d_wapurl;
+	}
+	public void setD_wapurl(String d_wapurl) {
+		this.d_wapurl = d_wapurl;
+	}
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 }

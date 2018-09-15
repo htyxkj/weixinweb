@@ -13,15 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import weixin.connection.users.OperateUsers;
 import weixin.pojo.AccessToken;
 import weixin.thread.TokenThread;
-import weixin.util.WeixinUtil;
+import weixin.util.HttpUtil;
 
 public class DeleteUserServlet extends HttpServlet {
 	private static final Log log = LogFactory.getLog(DeleteUserServlet.class);
@@ -54,8 +54,8 @@ public class DeleteUserServlet extends HttpServlet {
 			TokenThread tokenThread=new TokenThread();
 			Map<String, AccessToken> map=tokenThread.maplist;
 			AccessToken acc=map.get(wxscmid+"-00");
-			String requestUrl="https://qyapi.weixin.qq.com/cgi-bin/user/delete?access_token="+acc.getToken()+"&userid="+userid;
-			JSONObject jsonobj=WeixinUtil.httpRequest(requestUrl, "GET", null);
+			String requestUrl="https://qyapi.weixin.qq.com/cgi-bin/user/delete?access_token="+acc.getW_accessToken()+"&userid="+userid;
+			JSONObject jsonobj=HttpUtil.httpRequest(requestUrl, "GET", null);
 			log.info(jsonobj);
 			String _out="";
 			OperateUsers oU=new OperateUsers();

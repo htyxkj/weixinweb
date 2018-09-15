@@ -1,8 +1,6 @@
 package weixin.servlet.oaggtz;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +20,7 @@ import weixin.pojo.Department;
 import weixin.pojo.Oaflb;
 import weixin.pojo.Users;
 import weixin.thread.TokenThread;
-import weixin.util.WeixinUtil;
+import weixin.util.HttpUtil;
 
 public class SelectOaflbServlet extends HttpServlet {
 
@@ -47,10 +45,10 @@ public class SelectOaflbServlet extends HttpServlet {
 		try {
 			if (!"authdeny".equals(code) && code != null) {
 				String requestUrl = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token="
-						+ accessToken.getToken()
+						+ accessToken.getW_accessToken()
 						+"&code="
 						+code;
-				JSONObject jsonObj = WeixinUtil.httpRequest(requestUrl, "GET",null);
+				JSONObject jsonObj = HttpUtil.httpRequest(requestUrl, "GET",null);
 				//获取用户id
 				OperateUsers oU=new OperateUsers();
 				String userid = jsonObj.getString("UserId");

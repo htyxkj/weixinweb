@@ -1,8 +1,6 @@
 package weixin.servlet.userandscm;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.ParseException;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -10,15 +8,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.sf.json.JSONObject;
 import weixin.connection.users.OperateUsers;
 import weixin.pojo.AccessToken;
 import weixin.pojo.Users;
 import weixin.thread.TokenThread;
-import weixin.util.WeixinUtil;
+import weixin.util.HttpUtil;
 
 public class SubscribeServlet extends HttpServlet {
 	private static Logger log = LoggerFactory.getLogger(SubscribeServlet.class);
@@ -46,19 +45,19 @@ public class SubscribeServlet extends HttpServlet {
 			user.setW_corpid(ToUserName);
 			//员工关注  获得头像url		
 			String requestUrl = "https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token="
-					+ acc.getToken()
+					+ acc.getW_accessToken()
 					+ "&userid="
 					+ FromUserName;
 			
-			JSONObject jsonobj = WeixinUtil.httpRequest(requestUrl, "GET", null);
+			JSONObject jsonobj = HttpUtil.httpRequest(requestUrl, "GET", null);
 			log.info(jsonobj.toString());
 			if (jsonobj.containsKey("avatar") == true) {
-				user.setImgurl(jsonobj.getString("avatar"));
+				user.setW_imgurl(jsonobj.getString("avatar"));
 			} else {
-				user.setImgurl("img/ren.png");
+				user.setW_imgurl("img/ren.png");
 			}
-			o.uodateUsersImgUrl(user);
-		} catch (ParseException e) {
+//			o.uodateUsersImgUrl(user);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

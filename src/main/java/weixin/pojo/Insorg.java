@@ -1,12 +1,16 @@
 package weixin.pojo;
 
 public class Insorg {
+	private String uuid;
 	private String c_corp;/**集团编码**/
 	private String orgcode;/**公司编码**/
 //	private String corpid;/**企业编号**/
 	private String w_corpid;/**微信企业号ID**/
-	private String w_secret;/**secret序列号**/
-	private String w_trusturl;/**移动端地址串**/
+	private String w_secret;/**微信secret序列号**/
+	private String w_trusturl;/**微信移动端地址串**/
+	private String d_corpid;/**钉钉企业号ID**/
+	private String d_secret;/**钉钉secret序列号**/
+	private String d_trusturl;/**钉钉移动端地址串**/
 	private String serverurl;/**信息来源地址**/
 	public String getOrgcode() {
 		return orgcode;
@@ -50,4 +54,29 @@ public class Insorg {
 	public void setServerurl(String serverurl) {
 		this.serverurl = serverurl;
 	}
+	public String getD_corpid() {
+		return d_corpid;
+	}
+	public void setD_corpid(String d_corpid) {
+		this.d_corpid = d_corpid;
+	}
+	public String getD_secret() {
+		return d_secret;
+	}
+	public void setD_secret(String d_secret) {
+		this.d_secret = d_secret;
+	}
+	public String getD_trusturl() {
+		return d_trusturl;
+	}
+	public void setD_trusturl(String d_trusturl) {
+		this.d_trusturl = d_trusturl;
+	}
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+	
 }

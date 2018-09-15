@@ -3,6 +3,7 @@ package weixin.connection.message;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -25,13 +26,36 @@ public class ReceiveData extends BaseDao<Message>{
 		Connection connection=getConnection();
 		PreparedStatement statement=null;
 		ResultSet resultSet=null;
-		int count=0;
 		String zt="";
-		String sql = "INSERT INTO message(title,name,spweixinid,spname,content,yjcontent,tjtime,documentsid,documentstype,tablename,sbuid,state,state0,state1,dbid,scm,department,appid,wapno,w_corpid,smake)VALUES ('" + 
-				mess.getTitle() + "','" + mess.getName() + "','" + mess.getSpweixinid() + "','" + mess.getSpname() + "','" + mess.getContent() + "','" 
-				+ mess.getYjcontent() + "','" + sdf.format(mess.getTjtime()) + "','" + mess.getDocumentsid() + "','" + mess.getDocumentstype() + "','" + mess.getTablename() + "','" + mess.getSbuId() + "',0,'"+mess.getState0()+"','" + mess.getState1() + "','" + mess.getDbid() + "','" + mess.getScm() + "','" + mess.getDepartment() + "','" + mess.getAppid()+ "','" + mess.getWapno()+ "','" + mess.getW_corpid()+ "','" + mess.getSmake()+ "');";
+		int count = 0;
+		String sql = "INSERT INTO message(title,name,spweixinid,spname,content,yjcontent,tjtime,documentsid,documentstype,tablename"
+				+ ",sbuid,state,state0,state1,dbid,scm,department,w_appid,d_appid,wapno,w_corpid,d_corpid,smake)VALUES ("
+				+ "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 		try {
 			statement=connection.prepareStatement(sql, statement.RETURN_GENERATED_KEYS);  
+			statement.setString(1, mess.getTitle());
+			statement.setString(2, mess.getName());
+			statement.setString(3, mess.getSpweixinid());
+			statement.setString(4, mess.getSpname());
+			statement.setString(5, mess.getContent());
+			statement.setString(6, mess.getYjcontent());
+			statement.setTimestamp(7, new Timestamp(mess.getTjtime().getTime()));  
+			statement.setString(8, mess.getDocumentsid());
+			statement.setString(9, mess.getDocumentstype());
+			statement.setString(10, mess.getTablename());
+			statement.setString(11, mess.getSbuId());
+			statement.setInt(12, mess.getState());
+			statement.setString(13, mess.getState0());
+			statement.setString(14, mess.getState1());
+			statement.setString(15, mess.getDbid());
+			statement.setString(16, mess.getScm());
+			statement.setString(17, mess.getDepartment());
+			statement.setString(18, mess.getW_appid());
+			statement.setString(19, mess.getD_appid());
+			statement.setString(20, mess.getWapno());
+			statement.setString(21, mess.getW_corpid());
+			statement.setString(22, mess.getD_corpid());
+			statement.setString(23, mess.getSmake());
 			statement.executeUpdate();
 			resultSet=statement.getGeneratedKeys();
 			if(resultSet.next()){

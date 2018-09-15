@@ -6,30 +6,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import weixin.connection.message.ReceiveData;
-import weixin.connection.message.ShowData;
-import weixin.connection.text.OperateTextData;
-import weixin.key.SRegServ;
-import weixin.pojo.AccessToken;
-import weixin.pojo.Message;
-import weixin.pojo.PageInfo;
-import weixin.pojo.Text;
-import weixin.thread.TokenThread;
-import weixin.util.SendTxtToUser;
 import net.sf.json.JSONObject;
+import weixin.key.SRegServ;
+import weixin.util.SendTxtToUser;
 
 public class InformServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 消息通知
 	 */
@@ -57,21 +46,11 @@ public class InformServlet extends HttpServlet {
 			//{"title":"XXXX","type":"XXXX","content":"XXXX","users":"XXXX|XXXX|XXXX","w_corpid":"XXXX","appid":"XXXX","bipappid":"XXXX"}
 			String conetnt=jsonObject.getString("content");
 			String users=jsonObject.getString("users");
-			String appid=jsonObject.getString("appid");
+			String w_appid=jsonObject.getString("w_appid");
 			String w_corpid=jsonObject.getString("w_corpid");
-			String type=jsonObject.getString("type");
-			String title=jsonObject.getString("title");
-			String bipappid=jsonObject.getString("bipappid");
-			String scm=jsonObject.getString("scm");
-			Text txt=new Text();
-			txt.setType(type);
-			txt.setTitle(title);
-			txt.setContent(conetnt);
-			txt.setUsers(users);
-			txt.setW_corpid(w_corpid);
-			txt.setAppid(appid);
-			txt.setBipappid(bipappid);
-			txt.setScm(scm);
+			String d_appid=jsonObject.getString("d_appid");
+			String d_corpid=jsonObject.getString("d_corpid");
+			String scm=jsonObject.getString("scm"); 
 			
 			
 			SRegServ t=new SRegServ();
@@ -107,8 +86,8 @@ public class InformServlet extends HttpServlet {
 //				conetnt=_url;
 //			}
 			//通知Users
-			SendTxtToUser sendTxt=new SendTxtToUser();
-			zt=sendTxt.informUser(conetnt, users, w_corpid, appid, scm);
+			zt=SendTxtToUser.wxInformUser(conetnt, users, w_corpid, w_appid, scm);
+			zt=SendTxtToUser.ddInformUser(conetnt, users, d_corpid, d_appid, scm);
 			JSONObject json = new JSONObject();
 			json.put("zt", zt);
 			OutputStream outputStream = response.getOutputStream();

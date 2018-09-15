@@ -7,10 +7,12 @@ public class Users {
 	private String scm;
 	private String email;
 	private String w_corpid;
-	private String imgurl="img/ren.png";
+	private String d_corpid;
+	private String w_imgurl="img/ren.png";
+	private String d_imgurl="img/ren.png";
 	private String status;//关注企业号状态
-	private String exp_account;//收款人账号
-	private String exp_bank;//收款人开户行
+	private String loginType;//登录类型
+	private String loginAppid;//登录应用id   //钉钉登录不需要管
 	public String getUserid() {
 		return userid;
 	}
@@ -41,11 +43,17 @@ public class Users {
 	public void setW_corpid(String w_corpid) {
 		this.w_corpid = w_corpid;
 	}
-	public String getImgurl() {
-		return imgurl;
+	public String getW_imgurl() {
+		return w_imgurl;
 	}
-	public void setImgurl(String imgurl) {
-		this.imgurl = imgurl;
+	public void setW_imgurl(String w_imgurl) {
+		this.w_imgurl = w_imgurl;
+	}
+	public String getD_imgurl() {
+		return d_imgurl;
+	}
+	public void setD_imgurl(String d_imgurl) {
+		this.d_imgurl = d_imgurl;
 	}
 	public String getEmail() {
 		return email;
@@ -59,16 +67,22 @@ public class Users {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getExp_account() {
-		return exp_account;
+	public String getD_corpid() {
+		return d_corpid;
 	}
-	public void setExp_account(String exp_account) {
-		this.exp_account = exp_account;
+	public void setD_corpid(String d_corpid) {
+		this.d_corpid = d_corpid;
 	}
-	public String getExp_bank() {
-		return exp_bank;
+	public String getLoginType() {
+		return loginType;
 	}
-	public void setExp_bank(String exp_bank) {
-		this.exp_bank = exp_bank;
+	public void setLoginType(String loginType) {
+		this.loginType = loginType;
+	}
+	public String getLoginAppid() {
+		return loginAppid;
+	}
+	public void setLoginAppid(String loginAppid) {
+		this.loginAppid = loginAppid;
 	}
 }

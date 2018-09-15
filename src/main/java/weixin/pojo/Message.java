@@ -29,9 +29,11 @@ public class Message extends BasePojo {
 	private String state1wenzi;/**目标状态 文字**/
 	private String state2;/**下一状态**/
 	private String spname2;/**下一审批人**/
-	private String appid;/**应用id**/
+	private String w_appid;/**应用id**/
 	private String wapno;/**平台定义应用id**/
 	private String w_corpid;/**微信企业号id**/
+	private String d_appid;/**应用id**/
+	private String d_corpid;/**钉钉企业号id**/
 	private String serverurl;/**来源服务器地址**/
 	private String smake;/**制单人**/
 	private String submit;/**提交人**/
@@ -192,13 +194,7 @@ public class Message extends BasePojo {
 	}
 	public void setState1wenzi(String state1wenzi) {
 		this.state1wenzi = state1wenzi;
-	}
-	public String getAppid() {
-		return appid;
-	}
-	public void setAppid(String appid) {
-		this.appid = appid;
-	}
+	} 
 	public String getWapno() {
 		return wapno;
 	}
@@ -223,6 +219,18 @@ public class Message extends BasePojo {
 	}
 	public void setLastState(String lastState) {
 		this.lastState = lastState;
+	}
+	public String getW_appid() {
+		return w_appid;
+	}
+	public void setW_appid(String w_appid) {
+		this.w_appid = w_appid;
+	}
+	public String getD_appid() {
+		return d_appid;
+	}
+	public void setD_appid(String d_appid) {
+		this.d_appid = d_appid;
 	}
 	public Message copy(){
 		Message mm = new Message();
@@ -251,9 +259,11 @@ public class Message extends BasePojo {
 		mm.state1wenzi=this.state1wenzi;/**目标状态 文字**/
 		mm.state2=this.state2;/**下一状态**/
 		mm.spname2=this.spname2;/**下一审批人**/
-		mm.appid=this.appid;/**应用id**/
+		mm.w_appid=this.w_appid;/**应用id**/
+		mm.d_appid=this.d_appid;/**应用id**/
 		mm.wapno=this.wapno;/**平台定义应用id**/
 		mm.w_corpid=this.w_corpid;/**微信企业号id**/
+		mm.d_corpid=this.d_corpid;/**微信企业号id**/
 		mm.serverurl=this.serverurl;/**来源服务器地址**/
 		mm.smake = this.smake;/**制单人**/
 		mm.submit = this.submit;/**提交人**/
@@ -273,6 +283,12 @@ public class Message extends BasePojo {
 	public void setSubmit(String submit) {
 		this.submit = submit;
 	}
+	public String getD_corpid() {
+		return d_corpid;
+	}
+	public void setD_corpid(String d_corpid) {
+		this.d_corpid = d_corpid;
+	}
 	public String toString(){
 		return "{\"id\":"+"\""+id+"\","+"\"title\":"+"\""+title+"\","+"\""
 				+ "name\":"+"\""+name+"\","+"\"spweixinid\":"+"\""+spweixinid
@@ -283,8 +299,8 @@ public class Message extends BasePojo {
 				+"\"state\":"+"\""+state+"\","+"\"sbuId\":"+"\""+sbuId+"\","+"\"gs\":"+"\""+gs+"\","
 				+"\"tuUrl\":"+"\""+tuUrl+"\","+"\"dbid\":"+"\""+dbid+"\","+"\"scm\":"+"\""+scm+"\","
 				+"\"department\":"+"\""+department+"\","+"\"state0\":"+"\""+state0+"\","+"\"state1\":"+"\""
-				+state1+"\","+"\"state2\":"+"\""+state2+"\","+"\"spname2\":"+"\""+spname2+"\","+"\"appid\":"+"\""+appid+"\","
+				+state1+"\","+"\"state2\":"+"\""+state2+"\","+"\"spname2\":"+"\""+spname2+"\","+"\"w_appid\":"+"\""+w_appid+"\","+"\"d_appid\":"+"\""+d_appid+"\","
 				+"\"wapno\":"+"\""+wapno+"\","+"\"w_corpid\":"+"\""+w_corpid+"\","+"\"serverurl\":"+"\""+serverurl+"\","
-				+"\"submit\":"+"\""+submit+"\","+"\"tjtimeStr\":"+"\""+tjtimeStr+"\","+"\"lastState\":"+"\""+lastState+"\","+"\"smake\":"+"\""+smake+"\"}";
+				+"\"submit\":"+"\""+submit+"\","+"\"tjtimeStr\":"+"\""+tjtimeStr+"\","+"\"lastState\":"+"\""+lastState+"\","+"\"smake\":"+"\""+smake+"\","+"\"d_corpid\":"+"\""+d_corpid+"\"}";
 	}
 }

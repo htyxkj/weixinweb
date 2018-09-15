@@ -13,16 +13,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.sf.json.JSONObject;
 import weixin.connection.message.ReceiveData;
 import weixin.connection.message.UpdateDate;
 import weixin.pojo.Message;
 import weixin.util.SendTxtToUser;
 
 public class TestServlet extends HttpServlet {
+	private static final long serialVersionUID = -2909494057847138389L;
 	private static Logger log = LoggerFactory.getLogger(TestServlet.class);
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -86,9 +88,7 @@ public class TestServlet extends HttpServlet {
 		String str=jsonObject.getString("spname");
 		String zt="";
 		ReceiveData r=new ReceiveData();
-		SendTxtToUser sendTxt=new SendTxtToUser();
 		String[] array=str.split("\\|");
-		UpdateDate up=new UpdateDate();
 		for(String spweixinid : array) {
 			mess.setTitle(jsonObject.getString("title"));//标题**/
 			mess.setName(jsonObject.getString("name"));//提交人姓名**/
@@ -100,6 +100,7 @@ public class TestServlet extends HttpServlet {
 			mess.setTjtime(new Date());//提交时间**/
 			mess.setGs(jsonObject.getString("scm"));//公司**/
 			mess.setScm(jsonObject.getString("scm"));//公司**/
+			mess.setState(0);
 			mess.setState1(jsonObject.getString("state1"));//目标状态**/
 			mess.setState0(jsonObject.getString("state0"));//来源状态**/
 			mess.setDocumentsid(jsonObject.getString("documentsid"));//单据编号**/
@@ -108,25 +109,23 @@ public class TestServlet extends HttpServlet {
 			mess.setSbuId(jsonObject.getString("sbuid"));//业务号**/
 			mess.setDepartment(jsonObject.getString("department"));//公司**/
 			mess.setDbid(jsonObject.getString("dbid"));//公司**/
-			mess.setAppid(jsonObject.getString("appid"));//应用id**/
+			mess.setW_appid(jsonObject.getString("w_appid"));//应用id**/
+			mess.setD_appid(jsonObject.getString("d_appid"));//应用id**/
 			mess.setWapno(jsonObject.getString("wapno"));//平台定义应用id**/
 			mess.setW_corpid(jsonObject.getString("w_corpid"));//微信企业号标识**/
+			mess.setD_corpid(jsonObject.getString("d_corpid"));//微信企业号标识**/
 			mess.setSmake(jsonObject.getString("smake"));//制单人
 			//为解决上级审批可能出现的垃圾数据，进行数据清洗
 //			updateState(mess);
 			//录入数据
 			zt=r.jieshou(mess);
 			//通知微信端
-			zt=sendTxt.tosend(null,spweixinid,mess.getW_corpid(),mess.getScm(),mess.getAppid());
+			zt=SendTxtToUser.wxToSendSPMsg(null,spweixinid,mess.getW_corpid(),mess.getScm(),mess.getW_appid());
+			zt=SendTxtToUser.ddToSendSPMsg(null, spweixinid, mess.getD_corpid(), mess.getScm(), mess.getD_appid());
 		}
 		//统计发送记录
 //		up.ToHistory(mess.getDocumentsid(), mess.getW_corpid(), "0", mess.getState1(),null);
 		return zt;
-	}
-
-	private void updateState(Message mess) {
-		ReceiveData r=new ReceiveData();
-		r.updateState(mess);
 	}
 
 	/**
@@ -137,19 +136,19 @@ public class TestServlet extends HttpServlet {
 		String documentsid=jsonObject.getString("documentsid");
 		String w_corpid=jsonObject.getString("w_corpid");
 		String str=jsonObject.getString("spweixinid");
-		UpdateDate up=new UpdateDate();
-		SendTxtToUser sendTxt=new SendTxtToUser();
-		Message message=new Message();
-		message.setDocumentsid(documentsid);
-		message.setW_corpid(w_corpid);
-		String[] array=str.split("\\|");
-//		up.ToHistory(message.getDocumentsid(), message.getW_corpid(), "0",null,null);
-		String num=up.TuiHuiDelete(message);
 		if(str.equals(""))
 			str=jsonObject.getString("spname");
-		for (String string : array) {
-			sendTxt.tosend(null, string, jsonObject.getString("w_corpid"),jsonObject.getString("scm"),jsonObject.getString("appid"));
+		UpdateDate up=new UpdateDate();
+		Message message=new Message();
+		message.setDocumentsid(documentsid);
+		message.setW_corpid(w_corpid); 
+		if(str == null|| str.equals("")){
+			str = up.TuiHuiSpName(message);
 		}
+		str = str==null?"":str;
+		String num=up.TuiHuiDelete(message);
+		SendTxtToUser.wxToSendSPMsg(null, str, jsonObject.getString("w_corpid"),jsonObject.getString("scm"),jsonObject.getString("w_appid"));
+		SendTxtToUser.ddToSendSPMsg(null, str, jsonObject.getString("d_corpid"),jsonObject.getString("scm"),jsonObject.getString("d_appid"));
 		return num;
 	}
 }

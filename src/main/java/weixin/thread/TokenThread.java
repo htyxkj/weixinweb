@@ -1,6 +1,5 @@
 package weixin.thread;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,56 +9,65 @@ import org.apache.commons.logging.LogFactory;
 
 import weixin.connection.accessToken.AccessTokenDo;
 import weixin.pojo.AccessToken;
-import weixin.util.WeixinUtil;
+import weixin.util.HttpUtil;
 
 public class TokenThread implements Runnable{
-	 	private static final Log log = LogFactory.getLog(TokenThread.class);
-	 	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-	    // 第三方用户唯一凭证  
-	    public static String appid;  
-	    // 第三方用户唯一凭证密钥  
-	    public static String appsecret;  
-	    public static AccessToken accessToken = null;  
-	    public Map<String, AccessToken> map=null;
-	    public static Map<String, AccessToken> maplist=new HashMap<String, AccessToken>();
-	    public void run() {
-	    	while (true) {
-	            try {
-	            	//从数据库里拿每个公司微信配置信息
-	            	AccessTokenDo access=new AccessTokenDo();
-	            	List<AccessToken> atd=access.getListAccess();
-	            	for(int i=0;i<atd.size();i++){
-	            		accessToken = WeixinUtil.getAccessToken(atd.get(i).getCorpIDid(), atd.get(i).getSecret());
-	            		if (null != accessToken) {  
-	            			accessToken.setApplyId(atd.get(i).getApplyId());//应用id
-		            		accessToken.setCompanyId(atd.get(i).getCompanyId());//公司标识
-		            		accessToken.setCorpIDid(atd.get(i).getCorpIDid());//企业号标识
-		            		accessToken.setDomainName(atd.get(i).getDomainName());//访问域名
-		            		accessToken.setServerurl(atd.get(i).getServerurl());//信息来源地址
-		            		accessToken.setDbid(atd.get(i).getDbid());//数据库连接标识
-		                    log.info("获取access_token成功,获取时间:"+sdf.format(new Date())+",有效时长"+accessToken.getExpiresIn()+"秒 token:"+accessToken.getToken()+"");
-		                }else {
-		                	 //未获得链接令牌  休眠5秒后重新获取
-			                 Thread.sleep(5000);  
-						}
-	            		if(accessToken!=null)
-	            			maplist.put(accessToken.getCorpIDid()+"-"+atd.get(i).getApplyId(), accessToken);
-	            	}
-	            	// 休眠7000秒  
-                    Thread.sleep(7000000);  
-	            }catch (Exception ex) {
-	            	try {
-	            		//出现异常10秒后重新获取
-						Thread.sleep(10000);
-						StackTraceElement stackTraceElement= ex.getStackTrace()[0];
-						log.error("File="+stackTraceElement.getFileName());
-						log.error("Line="+stackTraceElement.getLineNumber());
-						log.error("Method="+stackTraceElement.getMethodName());
-						log.error("https request error:{}", ex);  
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-				}  
-	        }  
-	    }
+ 	private static final Log log = LogFactory.getLog(TokenThread.class);
+ 	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    public static AccessToken accessToken = null;  
+    public static Map<String, AccessToken> maplist=new HashMap<String, AccessToken>();
+    public void run() {
+    	while (true){
+        	try {
+				wxAccToken();
+				ddAccToken();
+				Thread.sleep(7000000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}  
+    	}
+    }
+    /**
+     * 获取微信AccessToken
+     */
+    public static void wxAccToken(){
+    	log.info("获取微信AccessToken");
+    	//从数据库里拿每个公司微信配置信息
+    	AccessTokenDo access=new AccessTokenDo();
+    	List<AccessToken> atd=access.getListWxAccess();
+    	for(int i=0;i<atd.size();i++){
+    		accessToken = HttpUtil.getWxAccessToken(atd.get(i).getW_corpIDid(), atd.get(i).getW_secret());
+    		if (null != accessToken) {
+    			accessToken.setW_applyId(atd.get(i).getW_applyId());//应用id
+        		accessToken.setCompanyId(atd.get(i).getCompanyId());//公司标识
+        		accessToken.setW_corpIDid(atd.get(i).getW_corpIDid());//企业号标识
+        		accessToken.setDomainName(atd.get(i).getDomainName());//访问域名
+        		accessToken.setServerurl(atd.get(i).getServerurl());//信息来源地址
+        		accessToken.setDbid(atd.get(i).getDbid());//数据库连接标识
+        		maplist.put("wx-"+accessToken.getW_corpIDid()+"-"+atd.get(i).getW_applyId(), accessToken);
+            }
+    	}
+    }
+    /**
+     * 获取钉钉AccessToken
+     */
+    public static void ddAccToken(){
+    	log.info("获取钉钉AccessToken");
+    	//从数据库里拿每个公司微信配置信息
+    	AccessTokenDo access=new AccessTokenDo();
+    	List<AccessToken> atd=access.getListDdAccess();
+    	for(int i=0;i<atd.size();i++){
+    		accessToken = HttpUtil.getDdAccessToken(atd.get(i).getD_corpIDid(), atd.get(i).getD_secret());
+    		if (null != accessToken) {
+    			accessToken.setD_corpIDid(atd.get(i).getD_corpIDid());
+    			accessToken.setD_secret(atd.get(i).getD_secret());
+        		accessToken.setCompanyId(atd.get(i).getCompanyId());//公司标识
+        		accessToken.setDomainName(atd.get(i).getDomainName());//访问域名
+        		accessToken.setServerurl(atd.get(i).getServerurl());//信息来源地址
+        		accessToken.setDbid(atd.get(i).getDbid());//数据库连接标识
+        		maplist.put("dd-"+accessToken.getD_corpIDid(), accessToken);
+            }
+    	}
+    }
+    
 }

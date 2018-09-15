@@ -14,10 +14,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.sf.json.JSONObject;
 import weixin.connection.message.ShowData;
 import weixin.connection.message.UpdateDate;
 import weixin.pojo.Message;
@@ -51,15 +52,14 @@ public class UpdateStateServlet extends HttpServlet {
 			jsonstr=jsonstr.replaceAll("\t", "");
 			jsonstr=jsonstr.replaceAll("null", "");
 			JSONObject jsonObject = JSONObject.fromObject(jsonstr);
-			String w_corpid,scm,documentsid;
-			w_corpid=jsonObject.getString("w_corpid");
+			String w_corpid,scm,documentsid,d_corpid;
+			w_corpid = jsonObject.getString("w_corpid");
+			d_corpid = jsonObject.getString("d_corpid");
 			scm=jsonObject.getString("scm");
 			documentsid=jsonObject.getString("documentsid");
 			String rows ="";
-			ShowData sh=new ShowData();
 			UpdateDate up=new UpdateDate();
 			Message message=new Message();
-			SendTxtToUser sendTxt=new SendTxtToUser();
 			String state1=jsonObject.getString("state1");
 			String spname=jsonObject.getString("spname");
 			String yjcontent=jsonObject.getString("yjcontent");
@@ -77,7 +77,7 @@ public class UpdateStateServlet extends HttpServlet {
 				String zt=weidu(jsonObject);
 			}else if(jsonObject.getInt("state")==-1){//驳回
 				ShowData showData=new ShowData();
-				List<Message> lm=showData.showjilu(documentsid,w_corpid,"tz");
+				List<Message> lm=showData.showSPUser(documentsid,w_corpid,d_corpid );
 				message.setSptime(new Date());
 				message.setState(2);
 				rows =up.BipUpdate(message);
@@ -85,18 +85,20 @@ public class UpdateStateServlet extends HttpServlet {
 //				String name=sh.showName(w_corpid,scm,documentsid);
 //				sendTxt.tosend("您有一条被驳回消息,请去平台处理！", name,jsonObject.getString("w_corpid"),jsonObject.getString("appid"),scm);
 				for(Message m :lm){
-					sendTxt.tosend(null, m.getSpname(),jsonObject.getString("w_corpid"),scm,m.getAppid());
+					SendTxtToUser.wxToSendSPMsg(null, m.getSpname(),w_corpid,scm,m.getW_appid());
+					SendTxtToUser.ddToSendSPMsg(null, m.getSpname(),jsonObject.getString("d_corpid"),scm,m.getD_appid());
 				}
 			}else{
 				//同意
 				ShowData showData=new ShowData();
-				List<Message> lm=showData.showjilu(documentsid,w_corpid,"tz");
+				List<Message> lm=showData.showSPUser(documentsid,w_corpid,d_corpid );
 				message.setSptime(new Date());
 				rows =up.BipUpdate(message);
 				rows = up.BipTuiHui(message);
 				log.info(lm.size()+"");
 				for(Message m :lm){
-					sendTxt.tosend(null, m.getSpname(),jsonObject.getString("w_corpid"),scm,m.getAppid());
+					SendTxtToUser.wxToSendSPMsg(null, m.getSpname(),w_corpid,scm,m.getW_appid());
+					SendTxtToUser.ddToSendSPMsg(null, m.getSpname(),jsonObject.getString("d_corpid"),scm,m.getD_appid());
 				}
 			}
 			isr.close();
@@ -122,9 +124,10 @@ public class UpdateStateServlet extends HttpServlet {
 		message.setState1(jsonObject.getString("state1"));
 		message.setSpname(jsonObject.getString("spname"));
 		message.setW_corpid(jsonObject.getString("w_corpid"));
+		message.setD_corpid(jsonObject.getString("d_corpid"));
 		String num=up.ToWeiDu(message);
-		SendTxtToUser sendTxt=new SendTxtToUser();
-		sendTxt.tosend(null, jsonObject.getString("spweixinid"),jsonObject.getString("w_corpid"),jsonObject.getString("scm"),jsonObject.getString("appid"));
+		SendTxtToUser.wxToSendSPMsg(null, jsonObject.getString("spweixinid"),jsonObject.getString("w_corpid"),jsonObject.getString("scm"),jsonObject.getString("w_appid"));
+		SendTxtToUser.ddToSendSPMsg(null, jsonObject.getString("spweixinid"),jsonObject.getString("d_corpid"),jsonObject.getString("scm"),jsonObject.getString("d_appid"));
 //		up.ToHistory(message.getDocumentsid(), message.getW_corpid(), null,message.getState1()+"",message.getSpname());
 		return num;
 	}

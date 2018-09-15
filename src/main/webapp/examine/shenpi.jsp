@@ -323,9 +323,11 @@
                 dataType: "JSON",
                 success: function (data) {
                     if (data.success == 'ok') {
-                        window.location.href = 'ResultServlet?w_appid='+$("input[name='appid']").val()+'&success=ok&wxscmid=' + $("input[name='w_corpid']").val();
+                    	alert("审批成功！");
+                        window.location.href = 'ButtonServlet?state=0';
                     } else {
-                        window.location.href = 'ResultServlet?w_appid='+$("input[name='appid']").val()+'&success=no&wxscmid=' + $("input[name='w_corpid']").val();
+                    	alert("审批失败！");
+                    	window.location.href = 'ButtonServlet?state=0';
                     }
                 },
                 error: function (err) {
@@ -373,7 +375,7 @@
                     if (data.success == 'ok') {
                         sp(state);
                     } else {
-                        window.location.href = 'ResultServlet?w_appid='+$("input[name='appid']").val()+'&success=no&wxscmid=' + $("input[name='w_corpid']").val();
+                    	alert("审批失败！");
                     }
                 },
                 error: function (err) {
@@ -391,7 +393,9 @@
         }
         function hidejilu() {
             $("#showjilu").show();
-            $("#showfl").show();
+            $("#showfl").show(function(){
+		fltf();
+		});
             $("#hidejilu").hide();
             $("#jilu").hide();
         }
@@ -399,14 +403,17 @@
              var url= "examine/fenlu.jsp?usercode=" + $("input[name='userCode']").val() + "&documentstype=" + $("input[name='documentstype']").val() + "&documentsid=" + $("input[name='documentsid']").val() + "&serverurl=" + $("input[name='serverurl']").val()+"&flname=" + $("input[name='flname']").val()+"&dbid=" + $("input[name='dbid']").val();
              window.location.href=url;
         }
-        function  fltf(){
+        function  fltf(){ 
         	$.ajax({
-	        	type : "POST",
+	        	type : "GET",
 				contentType : "application/x-www-form-urlencoded",
 				url :$("input[name='serverurl']").val()+"lxvar",
+				//url :"http://127.0.0.1:9999/jd/lxvar",
+				//url:"http://localhost:9999/jd/lxver",
 				data :  {"VARID":"sql:select count(csysno) a,slabel from insaid where sid='"+$("input[name='documentstype']").val()+"FL' GROUP BY slabel ","DBID":""+$("input[name='dbid']").val()+"","USRCODE":""+$("input[name='userCode']").val()+"","CONT":""+$("input[name='documentsid']").val()+""},
 				dataType : "JSON",
 				success : function(data) { 
+					console.log(data);
 					if(data.values==null){
 						$("#showfl").hide();
 						return;
@@ -417,7 +424,8 @@
 					}
 					$("#flname").val(data.values[0][1]);			
 				},
-				error : function(err) {
+				error : function(err) { 
+					console.log(err);
 					$("#showfl").hide();
 					//alert("系统错误，请联系系统管理员！416行");
 				}
@@ -447,9 +455,6 @@
     <input type="hidden" value="${data.state1}" name="state1"/> 
     <input type="hidden" value="${data.tablename}" name="tablename"/> 
     <input type="hidden" value="${data.id}" name="id"/> 
-    <input type="hidden" value="${data.appid}" name="appid"/> 
-    <input type="hidden" value="${data.wapno}" name="wapno"/> 
-    <input type="hidden" value="${data.w_corpid}" name="w_corpid"/> 
     <input type="hidden" value="${data.serverurl}" name="serverurl"/> 
     <input id="date" name="date" type="hidden"/> 
     <input id="results" name="results" type="hidden"/> 
@@ -494,7 +499,7 @@
                 <td valign="top">
                     <p>${data.contenthuanhang}
                         <c:forEach var="fujian" items="${fujians}" varStatus="status">
-                            附件${status.index+1}:<a href='${fujian.fullPath}'>${fujian.fileName}</a><br/>
+                                                                                      附件${status.index+1}:<a href='${fujian.fullPath}'>${fujian.fileName}</a><br/>
                         </c:forEach>
                     </p>
                     <%--<p style="font-size:14px;">${data.contenthuanhang}</p>--%>

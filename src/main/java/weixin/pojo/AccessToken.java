@@ -1,59 +1,93 @@
 package weixin.pojo;
 
 public class AccessToken {
-    // 获取到的凭证  
-    private String token;  
-    // 凭证有效时间，单位：秒  
-    private int expiresIn;
+    
+	private volatile String w_accessToken;//微信 获取到的凭证  
+	private volatile long w_expiresTime;//微信凭证有效时间，单位：秒  
+	private volatile String d_accessToken;//钉钉 获取到的凭证  
+	private volatile long d_expiresTime;//钉钉凭证有效时间，单位：秒
     private String companyId;//公司标识
-    private String applyId;//应用id
-	private String corpIDid;//企业号标识
-	private String secret;//管理组标识
+    private String w_applyId;//微信应用id
+	private String w_corpIDid;//微信企业号标识
+	private String w_secret;//微信管理组标识
+	private String d_applyId;//钉钉应用id
+	private String d_corpIDid;//钉钉企业号标识
+	private String d_secret;//钉钉管理组标识
 	private String domainName;//访问域名
 	private String serverurl;/**来源服务器地址**/
 	private String dbid;/** 数据库访问编码 **/
 	
-    public String getDomainName() {
-		return domainName;
+	public String getW_accessToken() {
+		return w_accessToken;
 	}
-	public void setDomainName(String domainName) {
-		this.domainName = domainName;
+	public void setW_accessToken(String w_accessToken) {
+		this.w_accessToken = w_accessToken;
 	}
-	public String getToken() {  
-        return token;  
-    }  
-    public void setToken(String token) {  
-        this.token = token;  
-    }  
-    public int getExpiresIn() {  
-        return expiresIn;  
-    }  
-    public void setExpiresIn(int expiresIn) {  
-        this.expiresIn = expiresIn;  
-    }  
-    public String getCompanyId() {
+	public long getW_expiresTime() {
+		return w_expiresTime;
+	}
+	public void setW_expiresTime(long w_expiresTime) {
+		this.w_expiresTime = w_expiresTime;
+	}
+	public String getD_accessToken() {
+		return d_accessToken;
+	}
+	public void setD_accessToken(String d_accessToken) {
+		this.d_accessToken = d_accessToken;
+	}
+	public long getD_expiresTime() {
+		return d_expiresTime;
+	}
+	public void setD_expiresTime(long d_expiresTime) {
+		this.d_expiresTime = d_expiresTime;
+	}
+	public String getCompanyId() {
 		return companyId;
 	}
 	public void setCompanyId(String companyId) {
 		this.companyId = companyId;
 	}
-	public String getApplyId() {
-		return applyId;
+	public String getW_applyId() {
+		return w_applyId;
 	}
-	public void setApplyId(String applyId) {
-		this.applyId = applyId;
+	public void setW_applyId(String w_applyId) {
+		this.w_applyId = w_applyId;
 	}
-	public String getCorpIDid() {
-		return corpIDid;
+	public String getW_corpIDid() {
+		return w_corpIDid;
 	}
-	public void setCorpIDid(String corpIDid) {
-		this.corpIDid = corpIDid;
+	public void setW_corpIDid(String w_corpIDid) {
+		this.w_corpIDid = w_corpIDid;
 	}
-	public String getSecret() {
-		return secret;
+	public String getW_secret() {
+		return w_secret;
 	}
-	public void setSecret(String secret) {
-		this.secret = secret;
+	public void setW_secret(String w_secret) {
+		this.w_secret = w_secret;
+	}
+	public String getD_applyId() {
+		return d_applyId;
+	}
+	public void setD_applyId(String d_applyId) {
+		this.d_applyId = d_applyId;
+	}
+	public String getD_corpIDid() {
+		return d_corpIDid;
+	}
+	public void setD_corpIDid(String d_corpIDid) {
+		this.d_corpIDid = d_corpIDid;
+	}
+	public String getD_secret() {
+		return d_secret;
+	}
+	public void setD_secret(String d_secret) {
+		this.d_secret = d_secret;
+	}
+	public String getDomainName() {
+		return domainName;
+	}
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
 	}
 	public String getServerurl() {
 		return serverurl;
@@ -67,4 +101,5 @@ public class AccessToken {
 	public void setDbid(String dbid) {
 		this.dbid = dbid;
 	}
+	 
 }

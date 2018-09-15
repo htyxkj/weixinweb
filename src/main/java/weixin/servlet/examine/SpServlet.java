@@ -3,7 +3,6 @@ package weixin.servlet.examine;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import weixin.connection.message.ShowData;
 import weixin.connection.message.UpdateDate;
 import weixin.pojo.Message;
-import weixin.util.SendTxtToUser;
+import weixin.pojo.Users;
 
 public class SpServlet extends HttpServlet {
 
@@ -30,6 +29,7 @@ public class SpServlet extends HttpServlet {
 		response.setCharacterEncoding("utf-8");
 		PrintWriter out = null;
 		try {
+			Users user = (Users) request.getSession().getAttribute("sessionUser");
 			Message message = new Message();
 			String yjcontent = request.getParameter("yjcontent");// 审批yj内容88
 			String id = request.getParameter("id");// 消息编号88
@@ -39,11 +39,10 @@ public class SpServlet extends HttpServlet {
 			String state0 = request.getParameter("state0");// 审批结果
 			String spname=request.getParameter("spname");
 			String state1=request.getParameter("state1");
-			String wxscmid=request.getParameter("w_corpid");
-			String scm=request.getParameter("scm");
-			String appid=request.getParameter("appid");
+			 
 
-			message.setW_corpid(wxscmid);
+			message.setW_corpid(user.getW_corpid());
+			message.setD_corpid(user.getD_corpid());
 			message.setDocumentsid(documentsid);
 			message.setState0(state0);
 			message.setState1(state1);
@@ -55,16 +54,15 @@ public class SpServlet extends HttpServlet {
 
 			int rows =0;
 			ShowData showData=new ShowData();
-			List<Message> lm=showData.showjilu(documentsid,wxscmid,"tz");
-			ShowData sh=new ShowData();
-			SendTxtToUser sendTxt=new SendTxtToUser();
+//			List<Message> lm=showData.showSPUser(documentsid, user.getW_corpid(), user.getD_corpid());
 			UpdateDate upDate = new UpdateDate();
 			rows = upDate.update(message);
 			upDate.BipTuiHui(message);
 			if (rows != 0) {
-				for(Message m :lm){
-					sendTxt.tosend(null, m.getSpname(),m.getW_corpid(),m.getScm(),m.getAppid());
-				}
+//				for(Message m :lm){
+//					SendTxtToUser.wxToSendSPMsg(null, m.getSpname(),m.getW_corpid(),m.getScm(),m.getW_appid());
+//					SendTxtToUser.ddToSendSPMsg(null, m.getSpname(),m.getD_corpid(),m.getScm(),m.getD_appid());
+//				}
 				String str="{\"success\":\"ok\"}";
 				out = response.getWriter();
 				out.append(str);

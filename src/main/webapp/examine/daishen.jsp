@@ -33,8 +33,6 @@
 		if(regdate!=''){
 			alert(regdate);
 		}
-    	
-    	
         loading = true;
         $.ajax({
             url:"PageDataServlet",
@@ -65,17 +63,6 @@
                 if (i == 0) {
                     $("#offset").val(data[i].offset);
                 }
-//                var state = data[i].lastState;
-//                var stateStr;
-//                if (state == 0) {
-//                    stateStr = "待审批";
-//                }
-//                if (state == 1) {
-//                    stateStr = "审批通过";
-//                }
-//                if (state == 2) {
-//                    stateStr = "驳回";
-//                }
                 html = html + ['<li><div class="audit_list_box"><img src="img/point.png"/>',
                             '<div class="audit_dashed_box">',
                             '<div class="audit_dsd_lbox">',
@@ -111,17 +98,6 @@
                 if (i == 0) {
                     $("#offset").val(data[i].offset);
                 }
-//                var state = data[i].lastState;
-//                var stateStr;
-//                if (state == 0) {
-//                    stateStr = "待审批";
-//                }
-//                if (state == 1) {
-//                    stateStr = "审批通过";
-//                }
-//                if (state == 2) {
-//                    stateStr = "驳回";
-//                }
                 html = html + ['<li><div class="audit_list_box"><img src="img/point.png"/>',
                         '<div class="audit_dashed_box">',
                         '<div class="audit_dsd_lbox">',
@@ -170,24 +146,6 @@
             <!--待审-->
             <ul id="audit_list_container" class="audit_list_container" style="display: block;">
                 <!--列表-->
-                <%--<c:forEach var="list" items="${listM}">--%>
-                    <%--<div class="audit_list_box">--%>
-                        <%--<img src="img/point.png"/>--%>
-                        <%--<div class="audit_dashed_box">--%>
-                            <%--<div class="audit_dsd_lbox">--%>
-                                <%--<div style="margin-top:20px">${list.title}</div>--%>
-                                <%--<div>--%>
-                                        <%--${list.tjtimeStr}--%>
-                                <%--</div>--%>
-                                <%--<div style="margin-bottom:9px">提交人:${list.submit}</div>--%>
-                                <%--<!--<div>制单人编号:${list.smake}</div>-->--%>
-                            <%--</div>--%>
-                            <%--<div class="audit_dsd_rbox">--%>
-                                <%--<a href="${xqurl}${list.id}${url2}" class="audit_btn"> 详情 </a>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                <%--</c:forEach>--%>
             </ul>
             <!--待审 END-->
         </div>
@@ -221,14 +179,12 @@
 
                 },
                 success: function (res) {
-//                alert("res"+JSON.stringify(res));
                     addItems(res);
                     myScroll.refresh();
                     loading = false;
                 },
                 error: function (error) {
                     loading = false;
-//                alert("error"+JSON.stringify(error));
                 }
             });
         }, 100);

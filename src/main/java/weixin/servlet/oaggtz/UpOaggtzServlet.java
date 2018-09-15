@@ -4,17 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.URLDecoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 import weixin.connection.oaggtz.OperateOaggtz;
+import weixin.pojo.Users;
 /**
  * 
  * @author Administrator
@@ -34,11 +33,9 @@ public class UpOaggtzServlet extends HttpServlet {
         OperateOaggtz oagg=new OperateOaggtz();
         //编号不为空
         if(id!=null&&!id.equals("")){
-        	HttpSession session = request.getSession();
-			String userId = (String) session.getAttribute("userId");
-			String w_corpid = (String) session.getAttribute("wxscmid");
+        	Users user = (Users) request.getSession().getAttribute("sessionUser");
         	//将这条信息设为已读
-	        oagg.updateRad(id,userId,w_corpid);
+	        oagg.updateRad(id,user.getUserid(),user.getW_corpid(),user.getD_corpid());
         }else{
         	//平台进行提交退回，删除某条公告信息
         	String jsonstr = "";

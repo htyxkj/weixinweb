@@ -1,14 +1,13 @@
 package weixin.servlet;
 
 
-import javax.servlet.ServletException;  
-import javax.servlet.http.HttpServlet;  
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 
-import weixin.thread.TokenThread;  
-import weixin.util.WeixinUtil;  
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.slf4j.Logger;  
-import org.slf4j.LoggerFactory;  
+import weixin.thread.TokenThread;
 
 public class InitServlet extends HttpServlet {  
     private static final long serialVersionUID = 1L;  

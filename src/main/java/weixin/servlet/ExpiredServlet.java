@@ -9,8 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import weixin.key.SRegServ;
-import weixin.pojo.Message;
 
+/**
+ * 
+ * ClassName: ExpiredServlet
+ * @Description: 功能描述:应用注册
+ * company:北京斯坦德科技发展有限公司
+ * @date 2018年9月10日下午12:04:03
+ */
 public class ExpiredServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

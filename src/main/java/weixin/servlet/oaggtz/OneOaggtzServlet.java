@@ -1,11 +1,8 @@
 package weixin.servlet.oaggtz;
 
-import java.awt.event.KeyAdapter;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,17 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.sf.json.JSONObject;
-import weixin.connection.message.ShowData;
 import weixin.connection.oaggtz.OperateOaggtz;
 import weixin.connection.users.OperateUsers;
 import weixin.pojo.AccessToken;
 import weixin.pojo.FuJian;
-import weixin.pojo.Message;
 import weixin.pojo.Oaggtz;
 import weixin.pojo.Users;
 import weixin.thread.TokenThread;
-import weixin.util.WeixinUtil;
 /**
  * 
  * @author Administrator
@@ -42,31 +35,23 @@ public class OneOaggtzServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
-        String read = request.getParameter("read");
-        String w_appid = request.getParameter("w_appid");
-//		String userid=request.getParameter("userid");
-        String wxscmid = request.getParameter("wxscmid");
-        TokenThread tokenThread = new TokenThread();
-        Map<String, AccessToken> map = tokenThread.maplist;
-        AccessToken accessToken = map.get(wxscmid+"-"+w_appid);
+        Users user = (Users) request.getSession().getAttribute("sessionUser");
+        AccessToken accessToken = null;
+        if(user.getLoginType().equals("w"))
+        	accessToken = TokenThread.maplist.get("wx-"+user.getW_corpid()+"-"+user.getLoginAppid());
+        else
+        	accessToken = TokenThread.maplist.get("dd-"+user.getD_corpid());
         //用户同意授权后，能获取到code
-        String code = request.getParameter("code");
         String keyid = request.getParameter("keyid");
         try {
-            if (!"authdeny".equals(code) && code != null) {
-                String requestUrl = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=" + accessToken.getToken() + "&code=" + code;
-                JSONObject jsonObj = WeixinUtil.httpRequest(requestUrl, "GET", null);
-//				获取员工id
-                String userid = jsonObj.getString("UserId");
-                if (userid.indexOf("@") != -1) {
-                    OperateUsers oU = new OperateUsers();
-                    userid = oU.getUserID(userid, wxscmid);
-                }
                 OperateOaggtz oaggtz=new OperateOaggtz();
                 Oaggtz data= oaggtz.selectOne(keyid);
-                
                 OperateUsers o = new OperateUsers();
-                Users u = o.showUserName(data.getSmaker(), null, data.getW_corpid());
+		    	Users uu = new Users();
+		    	uu.setUserid(data.getSmaker());
+		    	uu.setD_corpid(data.getD_corpid());
+		    	uu.setW_corpid(data.getW_corpid());
+                Users u = o.showUserName(uu);
                 List<FuJian> listFuJian = new ArrayList<FuJian>();
                 if(u!=null)
                 data.setSmaker(u.getUsername());
@@ -95,20 +80,9 @@ public class OneOaggtzServlet extends HttpServlet {
                 request.setAttribute("data", data);
                 request.setAttribute("fujians", listFuJian);
                 request.getRequestDispatcher("oaggtz/oneOaggtz.jsp").forward(request, response);
-            }
         } catch (Exception e) {
             log.info(e + "");
-            //获取员工信息失败   重新获取
-            String _url = "" +accessToken.getDomainName()
-                    + "/weixinweb/OneOaggtzServlet?w_appid="+w_appid+"&wxscmid=" + wxscmid
-                    + "&keyid=" + keyid;
-            _url = URLEncoder.encode(_url, "UTF-8");
-            _url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
-                    + wxscmid
-                    + "&redirect_uri="
-                    + _url;
-            _url += "&response_type=code&scope=snsapi_base#wechat_redirect";
-            response.sendRedirect(_url);
+            e.printStackTrace();
             return;
         }
 	}

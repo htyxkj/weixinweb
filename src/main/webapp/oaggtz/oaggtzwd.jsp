@@ -68,7 +68,6 @@
     function addItemsByFirst(data) {
         var sateurl = "&read=2"; //详情url 拼接串
         var xqurl = $("#xqurl").val(); //详情url 拼接串
-        var url2 = $("#url2").val();  //详情url 拼接串
         var dataLength = data.length;
         var html = '';
         if (data && dataLength > 0) {
@@ -77,7 +76,7 @@
                     $("#offset").val(data[i].offset);
                 }
                 html = html + ['<li><div style="background-color:#FFFFFF;color:#000000;width:88%;margin-left:5%;padding-left:10px;padding-top:14px;padding-bottom:16px;margin-bottom:25px">'+
-           						'<a href="' + xqurl + data[i].id + sateurl + url2 + '">'+
+           						'<a href="' + xqurl + data[i].id + sateurl + '">'+
            	                    '<div>'+
 								'<div style="color:#000000;font-size:20px">' + data[i].title + '</div>'+
            	                    '<div style="color:#888888;padding-top:4px;">'+ChangeDateFormat(data[i].mkdate)+'</div>'+
@@ -104,7 +103,6 @@
     function addItems(data) {
         var sateurl = "&read=2"; //详情url 拼接串
         var xqurl = $("#xqurl").val(); //详情url 拼接串
-        var url2 = $("#url2").val();  //详情url 拼接串
         var dataLength = data.length;
         var html = '';
         if (data && dataLength > 0) {
@@ -113,7 +111,7 @@
                     $("#offset").val(data[i].offset);
                 }
                 html = html + ['<li><div style="background-color:#FFFFFF;color:#000000;width:88%;margin-left:5%;padding-left:10px;padding-top:14px;padding-bottom:16px;margin-bottom:25px">'+
-           						'<a href="' + xqurl + data[i].id + sateurl + url2 + '">'+
+           						'<a href="' + xqurl + data[i].id + sateurl + '">'+
            	                    '<div>'+
 								'<div style="color:#000000;font-size:20px">' + data[i].title + '</div>'+
            	                    '<div style="color:#888888;padding-top:4px;">'+ChangeDateFormat(data[i].mkdate)+'</div>'+
@@ -179,16 +177,15 @@
 <input id="path" type="hidden" value="<%=path%>">
 <input id="offset" name="offset" type="hidden" value="${offset}">
 <input id="pageType" name="pageType" type="hidden" value="wode">
-<input id="url2" name="url2" type="hidden" value="${url2}">
 <input id="xqurl" name="xqurl" type="hidden" value="${xqurl}">
 <div class="audit_body">
     <!--内容盒子-->
     <div class="audit_content">
         <!--选项卡-->
         <ul class="audit_tab_control">
-            <li><a href="${bu_url0}0${bu_url2}" class="">未读</a></li>
-            <li><a href="${bu_url0}1${bu_url2}" class="">已读</a></li>
-            <li><a href="${bu_url0}2${bu_url2}" class="audit_tabcon_click">我发布的</a></li>
+            <li><a href="${bu_url0}0" class="">未读</a></li>
+            <li><a href="${bu_url0}1" class="">已读</a></li>
+            <li><a href="${bu_url0}2" class="audit_tabcon_click">我发布的</a></li>
         </ul>
         <div id="audit_list" class="audit_list">
             <ul id="audit_list_container" class="audit_list_container" style="display: block;">

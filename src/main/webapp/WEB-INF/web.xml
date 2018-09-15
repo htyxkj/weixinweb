@@ -54,37 +54,13 @@
     <display-name>AddScmServlet</display-name>
     <servlet-name>AddScmServlet</servlet-name>
     <servlet-class>weixin.servlet.userandscm.AddScmServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>SubscribeServlet</description>
-    <display-name>SubscribeServlet</display-name>
-    <servlet-name>SubscribeServlet</servlet-name>
-    <servlet-class>weixin.servlet.userandscm.SubscribeServlet</servlet-class>
-  </servlet>
+  </servlet> 
   <servlet>
     <description>SelectOneMessage</description>
     <display-name>SelectOneMessage</display-name>
     <servlet-name>SelectOneMessage</servlet-name>
     <servlet-class>weixin.servlet.examine.SelectOneMessage</servlet-class>
-  </servlet>
-  <servlet>
-    <description>ResultServlet</description>
-    <display-name>ResultServlet</display-name>
-    <servlet-name>ResultServlet</servlet-name>
-    <servlet-class>weixin.servlet.examine.ResultServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>InformServlet</description>
-    <display-name>InformServlet</display-name>
-    <servlet-name>InformServlet</servlet-name>
-    <servlet-class>weixin.servlet.inform.InformServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>ShowTextServlet</description>
-    <display-name>ShowTextServlet</display-name>
-    <servlet-name>ShowTextServlet</servlet-name>
-    <servlet-class>weixin.servlet.inform.ShowTextServlet</servlet-class>
-  </servlet>
+  </servlet> 
   <servlet>
     <description>ShowUsersAll</description>
     <display-name>ShowUsersAll</display-name>
@@ -146,35 +122,24 @@
     <servlet-class>weixin.servlet.ExpiredServlet</servlet-class>
   </servlet>
   <servlet>
-    <description>ExpiredServlet</description>
-    <display-name>ExpiredServlet</display-name>
-    <servlet-name>AttentionServlet</servlet-name>
-    <servlet-class>weixin.servlet.userandscm.AttentionServlet</servlet-class>
+    <description>WLoginServlet</description>
+    <display-name>WLoginServlet</display-name>
+    <servlet-name>WLoginServlet</servlet-name>
+    <servlet-class>weixin.servlet.login.WLoginServlet</servlet-class>
   </servlet>
   <servlet>
-    <description>ExpiredServlet</description>
-    <display-name>ExpiredServlet</display-name>
-    <servlet-name>ExpServlet</servlet-name>
-    <servlet-class>weixin.servlet.exp.ExpServlet</servlet-class>
+    <description>DLoginServlet</description>
+    <display-name>DLoginServlet</display-name>
+    <servlet-name>DLoginServlet</servlet-name>
+    <servlet-class>weixin.servlet.login.DLoginServlet</servlet-class>
   </servlet>
   <servlet>
-    <description>InsertExpServlet</description>
-    <display-name>InsertExpServlet</display-name>
-    <servlet-name>InsertExpServlet</servlet-name>
-    <servlet-class>weixin.servlet.exp.InsertExpServlet</servlet-class>
+    <description>InformServlet</description>
+    <display-name>InformServlet</display-name>
+    <servlet-name>InformServlet</servlet-name>
+    <servlet-class>weixin.servlet.inform.InformServlet</servlet-class>
   </servlet>
-  <servlet>
-    <description>SelectExpServlet</description>
-    <display-name>SelectExpServlet</display-name>
-    <servlet-name>SelectExpServlet</servlet-name>
-    <servlet-class>weixin.servlet.exp.SelectExpServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <description>SelectExpServlet</description>
-    <display-name>SelectExpServlet</display-name>
-    <servlet-name>SelectExpaServlet</servlet-name>
-    <servlet-class>weixin.servlet.exp.SelectExpaServlet</servlet-class>
-  </servlet>
+ 
   <servlet-mapping>
     <servlet-name>OAuthServlet</servlet-name>
     <url-pattern>/OAuthServlet</url-pattern>
@@ -206,27 +171,11 @@
   <servlet-mapping>
     <servlet-name>AddScmServlet</servlet-name>
     <url-pattern>/AddScmServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>SubscribeServlet</servlet-name>
-    <url-pattern>/SubscribeServlet</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> 
   <servlet-mapping>
     <servlet-name>SelectOneMessage</servlet-name>
     <url-pattern>/SelectOneMessage</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>ResultServlet</servlet-name>
-    <url-pattern>/ResultServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>InformServlet</servlet-name>
-    <url-pattern>/InformServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>ShowTextServlet</servlet-name>
-    <url-pattern>/ShowTextServlet</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>  
   <servlet-mapping>
     <servlet-name>ShowUsersAll</servlet-name>
     <url-pattern>/ShowUsersAll</url-pattern>
@@ -264,30 +213,21 @@
     <url-pattern>/SelectOaflbServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>ExpiredServlet</servlet-name>
-    <url-pattern>/ExpiredServlet</url-pattern>
+    <servlet-name>WLoginServlet</servlet-name>
+    <url-pattern>/WLoginServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>AttentionServlet</servlet-name>
-    <url-pattern>/AttentionServlet</url-pattern>
-  </servlet-mapping>
+    <servlet-name>DLoginServlet</servlet-name>
+    <url-pattern>/DLoginServlet</url-pattern>
+  </servlet-mapping>  
   <servlet-mapping>
-    <servlet-name>ExpServlet</servlet-name>
-    <url-pattern>/ExpServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>InsertExpServlet</servlet-name>
-    <url-pattern>/InsertExpServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>SelectExpServlet</servlet-name>
-    <url-pattern>/SelectExpServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>SelectExpaServlet</servlet-name>
-    <url-pattern>/SelectExpaServlet</url-pattern>
-  </servlet-mapping>
+    <servlet-name>InformServlet</servlet-name>
+    <url-pattern>/InformServlet</url-pattern>
+  </servlet-mapping> 
   <welcome-file-list>
-    <welcome-file>SubscribeServlet</welcome-file>
+    <welcome-file></welcome-file>
   </welcome-file-list>
+  <session-config>
+	<session-timeout>60</session-timeout>
+  </session-config>
 </web-app>

@@ -18,7 +18,7 @@
 %>
 <head>
 	<meta charset="UTF-8">
-	<title><%=flname %></title>
+	<title></title> <!-- %=flname %> -->
 	<script src='<%=basePath %>js/jquery-2.1.4.js'></script>
 	<link rel="stylesheet" href="<%=basePath %>css/basics_fl.css">
     <link rel="stylesheet" href="<%=basePath %>css/Block-list.css">
@@ -42,34 +42,33 @@
     </style>
 	<script type="text/javascript">
     $(function(){
-	  var html = "";
+	  var html = "<div class='list-aa'><span class='list-bt'> </span></div>";
 	  $.ajax({
 			type : "POST",
 			contentType : "application/x-www-form-urlencoded",
 			url : "<%=serverurl%>lxvar",
 			data :  {"VARID":"{&<%=documentstype%>FL}","DBID":"<%=dbid %>","USRCODE":"<%=usercode%>","CONT":"<%=documentsid%>","BINI":"1"},
 			dataType : "JSON",
-			success : function(data) {
-				console.log(data);
+			success : function(data) { 
 				for(var value = 0; value < data.values.length;value++){
 					var va = data.values[value];
 					html += "<div class=\"mydiv\"><span class=\"span1\">"+(value+1)+"</span></div>"
-					+"<div class='list-a'>";
-					for(var oneValue = 0; oneValue < va.length; oneValue++){
-						if(data.allCols[oneValue]=="fjname"){
+					+"<div class='list-a'>";  
+					for(var i=0;i<data.showCols.length;i++){
+						if(data.allCols[i]=="fjname"){
 							//html += "<div class='list-aa'><span class='list-bt'>"+data.labers[oneValue]+"：</span><span class='list-hk'></span></div>";
-							html += "<div class='list-aa'><span class='list-bt'>"+data.labers[oneValue]+"：</span><span class='list-hk'>"+getUrl(va[oneValue],va[oneValue+1])+"</span></div>";
-						}else if(data.allCols[oneValue]=="fj_root"){
+							html += "<div class='list-aa'><span class='list-bt'>"+data.labers[i]+"：</span><span class='list-hk'>"+getUrl(va[data.allCols[data.showCols[i]]],va[data.allCols[data.showCols[i+1]]])+"</span></div>";
+						}else if(data.allCols[i]=="fj_root"){
 							
 						}else{
-						    var baseValue = va[oneValue];
+						    var baseValue = va[data.allCols[data.showCols[i]]];
 						    var checkValue = '';
 						    if(baseValue){
                               checkValue = baseValue;
 							}
-							html += "<div class='list-aa'><span class='list-bt'>"+data.labers[oneValue]+"：</span><span class='list-hk'>"+checkValue+"</span></div>";
+							html += "<div class='list-aa'><span class='list-bt'>"+data.labers[i]+"：</span><span class='list-hk'>"+checkValue+"</span></div>";
 						}
-					}
+					} 
 					html += "</div>";
 				}
 				$("#list").append(html);

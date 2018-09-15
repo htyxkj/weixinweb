@@ -3,7 +3,6 @@ package weixin.connection.oaggtz;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class OperateOaggtz  extends BaseDao {
 	 * @param w_corpid         企业号标识
 	 * @return List<Oaggtz>
 	 */
-	public List<Oaggtz> ShowAll(String spweixinid,String scm,String read,String w_corpid,Integer offset){
+	public List<Oaggtz> ShowAll(String spweixinid,String scm,String read,String w_corpid,String d_corpid,Integer offset){
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
@@ -37,32 +36,37 @@ public class OperateOaggtz  extends BaseDao {
 		try {
 		String sql="";
 		 if(read.equals("0")){
-			sql="select * from oaggtz where w_corpid=? and (susr like ? or sorgto like ? or susr like '%All%' or sorgto like '%All%') and sid not in(select sid from oaggtzread where w_corpid=? and usercode=?) order by mkdate desc LIMIT ? OFFSET ? ";
+			sql="select * from oaggtz where (w_corpid=? or d_corpid=?) and (susr like ? or sorgto like ? or susr like '%All%' or sorgto like '%All%') and sid not in(select sid from oaggtzread where (w_corpid=? or d_corpid=?) and usercode=?) order by mkdate desc LIMIT ? OFFSET ? ";
 			statement = connection.prepareStatement(sql);
 			statement.setString(1,w_corpid);
-			statement.setString(2,"%"+spweixinid+"%");
-			statement.setString(3,"%"+scm+"%");
-			statement.setString(4,w_corpid);
-			statement.setString(5,spweixinid);
-			statement.setInt(6,RESULT_SIZE);
-			statement.setInt(7,offset);
+			statement.setString(2,d_corpid);
+			statement.setString(3,"%"+spweixinid+"%");
+			statement.setString(4,"%"+scm+"%");
+			statement.setString(5,w_corpid);
+			statement.setString(6,d_corpid);
+			statement.setString(7,spweixinid);
+			statement.setInt(8,RESULT_SIZE);
+			statement.setInt(9,offset);
 		}else if(read.equals("1")){
-			sql="select * from oaggtz where w_corpid=? and (susr like ? or sorgto like ? or susr like '%All%' or sorgto like '%All%') and sid in(select sid from oaggtzread where w_corpid=? and usercode=?) order by mkdate desc LIMIT ? OFFSET ? ";
+			sql="select * from oaggtz where (w_corpid=? or d_corpid=?) and (susr like ? or sorgto like ? or susr like '%All%' or sorgto like '%All%') and sid in(select sid from oaggtzread where (w_corpid=? or d_corpid=?) and usercode=?) order by mkdate desc LIMIT ? OFFSET ? ";
 			statement = connection.prepareStatement(sql);
 			statement.setString(1,w_corpid);
-			statement.setString(2,"%"+spweixinid+"%");
-			statement.setString(3,"%"+scm+"%");
-			statement.setString(4,w_corpid);
-			statement.setString(5,spweixinid);
-			statement.setInt(6,RESULT_SIZE);
-			statement.setInt(7,offset);
+			statement.setString(2,d_corpid);
+			statement.setString(3,"%"+spweixinid+"%");
+			statement.setString(4,"%"+scm+"%");
+			statement.setString(5,w_corpid);
+			statement.setString(6,d_corpid);
+			statement.setString(7,spweixinid);
+			statement.setInt(8,RESULT_SIZE);
+			statement.setInt(9,offset);
 		}else if(read.equals("2")){
-			sql="select * from oaggtz where w_corpid=? and smaker like ? order by mkdate desc LIMIT ? OFFSET ? ";
+			sql="select * from oaggtz where (w_corpid=? or d_corpid=?) and smaker like ? order by mkdate desc LIMIT ? OFFSET ? ";
 			statement = connection.prepareStatement(sql);
 			statement.setString(1,w_corpid);
-			statement.setString(2,"%"+spweixinid+"%");
-			statement.setInt(3,RESULT_SIZE);
-			statement.setInt(4,offset);
+			statement.setString(2,d_corpid);
+			statement.setString(3,"%"+spweixinid+"%");
+			statement.setInt(4,RESULT_SIZE);
+			statement.setInt(5,offset);
 		}
 			resultSet = statement.executeQuery();
 			resultSet.last(); //移到最后一行
@@ -117,16 +121,17 @@ public class OperateOaggtz  extends BaseDao {
 	 * 修改为已读
 	 * @param keyid 主键ID
 	 */
-	public void updateRad(String sid,String userid,String w_corpid){
+	public void updateRad(String sid,String userid,String w_corpid,String d_corpid){
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
 		try{
-			String sql="insert into oaggtzread(sid,usercode,`read`,w_corpid)values(?,?,?,?)";
+			String sql="insert into oaggtzread(sid,usercode,`read`,w_corpid,d_corpid)values(?,?,?,?,?)";
 			statement = connection.prepareStatement(sql);
 			statement.setString(1,sid);
 			statement.setString(2,userid);
 			statement.setInt(3,0);
 			statement.setString(4,w_corpid);
+			statement.setString(5,d_corpid);
 			statement.executeUpdate();
 		}catch(Exception e){
 			e.printStackTrace();
@@ -138,8 +143,8 @@ public class OperateOaggtz  extends BaseDao {
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
 		try{
-			String sql="insert into oaggtz (C_corp,sid,slb,Smaker,sorgto,susr,title,content,mkdate,fj_root,suri,sbuid,state,schk,ckdate,"
-					+ "sorg,coll_cc,scm,xxgs,`read`,appid,wapno,W_corpid,Serverurl,source,dbid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sql="insert into oaggtz (C_corp,sid,slb,smaker,sorgto,susr,title,content,mkdate,fj_root,suri,sbuid,state,schk,ckdate,"
+					+ "sorg,coll_cc,scm,xxgs,`read`,w_appid,wapno,w_corpid,Serverurl,source,dbid,d_appid,d_corpid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			statement = connection.prepareStatement(sql);
 			statement.setInt(    1,oagg.getC_corp());
 			statement.setString( 2,oagg.getSid());
@@ -161,12 +166,14 @@ public class OperateOaggtz  extends BaseDao {
 			statement.setString(18,oagg.getScm());
 			statement.setString(19,oagg.getXxgs());
 			statement.setString(20,oagg.getRead());
-			statement.setString(21,oagg.getAppid());
+			statement.setString(21,oagg.getW_appid());
 			statement.setString(22,oagg.getWapno());
 			statement.setString(23,oagg.getW_corpid());
 			statement.setString(24,oagg.getServerurl());
 			statement.setString(25,oagg.getSource());
 			statement.setString(26, oagg.getDbid());
+			statement.setString(27, oagg.getD_appid());
+			statement.setString(28, oagg.getD_corpid());
 			statement.executeUpdate();
 		}catch(Exception e){
 			e.printStackTrace();

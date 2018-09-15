@@ -26,10 +26,16 @@ public class OperateUsers extends BaseDao{
 		Connection connection=getConnection();
 		PreparedStatement statement=null;
 		ResultSet resultSet=null;
-		String sql = "INSERT INTO users(userid,username,tel,scm,w_corpid,email)VALUES ('" + 
-				user.getUserid() + "','" + user.getUsername() + "','" + user.getTel()+"','" + user.getScm()+"','" + user.getW_corpid()+"','" + user.getEmail()+"');";
+		String sql = "INSERT INTO users(userid,username,tel,scm,w_corpid,d_corpid,email)VALUES (?,?,?,?,?,?,?);";
 		try {
-			statement=connection.prepareStatement(sql);  
+			statement=connection.prepareStatement(sql); 
+			statement.setString(1, user.getUserid());
+			statement.setString(2, user.getUsername());
+			statement.setString(3, user.getTel());
+			statement.setString(4, user.getScm());
+			statement.setString(5, user.getW_corpid());
+			statement.setString(6, user.getD_corpid());
+			statement.setString(7, user.getEmail());
 			statement.executeUpdate();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -45,26 +51,25 @@ public class OperateUsers extends BaseDao{
 	 * @return Users对象
 	 * @throws ParseException
 	 */
-	public Users showUserName(String userid,String scm,String w_corpid) throws ParseException{
+	public Users showUserName(Users user) throws ParseException{
 		Connection connection=getConnection();
 		PreparedStatement statement=null;
 		ResultSet resultSet=null;
-		String sql="select * from users where userid ='"+userid+"'";
-		if(scm!=null){
-			sql+="  and scm='"+scm+"' ";
-		}
-		sql+=" and w_corpid='"+w_corpid+"'";
-//		log.info(sql);
-		Users user=null;
+		String sql="select * from users where userid =? and (w_corpid =? or d_corpid =?)";
 		try {
 			statement=connection.prepareStatement(sql);  
+			statement.setString(1,user.getUserid());
+			statement.setString(2,user.getW_corpid());
+			statement.setString(3,user.getD_corpid());
 			resultSet=statement.executeQuery();
+			user = null;
 			if(resultSet.next()){
 				user=new Users();
 				user.setUserid(resultSet.getString("userid"));
 				user.setTel(resultSet.getString("tel"));
 				user.setUsername(resultSet.getString("username"));
-				user.setImgurl(resultSet.getString("imgurl"));
+				user.setW_imgurl(resultSet.getString("w_imgurl"));
+				user.setD_imgurl(resultSet.getString("d_imgurl"));
 				user.setEmail(resultSet.getString("email"));
 			}
 		}catch (Exception e) {
@@ -85,9 +90,15 @@ public class OperateUsers extends BaseDao{
 		Connection connection=getConnection();
 		PreparedStatement statement=null;
 		ResultSet resultSet=null;
-		String sql = "update users  set imgurl='"+user.getImgurl()+"',username='"+user.getUsername()+"',tel='"+user.getTel()+"',email='"+user.getEmail()+"' where userid='"+user.getUserid()+"' and scm='"+user.getScm()+"' and w_corpid='"+user.getW_corpid()+"' ";
+		String sql = "update users  set username=?,tel=?,email=? where userid=? and (w_corpid=? or d_corpid=?)";
 		try {
-			statement=connection.prepareStatement(sql);  
+			statement=connection.prepareStatement(sql);
+			statement.setString(1, user.getUsername());
+			statement.setString(2, user.getTel());
+			statement.setString(3, user.getEmail());
+			statement.setString(4, user.getUserid());
+			statement.setString(5, user.getW_corpid());
+			statement.setString(6, user.getD_corpid());
 			statement.executeUpdate();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -96,15 +107,21 @@ public class OperateUsers extends BaseDao{
 		}
 	}
 	/**
-	 * 修改员工头像路径
+	 * 修改员工头像路径  钉钉 微信
 	 * @param user user对象
+	 * @param type d 钉钉   w 微信
 	 * @throws ParseException
 	 */
-	public void uodateUsersImgUrl(Users user) throws ParseException{
+	public void uodateUsersImgUrl(Users user,String type) throws ParseException{
 		Connection connection=getConnection();
 		PreparedStatement statement=null;
 		ResultSet resultSet=null;
-		String sql = "update users  set  imgurl='"+user.getImgurl()+"' where userid='"+user.getUserid()+"' and w_corpid='"+user.getW_corpid()+"' ";
+		String sql = "";
+		if(type.equals("d")){
+			sql = "update users  set  d_imgurl='"+user.getD_imgurl()+"' where userid='"+user.getUserid()+"' and d_corpid='"+user.getD_corpid()+"' ";
+		}else {
+			sql = "update users  set  w_imgurl='"+user.getW_imgurl()+"' where userid='"+user.getUserid()+"' and w_corpid='"+user.getW_corpid()+"' ";
+		}
 		try {
 			statement=connection.prepareStatement(sql);  
 			statement.executeUpdate();
@@ -177,10 +194,11 @@ public class OperateUsers extends BaseDao{
 		ResultSet resultSet=null;
 		Users user=null;
 		try {
-			String sql="select * from users where userid =? and w_corpid=?";
+			String sql="select * from users where userid =? and (w_corpid=? or d_corpid=?)";
 			statement=connection.prepareStatement(sql);
 			statement.setString(1,userid);
 			statement.setString(2,w_corpID);
+			statement.setString(3,w_corpID);
 			resultSet=statement.executeQuery();
 			if(resultSet.next()){
 				user=new Users();
@@ -260,7 +278,7 @@ public class OperateUsers extends BaseDao{
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getListUid(String scm,String w_corpID)throws Exception{
+	public List<String> getListUid(String scm,String w_corpID,String d_corpID)throws Exception{
 		Connection connection=getConnection();
 		PreparedStatement statement=null;
 		ResultSet resultSet=null;
@@ -268,11 +286,12 @@ public class OperateUsers extends BaseDao{
 		try {
 			String sql="";
 			if(!scm.equals(""))
-				sql="select userid from users where scm in ("+scm+") and w_corpid=?";
+				sql="select userid from users where scm in ("+scm+") and (w_corpid=? or d_corpid=?)";
 			if(scm.equals(""))
-				sql="select userid from users where  w_corpid=?";
+				sql="select userid from users where  (w_corpid=? or d_corpid=?)";
 			statement=connection.prepareStatement(sql);
 			statement.setString(1,w_corpID);
+			statement.setString(2,d_corpID);
 			resultSet=statement.executeQuery();
 			while(resultSet.next()){
 				listUI.add(resultSet.getString("userid"));

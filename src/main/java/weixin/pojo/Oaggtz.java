@@ -24,9 +24,11 @@ public class Oaggtz  extends BasePojo {
 	  private String scm;//归属公司
 	  private String xxgs;//信息归属
 	  private String read="";//是否已读
-	  private String appid;/**应用id**/
+	  private String w_appid;/**微信应用id**/
+	  private String d_appid;/**钉钉应用id**/
 	  private String wapno;/**平台定义应用id**/
 	  private String w_corpid;/**微信企业号id**/
+	  private String d_corpid;/**钉钉企业号id**/
 	  private String serverurl;/**来源服务器地址**/
 	  private String source;//来源项 W:微信移动端,B:BIP客户端
 	  private String dbid;/** 数据库编码**/
@@ -155,13 +157,7 @@ public class Oaggtz  extends BasePojo {
 	}
 	public void setRead(String read) {
 		this.read = read;
-	}
-	public String getAppid() {
-		return appid;
-	}
-	public void setAppid(String appid) {
-		this.appid = appid;
-	}
+	} 
 	public String getWapno() {
 		return wapno;
 	}
@@ -192,15 +188,33 @@ public class Oaggtz  extends BasePojo {
 	public void setDbid(String dbid) {
 		this.dbid = dbid;
 	}
-	public String toString(){
-		return "\"id\":\""+id+"\",\"c_corp\":\""+c_corp+"\",\"sid\":\""+sid+"\",\"slb\":\""+slb+"\","
-				+ "\"smaker\":\""+smaker+"\",\"sorgto\":\""+sorgto+"\",\"susr\":\""+susr+"\",\"title\":\""+title+"\","
-				+ "\"content\":\""+content+"\",\"mkdate\":\""+mkdate+"\",\"fj_root\":\""+fj_root+"\",\"suri\":\""+suri+"\","
-				+ "\"sbuid\":\""+sbuid+"\",\"state\":\""+state+"\",\"schk\":\""+schk+"\",\"ckdate\":\""+ckdate+"\","
-				+ "\"sorg\":\""+sorg+"\",\"coll_cc\":\""+coll_cc+"\",\"scm\":\""+scm+"\",\"xxgs\":\""+xxgs+"\","
-				+ "\"read\":\""+read+"\",\"appid\":\""+appid+"\",\"wapno\":\""+wapno+"\",\"w_corpid\":\""+w_corpid+"\","
-				+ "\"serverurl\":\""+serverurl+"\","
-				+ "\"source\":\""+source+"\"";
-		
+	public String getD_corpid() {
+		return d_corpid;
+	}
+	public void setD_corpid(String d_corpid) {
+		this.d_corpid = d_corpid;
+	}
+//	public String toString(){
+//		return "\"id\":\""+id+"\",\"c_corp\":\""+c_corp+"\",\"sid\":\""+sid+"\",\"slb\":\""+slb+"\","
+//				+ "\"smaker\":\""+smaker+"\",\"sorgto\":\""+sorgto+"\",\"susr\":\""+susr+"\",\"title\":\""+title+"\","
+//				+ "\"content\":\""+content+"\",\"mkdate\":\""+mkdate+"\",\"fj_root\":\""+fj_root+"\",\"suri\":\""+suri+"\","
+//				+ "\"sbuid\":\""+sbuid+"\",\"state\":\""+state+"\",\"schk\":\""+schk+"\",\"ckdate\":\""+ckdate+"\","
+//				+ "\"sorg\":\""+sorg+"\",\"coll_cc\":\""+coll_cc+"\",\"scm\":\""+scm+"\",\"xxgs\":\""+xxgs+"\","
+//				+ "\"read\":\""+read+"\",\"appid\":\""+w_appid+"\",\"wapno\":\""+wapno+"\",\"w_corpid\":\""+w_corpid+"\","
+//				+ "\"serverurl\":\""+serverurl+"\","
+//				+ "\"source\":\""+source+"\","+ "\"d_corpid\":\""+d_corpid+"\"";
+//		
+//	}
+	public String getW_appid() {
+		return w_appid;
+	}
+	public void setW_appid(String w_appid) {
+		this.w_appid = w_appid;
+	}
+	public String getD_appid() {
+		return d_appid;
+	}
+	public void setD_appid(String d_appid) {
+		this.d_appid = d_appid;
 	}
 }

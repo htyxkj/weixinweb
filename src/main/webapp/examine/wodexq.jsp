@@ -140,197 +140,12 @@ html,body {
 	$(function() {
 		$("#jilu").hide();
 		$("#hidejilu").hide();
-		//33获得下一审批人
-		$('#ty')
-				.click(
-						function() {
-							$
-									.ajax({
-										type : "POST",
-										//contentType: "application/json;charset=utf-8",   //内容类型
-										contentType : "application/x-www-form-urlencoded",
-										url : $("input[name='serverurl']")
-												.val()
-												+ "weixinInf",
-										data : {
-											tip : "33",
-											dbid : $("input[name='dbid']")
-													.val(),
-											state : "1",
-											state1 : $("input[name='state1']")
-													.val(),
-											tbname : $(
-													"input[name='tablename']")
-													.val(),
-											usrcode : $("input[name='spname']")
-													.val(),
-											scm : $("input[name='scm']").val(),
-											orgcode : $(
-													"input[name='department']")
-													.val(),
-											sid : $("input[name='documentsid']")
-													.val(),
-											sbuid : $("input[name='sbuId']")
-													.val(),
-											spname : $("input[name='spname']")
-													.val()
-										},
-										dataType : "JSON",
-										success : function(data) {
-											var trstr = "";
-											for (var i = 0; i < data.nextusers.length; i++) {
-												var item = data.nextusers[i];
-												if (item.state == 6) {
-													document
-															.getElementById("state2").value = item.state;
-													ty();
-												} else if (item.state == -1) {
-													alert("未定义下一审批人！");
-												} else {
-													var usrcode = "'"
-															+ item.usrcode
-															+ "'";
-													trstr += '<tr  style="width:100%;text-align: center;font-size:20px; height:40px"><td><input type="radio" name="nextName" onclick="javascript:xuanName('
-															+ item.state
-															+ ","
-															+ usrcode
-															+ ')" value="">'
-															+ item.name
-															+ '</td></tr>';
-												}
-											}
-											trstr += '<tr  style="width:100%;text-align: center;font-size:20px; height:40px"><td><a onclick="javascript:ty()" class="sel_btn">确定</a></td> </tr>';
-											if (data.nextusers[0].state == 6) {
-											} else if (data.nextusers[0].state == -1) {
-											} else {
-												trstr += '<tr  style="width:100%;text-align: center;font-size:20px; height:40px"><td>   　　</td> </tr>';
-												document
-														.getElementById('new_table').innerHTML = trstr;
-												document
-														.getElementsByTagName('BODY')[0].scrollTop = document
-														.getElementsByTagName('BODY')[0].scrollHeight;
-											}
-										},
-										error : function(err) {
-											alert("err:" + err);
-										}
-									});
-						});
-	});
-	function ty() {
-		if ($("input[name='state2']").val() == '') {
-			alert("请选择下一审批人");
-			return;
-		}
-		document.getElementById("results").value = "1";
-		getId("1");
-	}
-	function bh() {
-		document.getElementById("results").value = "2";
-		if ($("textarea[name='yjcontent']").val() == '') {
-			document.getElementById("yjcontent").value = "驳回";
-		}
-		getId("2");
-	}
-
-	function xuanName(state, usercode) {
-		document.getElementById("state2").value = state;
-		document.getElementById("spname2").value = usercode;
-	}
-
-	//1.查询此条数据 是否被审批过
-	function getId(state) {
-		$.ajax({
-			type : "POST",
-			url : "SelectOneMessage",
-			data : {
-				id : $("input[name='id']").val()
-			},
-			dataType : "JSON",
-			success : function(data) {
-				if (data.success == 'ok') {
-					sp(state);
-				} else {
-					alert("此消息已被 其他审批人审批！");
-				}
-			},
-			error : function(err) {
-				alert("err:" + err);
-			}
-		});
-	}
-	//2.没有被其他人审批过   进行审批并其他人的消息记录删除
-	function sp(state) {
-		$.ajax({
-			type : "POST",
-			url : "SpServlet",
-			data : {
-				yjcontent : $("textarea[name='yjcontent']").val(),
-				id : $("input[name='id']").val(),
-				results : state,
-				documentsid : $("input[name='documentsid']").val(),
-				spname : $("input[name='spname']").val(),
-				w_corpid : $("input[name='w_corpid']").val(),
-				state0 : $("input[name='state0']").val(),
-				state1 : $("input[name='state1']").val(),
-			},
-			dataType : "JSON",
-			success : function(data) {
-				if (data.success == 'ok') {
-					submit(state);
-				}
-			},
-			error : function(err) {
-				alert("err:" + err);
-			}
-		});
-	}
-	//3.34提交或者退回
-	function submit(state) {
-		$.ajax({
-			type : "POST",
-			contentType : "application/x-www-form-urlencoded",
-			url : $("input[name='serverurl']").val() + "weixinInf",
-			data : {
-				tip : "34",
-				dbid : $("input[name='dbid']").val(),
-				content : encodeURI($("input[name='content']").val(), "UTF-8"),
-				dbid : $("input[name='dbid']").val(),
-				department : $("input[name='department']").val(),
-				documentsid : $("input[name='documentsid']").val(),
-				documentstype : $("input[name='documentstype']").val(),
-				gs : $("input[name='scm']").val(),
-				name : $("input[name='spweixinid']").val(),
-				sbuid : $("input[name='sbuId']").val(),
-				scm : $("input[name='scm']").val(),
-				spname : $("input[name='spname']").val(),
-				spname2 : $("input[name='spname2']").val(),
-				spweixinid : $("input[name='spweixinid']").val(),
-				state : state,
-				state0 : $("input[name='state0']").val(),
-				state1 : $("input[name='state1']").val(),
-				state2 : $("input[name='state2']").val(),
-				tablename : $("input[name='tablename']").val(),
-				wapno : $("input[name='wapno']").val(),
-				appid : $("input[name='appid']").val(),
-				w_corpid : $("input[name='w_corpid']").val(),
-				title : encodeURI($("input[name='title']").val(), "UTF-8"),
-				yjcontent : encodeURI($("textarea[name='yjcontent']").val(),
-						"UTF-8"),
-			},
-			dataType : "JSON",
-			success : function(data) {
-				if (data.success == 'ok') {
-					window.location.href = 'jieguocg.jsp';
-				} else {
-					window.location.href = 'jieguosb.jsp';
-				}
-			},
-			error : function(err) {
-				alert("err:" + err);
-			}
-		});
-	}
+    	$(document).ready(function(){
+    	    $("#showfl").show(function(){
+    	    	fltf();
+    	    });
+    	}); 
+	}); 
 	
 	function showjilu() {
 		$("#jilu").show();
@@ -345,8 +160,37 @@ html,body {
 		$("#jilu").hide();
 	}
 	function showfl(){
-		window.location.href = "examine/fenlu.jsp?usercode="+$("input[name='userCode']").val()+"&documentstype="+$("input[name='documentstype']").val()+"&documentsid="+$("input[name='documentsid']").val()+"&serverurl="+$("input[name='serverurl']").val();
+		var url= "examine/fenlu.jsp?usercode=" + $("input[name='userCode']").val() + "&documentstype=" + $("input[name='documentstype']").val() + "&documentsid=" + $("input[name='documentsid']").val() + "&serverurl=" + $("input[name='serverurl']").val()+"&flname=" + $("input[name='flname']").val()+"&dbid=" + $("input[name='dbid']").val();
+        window.location.href=url;		  
 	}
+	function  fltf(){ 
+    	$.ajax({
+        	type : "GET",
+			contentType : "application/x-www-form-urlencoded",
+			url :$("input[name='serverurl']").val()+"lxvar",
+			//url :"http://127.0.0.1:9999/jd/lxvar",
+			//url:"http://localhost:9999/jd/lxver",
+			data :  {"VARID":"sql:select count(csysno) a,slabel from insaid where sid='"+$("input[name='documentstype']").val()+"FL' GROUP BY slabel ","DBID":""+$("input[name='dbid']").val()+"","USRCODE":""+$("input[name='userCode']").val()+"","CONT":""+$("input[name='documentsid']").val()+""},
+			dataType : "JSON",
+			success : function(data) { 
+				console.log(data);
+				if(data.values==null){
+					$("#showfl").hide();
+					return;
+				}
+				var num=data.values[0][0];
+				if(num==0){
+					$("#showfl").hide();
+				}
+				$("#flname").val(data.values[0][1]);			
+			},
+			error : function(err) { 
+				console.log(err);
+				$("#showfl").hide();
+				//alert("系统错误，请联系系统管理员！416行");
+			}
+		});
+    }
 </script>
 </head>
 <body>
@@ -369,10 +213,7 @@ html,body {
 			type="hidden" value="${data.state0}" name="state0" /> <input
 			type="hidden" value="${data.state1}" name="state1"> <input
 			type="hidden" value="${data.tablename}" name="tablename"> <input
-			type="hidden" value="${data.id}" name="id"> <input
-			type="hidden" value="${data.appid}" name="appid"> <input
-			type="hidden" value="${data.wapno}" name="wapno"> <input
-			type="hidden" value="${data.w_corpid}" name="w_corpid"> <input
+			type="hidden" value="${data.id}" name="id">  <input
 			type="hidden" value="${data.serverurl}" name="serverurl"> <input
 			id="date" name="date" type="hidden" /> <input id="results"
 			name="results" type="hidden" /> <input id="state2" name="state2"
@@ -438,10 +279,9 @@ html,body {
 				<c:if test="${fn:length(listM)>0}">
 					<a id="showjilu" onclick="showjilu()">查看流程</a>
 				</c:if>
-				<c:if test="${data.documentstype eq 'C10901' || data.documentstype eq 'C10309' || data.documentstype eq 'C10912'|| data.documentstype eq '3050'
-            || data.documentstype eq '3060' || data.documentstype eq '3075' || data.documentstype eq '303503'}">
-					<a id="showfl" onclick="showfl();">查看单据分录</a>
-				</c:if>
+				
+				<a id="showfl" onclick="showfl();">查看详情</a>
+				
 				<a id="hidejilu" onclick="hidejilu()">收起</a>
 			</p>
 			<div id="jilu" class="div1">

@@ -1,7 +1,6 @@
 package weixin.servlet.userandscm;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import weixin.connection.accessToken.AccessTokenDo;
 import weixin.pojo.AccessToken;
 import weixin.pojo.Users;
 import weixin.thread.TokenThread;
-import weixin.util.WeixinUtil;
+import weixin.util.HttpUtil;
 
 public class ShowUsersAll extends HttpServlet {
  
@@ -34,9 +32,9 @@ public class ShowUsersAll extends HttpServlet {
 		TokenThread tokenThread = new TokenThread();
 		Map<String, AccessToken>  map = TokenThread.maplist;	
 		AccessToken acc = (AccessToken) map.get(wxscmid+"-"+w_appid);
-		String requestUrl="https://qyapi.weixin.qq.com/cgi-bin/user/list?access_token="+acc.getToken()+"&department_id=1&fetch_child=1&status=0,1,2,4";
+		String requestUrl="https://qyapi.weixin.qq.com/cgi-bin/user/list?access_token="+acc.getW_accessToken()+"&department_id=1&fetch_child=1&status=0,1,2,4";
 		String jsonString = null;
-		JSONObject jsonobj = WeixinUtil.httpRequest(requestUrl, "GET", jsonString);
+		JSONObject jsonobj = HttpUtil.httpRequest(requestUrl, "GET", jsonString);
 		JSONArray arry = JSONArray.fromObject(jsonobj.get("userlist"));
 		Users user=null;
 		for (int i = 0; i < arry.size(); i++) {
@@ -49,7 +47,7 @@ public class ShowUsersAll extends HttpServlet {
 			if(jsonuser.containsKey("mobile"))
 			user.setTel(jsonuser.getString("mobile"));
 			if(jsonuser.containsKey("avatar"))
-			user.setImgurl(jsonuser.getString("avatar"));
+			user.setW_imgurl(jsonuser.getString("avatar"));
 			user.setStatus(jsonuser.getString("status"));
 			ltu.add(user);
 		}

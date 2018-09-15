@@ -4,23 +4,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
 import weixin.connection.oaggtz.OperateOaggtz;
-import weixin.connection.users.OperateUsers;
 import weixin.pojo.Oaggtz;
 import weixin.servlet.oaggtz.task.MyTask;
 import weixin.servlet.oaggtz.task.NoticeI;
-import weixin.util.SendTxtToUser;
-import net.sf.json.JSONObject;
 /**
  * 平台通过这个servlet传递公告数据
  * @author Administrator
@@ -65,7 +61,7 @@ public class InsertOaggtzServlet extends HttpServlet {
         	oagg.setRead("0");
 			oaggtz.insertOaggtz(oagg);
             NoticeI noi = new MyTask();
-            noi.init(oagg.getW_corpid(), oagg.getAppid(), oagg.getScm());
+            noi.init(oagg.getW_corpid(), oagg.getW_appid(), oagg.getScm(),oagg.getD_corpid(),oagg.getD_appid());
 //            noi.run();
 		} catch (Exception e) {
 			e.printStackTrace();

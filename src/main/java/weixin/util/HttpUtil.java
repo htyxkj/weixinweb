@@ -8,11 +8,11 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;  
-import java.util.Iterator;  
-import java.util.List;  
-import java.util.Map;  
-import java.util.Map.Entry;  
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -24,25 +24,25 @@ import net.sf.json.JSONObject;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
-import org.apache.http.util.EntityUtils;  
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import weixin.pojo.AccessToken;
 
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
- 
-
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 
 
-
-public class WeixinUtil {
-	private static Logger log = LoggerFactory.getLogger(WeixinUtil.class);  
+public class HttpUtil {
+	private static Logger log = LoggerFactory.getLogger(HttpUtil.class);  
+	// 获取access_token的接口地址（GET） 限200（次/天）  
+    public final static String wxaccess_token_url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=Corpid&corpsecret=Corpsecret";
+    public final static String ddaccess_token_url = "https://oapi.dingtalk.com/gettoken?corpid=CORPID&corpsecret=SECRECT";
 	
 	/** 
      * 通过httpclient发起http请求并获取结果 
@@ -149,7 +149,7 @@ public class WeixinUtil {
             URL url = new URL(requestUrl);  
             HttpsURLConnection httpUrlConn = (HttpsURLConnection) url.openConnection();  
             httpUrlConn.setSSLSocketFactory(ssf);  
-  
+            httpUrlConn.setRequestProperty("Content-Type","application/json;charset=UTF-8");
             httpUrlConn.setDoOutput(true);  
             httpUrlConn.setDoInput(true);  
             httpUrlConn.setUseCaches(false);  
@@ -188,29 +188,53 @@ public class WeixinUtil {
         }  
         return jsonObject;  
     } 
- // 获取access_token的接口地址（GET） 限200（次/天）  
-    public final static String access_token_url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=Corpid&corpsecret=Corpsecret";
+    
     /** 
-     * 获取access_token 
+     * 获取微信access_token 
      * @param appid 凭证 
      * @param appsecret 密钥 
      * @return 
      */  
-    public static AccessToken getAccessToken(String corpid, String corpsecret) {  
+    public static AccessToken getWxAccessToken(String corpid, String corpsecret) {  
         AccessToken accessToken = null;  
-        String requestUrl = access_token_url.replace("Corpid", corpid).replace("Corpsecret", corpsecret);
+        String requestUrl = wxaccess_token_url.replace("Corpid", corpid).replace("Corpsecret", corpsecret);
         JSONObject jsonObject = httpRequest(requestUrl, "GET", null);  
         //如果请求成功
         if (null != jsonObject) {  
             try {
+            	if(!jsonObject.getString("errcode").equals("0")){
+            		log.error("获取token失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+            		return null;
+            	}
                 accessToken = new AccessToken();
-                accessToken.setToken(jsonObject.getString("access_token"));
-                accessToken.setExpiresIn(jsonObject.getInt("expires_in"));
+                accessToken.setW_accessToken(jsonObject.getString("access_token"));
+                accessToken.setW_expiresTime(jsonObject.getLong("expires_in"));
             } catch (JSONException e) {  
-                accessToken = new AccessToken();  
-                accessToken.setToken(jsonObject.getString("errcode"));
-                // 获取token失败  
-                log.error("获取token失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+                accessToken = null;   
+            }  
+        }  
+        return accessToken;  
+    }  
+    
+    /**
+     * 获取钉钉access_token
+     */
+    public static AccessToken getDdAccessToken(String corpid, String corpsecret) {  
+        AccessToken accessToken = null;  
+        String requestUrl = ddaccess_token_url.replace("CORPID", corpid).replace("SECRECT", corpsecret);
+        JSONObject jsonObject = httpRequest(requestUrl, "GET", null);  
+        //如果请求成功
+        if (null != jsonObject) {  
+            try {
+            	if(!jsonObject.getString("errcode").equals("0")){
+            		log.error("获取token失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));  
+            		return null;
+            	}
+                accessToken = new AccessToken();
+                accessToken.setD_accessToken(jsonObject.getString("access_token"));
+                accessToken.setD_expiresTime(jsonObject.getLong("expires_in"));
+            } catch (JSONException e) {  
+            	accessToken = null;   
             }  
         }  
         return accessToken;  

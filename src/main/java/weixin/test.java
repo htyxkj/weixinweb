@@ -15,7 +15,7 @@ import net.sf.json.JSONObject;
 import weixin.key.SRegServ;
 import weixin.pojo.Message;
 import weixin.pojo.PageInfo;
-import weixin.util.WeixinUtil;
+import weixin.util.HttpUtil;
 
 public class test {
 	/**  
@@ -34,7 +34,7 @@ public class test {
 			String  requestMethod="POST";
 	        StringBuffer buffer = new StringBuffer();
 	        InputStream inputStream=null;
-	        WeixinUtil.httpRequest(requestUrl, requestMethod, a);
+	        HttpUtil.httpRequest(requestUrl, requestMethod, a);
 	        try {
 	            URL url = new URL(requestUrl);
 	            HttpURLConnection httpUrlConn = (HttpURLConnection) url.openConnection();

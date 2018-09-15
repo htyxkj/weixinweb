@@ -1,37 +1,29 @@
 package weixin.servlet.examine;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-
-
-import com.opslab.util.StringUtil;
-
-import net.sf.json.JSONObject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import weixin.connection.message.ShowData;
-import weixin.connection.users.OperateUsers;
 import weixin.pojo.AccessToken;
 import weixin.pojo.FuJian;
 import weixin.pojo.Message;
 import weixin.pojo.Users;
 import weixin.thread.TokenThread;
-import weixin.util.WeixinUtil;
+
+import com.opslab.util.StringUtil;
 
 public class OAuthServlet extends HttpServlet {
-    private static String SERVER_PATH_BODY = "mydoc/db_";
+	private static final long serialVersionUID = -572430383982463747L;
+	private static String SERVER_PATH_BODY = "mydoc/db_";
     public final static char DIV_CELL = (char) 0x1F;//单元分隔
     private static Logger log = LoggerFactory.getLogger(OAuthServlet.class);
 
@@ -48,35 +40,21 @@ public class OAuthServlet extends HttpServlet {
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
         String state = request.getParameter("state");
-//		String userid=request.getParameter("userid");
-        String wxscmid = request.getParameter("wxscmid");
-        String w_appid = request.getParameter("w_appid");
-        
-        TokenThread tokenThread = new TokenThread();
-        Map<String, AccessToken> map = tokenThread.maplist;
-        AccessToken accessToken = map.get(wxscmid+"-"+w_appid);
-        //用户同意授权后，能获取到code
-        String code = request.getParameter("code");
         String keyid = request.getParameter("keyid");
+        Users user = (Users) request.getSession().getAttribute("sessionUser");
+        String userid = user.getUserid();
+        AccessToken accessToken = null;
+        if(user.getLoginType().equals("w")){
+        	accessToken = TokenThread.maplist.get("wx-"+user.getW_corpid()+"-"+user.getLoginAppid());
+        }else{
+        	accessToken = TokenThread.maplist.get("dd-"+user.getD_corpid());
+        }
         Message mess = null;
         try {
-            if (!"authdeny".equals(code) && code != null) {
-                String requestUrl = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=" + accessToken.getToken() + "&code=" + code;
-                JSONObject jsonObj = WeixinUtil.httpRequest(requestUrl, "GET", null);
-//				获取员工id
-                String userid = jsonObj.getString("UserId");
-                if (userid.indexOf("@") != -1) {
-                    OperateUsers oU = new OperateUsers();
-                    userid = oU.getUserID(userid, wxscmid);
-                }
                 ShowData show = new ShowData();
-                Message data = show.show(keyid);
-                OperateUsers o = new OperateUsers();
-                Users u = o.showUserName(data.getName(), null, data.getW_corpid());
+                Message data = show.show(keyid); 
                 List<Message> listM = new ArrayList<Message>();
                 List<FuJian> listFuJian = new ArrayList<FuJian>();
-                FuJian fujian = null;
-                String fujianNames = "";
                 String fujianPath = "";
                 if (data != null) {
                     if (data.getContent() != null && !"".equals(data.getContent())) {
@@ -148,52 +126,22 @@ public class OAuthServlet extends HttpServlet {
                             data.setContenthuanhang(aStr);
                         }
                     }
-                    if (u != null) {
-                        data.setName(u.getUsername());
-                        if (u.getImgurl() != null && !u.getImgurl().equals(""))
-                            data.setTuUrl(u.getImgurl());
-                    }
-                    List<Message> list = show.showjilu(data.getDocumentsid(), data.getW_corpid(), "jl");
-                    data.setState1wenzi(show.showStateWZ(data.getState1()));
-                    //Message message=null;
-                    for (int i = 0; i < list.size(); i++) {
-                        Message message = new Message();
-                        message = list.get(i);
-                        u = new Users();
-                        if (i == 0) {
-                            mess = new Message();
-                            mess = list.get(0).copy();
-                            u = o.showUserName(message.getName(), null, message.getW_corpid());
-                            if (u != null) {
-                                mess.setName(u.getUsername());
-                                mess.setTuUrl(u.getImgurl());
-                            }
-                        }
-                        u = new Users();
-                        u = o.showUserName(message.getSpname(), null, message.getW_corpid());
-                        if (u != null) {
-                            message.setSpname(u.getUsername());
-                            message.setState1wenzi(show.showStateWZ(message.getState1()));
-                            message.setTuUrl(u.getImgurl());
-                        }
-                        listM.add(message);
-                    }
+                    listM = show.showSPJL(data.getDocumentsid(), user.getW_corpid(),user.getD_corpid());
+                    mess = show.showDJKS(data.getDocumentsid(), user.getW_corpid(),user.getD_corpid());
+                    data.setState1wenzi(show.showStateWZ(data.getState1())); 
                 }
                 data.setServerurl(accessToken.getServerurl());
                 request.setAttribute("_right", listM.get(listM.size() - 1).getState());
                 if (state != null && state.equals("3")) {
                     request.setAttribute("dateks", mess);
                     request.setAttribute("listM", listM);
-                    request.setAttribute("wxscmid", wxscmid);
                     request.setAttribute("data", data);
                     request.setAttribute("usercode", userid);
                     request.setAttribute("fujians", listFuJian);
                     request.getRequestDispatcher("examine/wodexq.jsp").forward(request, response);
                 } else if (userid.equals(data.getSpweixinid())) {
-                	
                     request.setAttribute("dateks", mess);
                     request.setAttribute("listM", listM);
-                    request.setAttribute("wxscmid", wxscmid);
                     request.setAttribute("data", data);
                     request.setAttribute("usercode", userid);
                     request.setAttribute("fujians", listFuJian);
@@ -202,20 +150,9 @@ public class OAuthServlet extends HttpServlet {
                     request.setAttribute("jg", 2);
                     request.getRequestDispatcher("examine/jieguo.jsp").forward(request, response);
                 }
-            }
         } catch (Exception e) {
-            log.info(e + "");
-            //获取员工信息失败   重新获取
-            String _url = "" + accessToken.getDomainName()
-                    + "/weixinweb/OAuthServlet?wxscmid=" + wxscmid
-                    + "&keyid=" + keyid;
-            _url = URLEncoder.encode(_url, "UTF-8");
-            _url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
-                    + wxscmid
-                    + "&redirect_uri="
-                    + _url;
-            _url += "&response_type=code&scope=snsapi_base#wechat_redirect";
-            response.sendRedirect(_url);
+            log.info(e.getMessage());
+            e.printStackTrace();
             return;
         }
     }
