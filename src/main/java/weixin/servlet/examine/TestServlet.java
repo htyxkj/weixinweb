@@ -1,4 +1,4 @@
-package weixin.servlet;
+package weixin.servlet.examine;
 
 import java.io.BufferedReader;
 import java.io.IOException;

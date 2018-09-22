@@ -36,6 +36,9 @@ public class TokenThread implements Runnable{
     	AccessTokenDo access=new AccessTokenDo();
     	List<AccessToken> atd=access.getListWxAccess();
     	for(int i=0;i<atd.size();i++){
+    		if(atd.get(i).getW_corpIDid()==null||atd.get(i).getW_corpIDid().equals("")||atd.get(i).getW_corpIDid().indexOf("wx")==-1){
+    			continue;
+    		}
     		accessToken = HttpUtil.getWxAccessToken(atd.get(i).getW_corpIDid(), atd.get(i).getW_secret());
     		if (null != accessToken) {
     			accessToken.setW_applyId(atd.get(i).getW_applyId());//应用id
@@ -57,6 +60,9 @@ public class TokenThread implements Runnable{
     	AccessTokenDo access=new AccessTokenDo();
     	List<AccessToken> atd=access.getListDdAccess();
     	for(int i=0;i<atd.size();i++){
+    		if(atd.get(i).getD_corpIDid()==null||atd.get(i).getD_corpIDid().equals("")||atd.get(i).getD_corpIDid().indexOf("ding")==-1){
+    			continue;
+    		}
     		accessToken = HttpUtil.getDdAccessToken(atd.get(i).getD_corpIDid(), atd.get(i).getD_secret());
     		if (null != accessToken) {
     			accessToken.setD_corpIDid(atd.get(i).getD_corpIDid());

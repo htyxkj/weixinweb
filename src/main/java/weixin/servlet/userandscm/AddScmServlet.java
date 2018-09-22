@@ -101,6 +101,19 @@ public class AddScmServlet extends HttpServlet {
 				d_trusturl = "http://" + d_trusturl;
 			String serverurl = jsonObject.getString("serverurl");// 数据信息来源地址
 
+			if(w_corpid!=null&&(w_corpid.equals("")||w_corpid.equals("null")||w_corpid.equals("\"null\""))){
+				w_corpid=null;
+			}
+			if(w_secret!=null&&(w_secret.equals("")||w_secret.equals("null")||w_secret.equals("\"null\""))){
+				w_secret=null;
+			}
+			if(d_corpid!=null&&(d_corpid.equals("")||d_corpid.equals("null")||d_corpid.equals("\"null\""))){
+				d_corpid=null;
+			}
+			if(d_secret!=null&&(d_secret.equals("")||d_secret.equals("null")||d_secret.equals("\"null\""))){
+				d_secret=null;
+			}
+			
 			AccessToken accessToken = new AccessToken();
 			// 获取应用信息
 			JSONArray arry = JSONArray.fromObject(jsonObject.get("app"));
@@ -123,34 +136,10 @@ public class AddScmServlet extends HttpServlet {
 			insorg.setServerurl(serverurl);
 			acd.SelectScm(insorg);
 			
-			accessToken = HttpUtil.getDdAccessToken(d_corpid, d_secret);
-			if(accessToken == null){
-				zt = "-1;企业钉钉配置错误";
-				OutputStream outputStream = response.getOutputStream();
-				// 注意编码格式，防止中文乱码
-				outputStream.write(zt.getBytes("UTF-8"));
-				outputStream.close();
-				return;
-			}
-			accessToken.setServerurl(serverurl);
-			accessToken.setDomainName(d_trusturl);
-			//保存token值
-			TokenThread.maplist.put("dd-"+d_corpid,accessToken);
-			log.info("获取钉钉access_token成功，获取时间：" + sdf.format(new Date())+ "有效时长{}秒 token:{}", accessToken.getD_expiresTime(),accessToken.getD_accessToken());
-			//获取钉钉应用列表
-			DefaultDingTalkClient  client = new DefaultDingTalkClient(APIAddr.DD_APP_LIST);
-			OapiMicroappListRequest req = new OapiMicroappListRequest();
-			ddApp = client.execute(req,accessToken.getD_accessToken());
-			
-			for (int i = 0; i < arry.size(); i++) {
-				JSONObject json = arry.getJSONObject(i);
-				inswaplist = new Inswaplist();
-				// 获取微信应用的Secret
-				String Secret = json.getString("w_appsecret");
-				// 验证微信 codeid和secret输入是否正确
-				accessToken = HttpUtil.getWxAccessToken(w_corpid, Secret);
+			if(d_corpid!=null){
+				accessToken = HttpUtil.getDdAccessToken(d_corpid, d_secret);
 				if(accessToken == null){
-					zt = "-1;微信企业应用配置错误";
+					zt = "-1;企业钉钉配置错误";
 					OutputStream outputStream = response.getOutputStream();
 					// 注意编码格式，防止中文乱码
 					outputStream.write(zt.getBytes("UTF-8"));
@@ -158,11 +147,39 @@ public class AddScmServlet extends HttpServlet {
 					return;
 				}
 				accessToken.setServerurl(serverurl);
-				accessToken.setDomainName(w_trusturl);
+				accessToken.setDomainName(d_trusturl);
 				//保存token值
-				TokenThread.maplist.put("wx-"+w_corpid + "-" + json.getString("w_applyid"),accessToken);
-				log.info("获取微信access_token成功，获取时间：" + sdf.format(new Date())+ "有效时长{}秒 token:{}", accessToken.getW_expiresTime(),accessToken.getW_accessToken());
-				
+				TokenThread.maplist.put("dd-"+d_corpid,accessToken);
+				log.info("获取钉钉access_token成功，获取时间：" + sdf.format(new Date())+ "有效时长{}秒 token:{}", accessToken.getD_expiresTime(),accessToken.getD_accessToken());
+				//获取钉钉应用列表
+				DefaultDingTalkClient  client = new DefaultDingTalkClient(APIAddr.DD_APP_LIST);
+				OapiMicroappListRequest req = new OapiMicroappListRequest();
+				ddApp = client.execute(req,accessToken.getD_accessToken());
+			}
+			
+			for (int i = 0; i < arry.size(); i++) {
+				JSONObject json = arry.getJSONObject(i);
+				inswaplist = new Inswaplist();
+				String Secret = "";
+				if(w_corpid !=null){
+					// 获取微信应用的Secret
+					Secret = json.getString("w_appsecret");
+					// 验证微信 codeid和secret输入是否正确
+					accessToken = HttpUtil.getWxAccessToken(w_corpid, Secret);
+					if(accessToken == null){
+						zt = "-1;微信企业应用配置错误";
+						OutputStream outputStream = response.getOutputStream();
+						// 注意编码格式，防止中文乱码
+						outputStream.write(zt.getBytes("UTF-8"));
+						outputStream.close();
+						return;
+					}
+					accessToken.setServerurl(serverurl);
+					accessToken.setDomainName(w_trusturl);
+					//保存token值
+					TokenThread.maplist.put("wx-"+w_corpid + "-" + json.getString("w_applyid"),accessToken);
+					log.info("获取微信access_token成功，获取时间：" + sdf.format(new Date())+ "有效时长{}秒 token:{}", accessToken.getW_expiresTime(),accessToken.getW_accessToken());
+				}
 				String wapno = json.getString("wapno");
 				String appid = json.getString("w_applyid");
 				
@@ -210,6 +227,8 @@ public class AddScmServlet extends HttpServlet {
 	public void upWXAppUrl(String appid,String corpid,String bipAppid,String redirect_domain){
 		try {
 			AccessToken acc = TokenThread.maplist.get("wx-"+corpid+"-"+appid);
+			if(acc == null)
+				return;
 			String url = APIAddr.WX_APP_UPDATE;
 			url = url.replace("ACCESS_TOKEN", acc.getW_accessToken());
 			String aa = redirect_domain+"WLoginServlet?corpId="+corpid+"&appId="+appid+"&bipAppId="+bipAppid;
@@ -260,7 +279,6 @@ public class AddScmServlet extends HttpServlet {
 			req.setPcHomepageUrl(home);
 			req.setAgentId(Long.valueOf(appid));
 			OapiMicroappUpdateResponse response = client.execute(req,acc.getD_accessToken());
-			System.out.println(response.getErrorCode());
 		} catch (ApiException e) {
 			e.printStackTrace();
 		}
@@ -275,7 +293,8 @@ public class AddScmServlet extends HttpServlet {
 				file =new FileItem(dir+"sp.png");
 			else if(bipAppid.equals("04"))
 				file =new FileItem(dir+"gg.png");
-			
+			else if(bipAppid.equals("03"))
+				file =new FileItem(dir+"xx.png");
 			AccessToken acc = TokenThread.maplist.get("dd-"+corpid);
 			DingTalkClient  client = new DefaultDingTalkClient(APIAddr.DD_UPLOAD_FILE);
 			OapiMediaUploadRequest request = new OapiMediaUploadRequest();

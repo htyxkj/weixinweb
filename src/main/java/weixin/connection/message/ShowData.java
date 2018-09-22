@@ -131,7 +131,7 @@ public class ShowData extends BaseDao<Message> {
 		ResultSet resultSet = null;
 		List<Message> list = new ArrayList<Message>();
 		Message mess = null;
-		String sql = "select m.state as state,u.username as name,u.w_imgurl as w_img,u.d_imgurl as d_img from  message m left join users u on m.spweixinid = u.userid  where documentsid='" + documentsid
+		String sql = "select m.state as state,ifNULL(u.username,m.smake) as name,IFNULL(u.w_imgurl,'img/ren.png') as w_img,IFNULL(u.d_imgurl,'img/ren.png') as d_img from  message m left join users u on m.spweixinid = u.userid  where documentsid='" + documentsid
 					+ "' and (m.w_corpid='" + w_corpid + "' or m.d_corpid='" + d_corpid + "') order by m.id";
 		try {
 			statement = connection.prepareStatement(sql);
@@ -170,7 +170,7 @@ public class ShowData extends BaseDao<Message> {
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		Message mess = null;
-		String sql = "select m.state as state,u.username as name,u.w_imgurl as w_img,u.d_imgurl as d_img from  message m left join users u on m.name = u.userid  where documentsid='" + documentsid
+		String sql = "select m.title as title,m.state as state,IFNULL(u.username,m.smake) as name,IFNULL(u.w_imgurl,'img/ren.png') as w_img,IFNULL(u.d_imgurl,'img/ren.png') as d_img from  message m left join users u on m.smake = u.userid  where documentsid='" + documentsid
 					+ "' and (m.w_corpid='" + w_corpid + "' or m.d_corpid='" + d_corpid + "') order by m.id asc limit 0,1";
 		try {
 			statement = connection.prepareStatement(sql);
@@ -186,6 +186,7 @@ public class ShowData extends BaseDao<Message> {
 				}
 				mess.setTuUrl(tuUrl);
 				mess.setState(resultSet.getInt("state"));
+				mess.setTitle(resultSet.getString("title"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -266,7 +267,9 @@ public class ShowData extends BaseDao<Message> {
 				mess.setState(resultSet.getInt("state"));//状态 0未审批 1审批通过 2驳回申请 **/
 				mess.setLastState(resultSet.getString("lsstate"));
 				mess.setSmake(resultSet.getString("smake"));//制单人
-				mess.setSubmit(resultSet.getString("sbumitName"));//提交人
+				String sbumit = resultSet.getString("sbumitName");
+				sbumit = sbumit == null ? resultSet.getString("smake") : sbumit;
+				mess.setSubmit(sbumit);//提交人
 				mess.setTjtimeStr(StringUtil.timePass(mess.getTjtime(), 4));
 				mess.setOffset(resultOffset);
 				list.add(mess);

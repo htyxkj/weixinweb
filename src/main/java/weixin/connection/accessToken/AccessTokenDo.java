@@ -256,19 +256,20 @@ public class AccessTokenDo  extends BaseDao{
 	public int updateApp(Inswaplist list){
 		Connection connection=getConnection();
 		PreparedStatement statement=null;
-		String sql="update  inswaplist set w_applyid=?,w_wapurl=?,w_appsecret=?,dbid=?,w_applyid=? where wapno=? and orgcode=? and (w_corpid=? or w_applyid=?);";
+		String sql="update  inswaplist set w_corpid=?,w_applyid=?,w_wapurl=?,w_appsecret=?,dbid=?,d_applyid=? where wapno=? and orgcode=? and (w_corpid=? or d_applyid=?);";
 		int row=0;
 		try{
 			statement=connection.prepareStatement(sql);
-			statement.setString(1, list.getW_applyid());
-			statement.setString(2, list.getW_wapurl());
-			statement.setString(3, list.getW_appsecret());
-			statement.setString(4, list.getDbid());
-			statement.setString(5, list.getD_applyid());
-			statement.setString(6, list.getWapno());
-			statement.setString(7, list.getOrgcode());
-			statement.setString(8, list.getW_corpid());
-			statement.setString(9, list.getD_applyid());
+			statement.setString(1, list.getW_corpid());
+			statement.setString(2, list.getW_applyid());
+			statement.setString(3, list.getW_wapurl());
+			statement.setString(4, list.getW_appsecret());
+			statement.setString(5, list.getDbid());
+			statement.setString(6, list.getD_applyid());
+			statement.setString(7, list.getWapno());
+			statement.setString(8, list.getOrgcode());
+			statement.setString(9, list.getW_corpid());
+			statement.setString(10, list.getD_applyid());
 			row=statement.executeUpdate();
 		}catch(Exception e){
 			e.printStackTrace();
@@ -395,4 +396,63 @@ public class AccessTokenDo  extends BaseDao{
 			closeAll(connection, statement, resultSet);
 		}
 	}
+
+	/**
+	 * 查询微信或钉钉应用对应的平台应用编码
+	 * @param corpid
+	 * @param appid
+	 * @return
+	 */
+	public String selBipAppId(String corpid,String appid){
+		Connection connection=getConnection();
+		PreparedStatement statement=null;
+		ResultSet resultSet=null;
+		String uuidSQL = "select uuid from insorg where d_corpid =?"; 
+		String uuid = "";	
+		String sql="select wapno from Inswaplist where uuid = ? and d_applyid=?";
+		String bipApp="";
+		try{
+			statement=connection.prepareStatement(uuidSQL);
+			statement.setString(1, corpid);
+			resultSet=statement.executeQuery();
+			if(resultSet.next()){
+				uuid=resultSet.getString("uuid");
+			}
+			statement=connection.prepareStatement(sql);
+			statement.setString(1, uuid);
+			statement.setString(2, appid);
+			resultSet=statement.executeQuery();
+			if(resultSet.next()){
+				bipApp=resultSet.getString("wapno");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			closeAll(connection, statement, resultSet);
+		}
+		return bipApp;
+	} 
+
+	public String[] selCorpid(String d_corpid,String w_corpid){
+		Connection connection=getConnection();
+		PreparedStatement statement=null;
+		ResultSet resultSet=null;
+		String sql = "select d_corpid,w_corpid from insorg where (d_corpid =? or w_corpid=?)";
+		String[] corpid = new String[2];
+		try{
+			statement=connection.prepareStatement(sql);
+			statement.setString(1, d_corpid);
+			statement.setString(2, w_corpid);
+			resultSet=statement.executeQuery();
+			if(resultSet.next()){
+				corpid[0] = resultSet.getString("d_corpid");
+				corpid[1] = resultSet.getString("w_corpid");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			closeAll(connection, statement, resultSet);
+		}
+		return corpid;
+	} 
 }

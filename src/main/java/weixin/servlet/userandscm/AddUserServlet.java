@@ -73,7 +73,7 @@ public class AddUserServlet extends HttpServlet {
 		for (int i = 0; i < arry.size(); i++) {
 			//单条信息
 			JSONObject jsonuser = arry.getJSONObject(i);
-			System.out.println(jsonuser);
+			log.info(jsonuser);
 			str += wxUser(jsonuser);
 			str += ddUser(jsonuser);
 			Users users = new Users();
@@ -152,32 +152,34 @@ public class AddUserServlet extends HttpServlet {
 			String ddscmid=jsonuser.getString("d_corpid");
 			String userid=jsonuser.getString("usrcode");
 			AccessToken acc = TokenThread.maplist.get("dd-"+ddscmid);
-			DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/get");
-			OapiUserGetRequest request = new OapiUserGetRequest();
-			request.setUserid(userid);
-			request.setTopHttpMethod("GET");
-			OapiUserGetResponse response = client.execute(request, acc.getD_accessToken());
-			if(response.getUserid() == null){
-				DingTalkClient creatClient = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/create");
-				OapiUserCreateRequest crearRequest = new OapiUserCreateRequest();
-				crearRequest.setUserid(userid);
-				crearRequest.setMobile((String) jsonuser.get("tel"));
-				crearRequest.setName((String) jsonuser.get("usrname"));
-				// 需要用字符串， "[59869009,60345027]" 这种格式 
-				crearRequest.setDepartment("[1]");
-				OapiUserCreateResponse creresponse = creatClient.execute(crearRequest, acc.getD_accessToken());
-				if(!creresponse.getErrcode().equals("0")){
-					zt="-1;"+jsonuser.get("usrname")+"同步失败";
-				}
-			}else{
-				DingTalkClient upClient = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/update");
-				OapiUserUpdateRequest upRequest = new OapiUserUpdateRequest();
-				upRequest.setUserid(userid);
-				upRequest.setName((String) jsonuser.get("usrname"));
-				upRequest.setMobile((String) jsonuser.get("tel"));
-				OapiUserUpdateResponse upresponse = upClient.execute(upRequest,  acc.getD_accessToken());
-				if(!upresponse.getErrcode().equals("0")){
-					zt="-1;"+jsonuser.get("usrname")+"同步失败";
+			if(acc !=null){
+				DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/get");
+				OapiUserGetRequest request = new OapiUserGetRequest();
+				request.setUserid(userid);
+				request.setTopHttpMethod("GET");
+				OapiUserGetResponse response = client.execute(request, acc.getD_accessToken());
+				if(response.getUserid() == null){
+					DingTalkClient creatClient = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/create");
+					OapiUserCreateRequest crearRequest = new OapiUserCreateRequest();
+					crearRequest.setUserid(userid);
+					crearRequest.setMobile((String) jsonuser.get("tel"));
+					crearRequest.setName((String) jsonuser.get("usrname"));
+					// 需要用字符串， "[59869009,60345027]" 这种格式 
+					crearRequest.setDepartment("[1]");
+					OapiUserCreateResponse creresponse = creatClient.execute(crearRequest, acc.getD_accessToken());
+					if(!creresponse.getErrcode().equals("0")){
+						zt="-1;"+jsonuser.get("usrname")+"同步失败";
+					}
+				}else{
+					DingTalkClient upClient = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/update");
+					OapiUserUpdateRequest upRequest = new OapiUserUpdateRequest();
+					upRequest.setUserid(userid);
+					upRequest.setName((String) jsonuser.get("usrname"));
+					upRequest.setMobile((String) jsonuser.get("tel"));
+					OapiUserUpdateResponse upresponse = upClient.execute(upRequest,  acc.getD_accessToken());
+					if(!upresponse.getErrcode().equals("0")){
+						zt="-1;"+jsonuser.get("usrname")+"同步失败";
+					}
 				}
 			}
 		} catch (ApiException e) {

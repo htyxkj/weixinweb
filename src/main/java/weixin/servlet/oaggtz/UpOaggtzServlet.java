@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
+import weixin.connection.accessToken.AccessTokenDo;
 import weixin.connection.oaggtz.OperateOaggtz;
 import weixin.pojo.Users;
 /**
@@ -34,8 +35,10 @@ public class UpOaggtzServlet extends HttpServlet {
         //编号不为空
         if(id!=null&&!id.equals("")){
         	Users user = (Users) request.getSession().getAttribute("sessionUser");
+        	AccessTokenDo accd = new AccessTokenDo();
+        	String[] corpid = accd.selCorpid(user.getD_corpid(), user.getW_corpid());
         	//将这条信息设为已读
-	        oagg.updateRad(id,user.getUserid(),user.getW_corpid(),user.getD_corpid());
+	        oagg.updateRad(id,user.getUserid(),corpid[1],corpid[0]);
         }else{
         	//平台进行提交退回，删除某条公告信息
         	String jsonstr = "";

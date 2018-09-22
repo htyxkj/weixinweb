@@ -431,6 +431,10 @@
 				}
 			});
         }
+        function file(url){ 
+        	url = encodeURIComponent(url);
+        	window.location.href="AnnexServlet?url="+url;
+        }
     </script>
 </head>
 <body>
@@ -499,7 +503,8 @@
                 <td valign="top">
                     <p>${data.contenthuanhang}
                         <c:forEach var="fujian" items="${fujians}" varStatus="status">
-                                                                                      附件${status.index+1}:<a href='${fujian.fullPath}'>${fujian.fileName}</a><br/>
+                        	附件${status.index+1}:<a onclick="javascript:file('${fujian.fullPath}')">${fujian.fileName}</a><br/> 
+                       <!-- 附件${status.index+1}:<a href='${fujian.fullPath}'>${fujian.fileName}</a><br/>-->
                         </c:forEach>
                     </p>
                     <%--<p style="font-size:14px;">${data.contenthuanhang}</p>--%>

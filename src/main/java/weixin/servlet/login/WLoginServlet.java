@@ -1,8 +1,10 @@
 package weixin.servlet.login;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,6 +46,10 @@ public class WLoginServlet extends HttpServlet {
 			String bipAppId = request.getParameter("bipAppId"); 
 			//获取微信token
 			AccessToken acct = TokenThread.maplist.get("wx-"+corpId+"-"+appid);
+			if(acct == null || code ==null){
+				request.getRequestDispatcher("/error.html").include(request, response);  
+				return;
+			}
 	 	 	String url = APIAddr.WX_USER_CODE;
 			url = url.replace("ACCESS_TOKEN", acct.getW_accessToken()).replace("CODE",code);
 			JSONObject jsonObj = HttpUtil.httpRequest(url, "GET",null);
@@ -65,6 +71,16 @@ public class WLoginServlet extends HttpServlet {
 					request.getSession().setAttribute("sessionUser",user);
 				} 
 				userServ.uodateUsersImgUrl(user, "w");
+				
+				String redirect_domain = acct.getDomainName();//"http://192.168.0.200:8080/weixinweb/";
+				String aa = redirect_domain+"WLoginServlet?corpId="+corpId+"&appId="+appid+"&bipAppId="+bipAppId;
+				aa = URLEncoder.encode(aa, "UTF-8");
+				String home = APIAddr.WX_OAUTH2;
+				home = home.replace("CORPID", corpId).replace("AGENTID", appid).replace("REDIRECT_URI", aa);
+				Cookie cookie = new Cookie("loginURL", home);  
+				cookie.setPath(request.getContextPath());  
+				response.addCookie(cookie);
+				
 				//拼接登录成功后跳转连接
 				if(bipAppId.equals("01")){
 					log.info("跳转到 审批页面");

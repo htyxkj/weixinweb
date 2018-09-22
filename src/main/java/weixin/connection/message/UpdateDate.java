@@ -52,13 +52,19 @@ public class UpdateDate extends BaseDao<Message> {
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
 		int rows = 0;
+//		String sql = "update message set yjcontent='" + message.getYjcontent()
+//				+ "', sptime='" + sdf.format(message.getSptime())
+//				+ "', state='" + message.getState() + "' where documentsid ='"
+//				+ message.getDocumentsid() + "' and state1='"
+//				+ message.getState1() + "' and (w_corpid='"
+//				+ message.getW_corpid() + "' or d_corpid = '"+message.getD_corpid()+"' )and spname='"
+//				+ message.getSpname() + "' and state=0";
 		String sql = "update message set yjcontent='" + message.getYjcontent()
-				+ "', sptime='" + sdf.format(message.getSptime())
-				+ "', state='" + message.getState() + "' where documentsid ='"
-				+ message.getDocumentsid() + "' and state1='"
-				+ message.getState1() + "' and w_corpid='"
-				+ message.getW_corpid() + "'  and spname='"
-				+ message.getSpname() + "' and state=0";
+		+ "', sptime='" + sdf.format(message.getSptime())
+		+ "', state='" + message.getState() + "' where documentsid ='"
+		+ message.getDocumentsid() + "' and (w_corpid='"
+		+ message.getW_corpid() + "' or d_corpid = '"+message.getD_corpid()+"' )and spname='"
+		+ message.getSpname() + "' and state=0";
 		log.info(sql);
 		try {
 			statement = connection.prepareStatement(sql);

@@ -35,7 +35,12 @@ public class ButtonServlet extends HttpServlet {
 				state = "0";
 			//判断应用注册时间
 			SRegServ t=new SRegServ();
-			Object[] obj=(Object[]) t.processOperator("isReg",user.getW_corpid());
+			String corpid ="";
+			if(user.getLoginType().equals("w"))
+				corpid = user.getW_corpid();
+			else
+				corpid = user.getD_corpid();
+			Object[] obj=(Object[]) t.processOperator("isReg",corpid);
 			if(obj[0].equals("1")||obj[0].equals("-1")){
 				request.setAttribute("errorInfo", obj[1]);
 				request.getRequestDispatcher("./expired.jsp").forward(request,response);

@@ -23,7 +23,7 @@
     <description>TestServlet</description>
     <display-name>TestServlet</display-name>
     <servlet-name>TestServlet</servlet-name>
-    <servlet-class>weixin.servlet.TestServlet</servlet-class>
+    <servlet-class>weixin.servlet.examine.TestServlet</servlet-class>
   </servlet>
   <servlet>
     <description>SpServlet</description>
@@ -139,6 +139,13 @@
     <servlet-name>InformServlet</servlet-name>
     <servlet-class>weixin.servlet.inform.InformServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description>AnnexServlet</description>
+    <display-name>AnnexServlet</display-name>
+    <servlet-name>AnnexServlet</servlet-name>
+    <servlet-class>weixin.servlet.file.AnnexServlet</servlet-class>
+  </servlet>
+
  
   <servlet-mapping>
     <servlet-name>OAuthServlet</servlet-name>
@@ -223,11 +230,35 @@
   <servlet-mapping>
     <servlet-name>InformServlet</servlet-name>
     <url-pattern>/InformServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AnnexServlet</servlet-name>
+    <url-pattern>/AnnexServlet</url-pattern>
   </servlet-mapping> 
   <welcome-file-list>
     <welcome-file></welcome-file>
   </welcome-file-list>
-  <session-config>
+  <filter>
+    <filter-name>loginFilter</filter-name>
+    <filter-class>weixin.servlet.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>loginFilter</filter-name>
+    <url-pattern>/OAuthServlet</url-pattern>
+  </filter-mapping> 
+  <filter-mapping>
+    <filter-name>loginFilter</filter-name>
+    <url-pattern>/ButtonServlet</url-pattern>
+  </filter-mapping>   
+  <filter-mapping>
+    <filter-name>loginFilter</filter-name>
+    <url-pattern>/OaggtzServlet</url-pattern>
+  </filter-mapping>   
+  <filter-mapping>
+    <filter-name>loginFilter</filter-name>
+    <url-pattern>/OneOaggtzServlet</url-pattern>
+  </filter-mapping>  
+    <session-config>
 	<session-timeout>60</session-timeout>
-  </session-config>
+  </session-config> 
 </web-app>

@@ -12,11 +12,9 @@
   </properties>
   <dependencies>
 	<dependency>
-	  <groupId>com</groupId>
-	  <artifactId>maple</artifactId>
-	  <version>1.0.0</version>
-	  <scope>system</scope>
-	  <systemPath>D:/BIPPlatForm/JDEXT/dingding/taobao-sdk-java-auto_1479188381469-20180911.jar</systemPath>
+	  <groupId>com.dingding</groupId>
+	  <artifactId>taobao-sdk-java-auto</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
 	</dependency>
     <dependency>
       <groupId>junit</groupId>

@@ -84,7 +84,11 @@
 		if(names=="null" || names==null)return "无";
 		var namearr = names.split(";");
 		for(var name=0;name<namearr.length;name++){
-			Str += "<a href='<%=serverurl%>mydoc/db_<%=dbid %>/"+url+namearr[name]+"'>"+namearr[name]+"</a><br/>";	
+			var file="";
+			file ='<%=serverurl%>fileupdown?fud=1&rid=4&isweb=1&dbid=<%=dbid %>&filepath='+url+namearr[name];
+			var url1 ="";
+			url1 = encodeURIComponent(file);
+			Str += "<a href='../AnnexServlet?url="+url1+"'>"+namearr[name]+"</a><br/>";
 		}
 		return Str;
 	}

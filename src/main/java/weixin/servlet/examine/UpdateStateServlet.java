@@ -72,6 +72,7 @@ public class UpdateStateServlet extends HttpServlet {
 			message.setSpname(spname);
 			message.setW_corpid(w_corpid);
 			message.setYjcontent(yjcontent);
+			message.setD_corpid(d_corpid);
 			log.info(message.getState()+"");
 			if(jsonObject.getInt("state")==0){//重置审批单据
 				String zt=weidu(jsonObject);

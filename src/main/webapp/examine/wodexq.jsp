@@ -191,6 +191,10 @@ html,body {
 			}
 		});
     }
+    function file(url){ 
+    	url = encodeURIComponent(url);
+    	window.location.href="AnnexServlet?url="+url;
+    }
 </script>
 </head>
 <body>
@@ -261,14 +265,14 @@ html,body {
 					<td valign="top">
 						<p>${data.contenthuanhang}
 							<c:forEach var="fujian" items="${fujians}" varStatus="status">
+							<!-- 附件${status.index+1}:<a onclick="javascript:file('${fujian.fullPath}')">${fujian.fileName}</a><br/> -->
 								附件${status.index+1}:<a href='${fujian.fullPath}'>${fujian.fileName}</a><br/>
 							</c:forEach>
 						</p>
 					</td>
 				</tr>
 				<tr class="tr" style="color:#999;">
-					<td valign="top">提交时间:<fmt:formatDate value="${data.tjtime}"
-							pattern="yyyy.MM.dd HH:mm" /></td>
+					<td valign="top">提交时间:<fmt:formatDate value="${data.tjtime}" pattern="yyyy.MM.dd HH:mm" /></td>
 				</tr>
 				<tr class="tr" style="color:#999;">
 					<td valign="top"></td>

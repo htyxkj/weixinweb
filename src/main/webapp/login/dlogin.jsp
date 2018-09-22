@@ -37,6 +37,8 @@
                             	var obj = eval('(' + data + ')');
                             	if(obj.code == 0){
                             		location.href = obj.toUrl;
+                            	}else{
+                            		location.href = "../error.html";
                             	}
                             }
                         });
@@ -55,7 +57,7 @@
                        if(pair[0] == variable){return pair[1];}
                }
                return(false);
-        }
+        } 
     </script>
 </head>
 <body>

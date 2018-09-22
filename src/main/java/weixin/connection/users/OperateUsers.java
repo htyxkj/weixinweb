@@ -26,7 +26,7 @@ public class OperateUsers extends BaseDao{
 		Connection connection=getConnection();
 		PreparedStatement statement=null;
 		ResultSet resultSet=null;
-		String sql = "INSERT INTO users(userid,username,tel,scm,w_corpid,d_corpid,email)VALUES (?,?,?,?,?,?,?);";
+		String sql = "INSERT INTO users(userid,username,tel,scm,w_corpid,d_corpid,email,w_imgurl,d_imgurl)VALUES (?,?,?,?,?,?,?,?,?);";
 		try {
 			statement=connection.prepareStatement(sql); 
 			statement.setString(1, user.getUserid());
@@ -36,6 +36,8 @@ public class OperateUsers extends BaseDao{
 			statement.setString(5, user.getW_corpid());
 			statement.setString(6, user.getD_corpid());
 			statement.setString(7, user.getEmail());
+			statement.setString(8, user.getW_imgurl());
+			statement.setString(9, user.getD_imgurl());
 			statement.executeUpdate();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -90,15 +92,17 @@ public class OperateUsers extends BaseDao{
 		Connection connection=getConnection();
 		PreparedStatement statement=null;
 		ResultSet resultSet=null;
-		String sql = "update users  set username=?,tel=?,email=? where userid=? and (w_corpid=? or d_corpid=?)";
+		String sql = "update users  set username=?,tel=?,email=?,w_corpid=?,d_corpid=? where userid=? and (w_corpid=? or d_corpid=?)";
 		try {
 			statement=connection.prepareStatement(sql);
 			statement.setString(1, user.getUsername());
 			statement.setString(2, user.getTel());
 			statement.setString(3, user.getEmail());
-			statement.setString(4, user.getUserid());
-			statement.setString(5, user.getW_corpid());
-			statement.setString(6, user.getD_corpid());
+			statement.setString(4, user.getW_corpid());
+			statement.setString(5, user.getD_corpid());
+			statement.setString(6, user.getUserid());
+			statement.setString(7, user.getW_corpid());
+			statement.setString(8, user.getD_corpid());
 			statement.executeUpdate();
 		}catch (Exception e) {
 			e.printStackTrace();

@@ -57,21 +57,25 @@ public class OneOaggtzServlet extends HttpServlet {
                 data.setSmaker(u.getUsername());
                 if (data != null) {
                     if (data.getFj_root() != null && data.getSuri()!=null&& !data.getFj_root().equals("")&& !data.getSuri().equals("")) {
-                        String fjPathStr =data.getFj_root();
-                        String fjNameStr =data.getSuri();
-                        FuJian fj = new FuJian();
-                        fj.setServerPathBody("");
-                        fj.setFilePath(fjPathStr);
-                        fj.setFileName(fjNameStr);
-                        if(data.getSource().equals("W")){
-                        	fj.setServerPathHead(accessToken.getDomainName()+"weixinweb");
-                        	fj.setFullPath(accessToken.getDomainName()+"\\weixinweb" + fjPathStr + fjNameStr);
-                        }else if(data.getSource().equals("B")){
-                        	fj.setServerPathHead(accessToken.getServerurl());
-                        	fj.setFullPath(accessToken.getServerurl()+"fileupdown?fud=1&rid=4&isweb=1&dbid="+data.getDbid()+"&filepath=" + fjPathStr + fjNameStr);
-                        }
-                        log.info(fj.getFullPath());
-                        listFuJian.add(fj);
+                    	String fjNameStr =data.getSuri();
+                    	String[] fjName = fjNameStr.split(";");
+                    	for (int i = 0; i < fjName.length; i++) {
+                    		fjNameStr = fjName[i];
+                    		String fjPathStr =data.getFj_root();
+                            FuJian fj = new FuJian();
+                            fj.setServerPathBody("");
+                            fj.setFilePath(fjPathStr);
+                            fj.setFileName(fjNameStr);
+                            if(data.getSource().equals("W")){
+                            	fj.setServerPathHead(accessToken.getDomainName());
+                            	fj.setFullPath(accessToken.getDomainName()+fjPathStr + fjNameStr);
+                            }else if(data.getSource().equals("B")){
+                            	fj.setServerPathHead(accessToken.getServerurl());
+                            	fj.setFullPath(accessToken.getServerurl()+"fileupdown?fud=1&rid=4&isweb=1&dbid="+data.getDbid()+"&filepath=" + fjPathStr + fjNameStr);
+                            }
+                            log.info(fj.getFullPath());
+                            listFuJian.add(fj);
+						}
                     }
                 }
                 String content=data.getContent();
