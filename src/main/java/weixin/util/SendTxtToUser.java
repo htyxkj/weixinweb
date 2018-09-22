@@ -35,7 +35,7 @@ public class SendTxtToUser{
 	 * @return 执行状态 
 	 */
 	public static String wxInformUser(String conetnt,String weixinid,String wxscmid,String appid,String scm){
-		if(appid == null)
+		if(appid == null || appid.equals("") || appid.equals("null"))
 			return "no";
 		String zt="";
 		try {
@@ -85,7 +85,7 @@ public class SendTxtToUser{
 	 * 执行 发送 消息 并统计待审数据条数
 	 */
 	public static String wxToSendSPMsg(String keyid,String weixinid,String wxscmid,String scm,String appid){
-		if(appid == null)
+		if(appid == null || appid.equals("") || appid.equals("null"))
 			return "no";
 		String zt="";
 		try {
@@ -148,7 +148,7 @@ public class SendTxtToUser{
 	 * @return 执行状态 
 	 */
 	public static String ddInformUser(String conetnt,String weixinid,String ddscmid,String appid,String scm){
-		if(appid == null)
+		if(appid == null || appid.equals("") || appid.equals("null"))
 			return "no";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String date = sdf.format(new Date());
@@ -226,7 +226,7 @@ public class SendTxtToUser{
 	 * 执行 发送 消息 并统计待审数据条数
 	 */
 	public static String ddToSendSPMsg(String keyid,String weixinid,String ddscmid,String scm,String appid){
-		if(appid == null)
+		if(appid == null || appid.equals("") || appid.equals("null"))
 			return "no";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String date = sdf.format(new Date());

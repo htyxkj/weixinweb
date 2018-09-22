@@ -134,7 +134,7 @@ public class AddScmServlet extends HttpServlet {
 			insorg.setD_secret(d_secret);
 			insorg.setD_trusturl(d_trusturl);
 			insorg.setServerurl(serverurl);
-			acd.SelectScm(insorg);
+			insorgUUID = acd.SelectScm(insorg);
 			
 			if(d_corpid!=null){
 				accessToken = HttpUtil.getDdAccessToken(d_corpid, d_secret);

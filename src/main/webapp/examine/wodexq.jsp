@@ -238,10 +238,10 @@ html,body {
 				<tr style="font-size:15px;color:#999; height:36px;width:100%;">
 					<td> 					
 					<div style="float:left">
-					<img class="image5" src="${data.tuUrl}" ></img>
+					<img class="image5" src="${dateks.tuUrl}" ></img>
 					</div>
 					<div style="float:left;">
-						<span style="font-size: 12px">&nbsp;&nbsp;${data.name}</span><br/>&nbsp;&nbsp;<span style="color:#8FB95C;font-size: 11px">
+						<span style="font-size: 12px">&nbsp;&nbsp;${dateks.name}</span><br/>&nbsp;&nbsp;<span style="color:#8FB95C;font-size: 11px">
 					
 						<c:if test="${_right==1}">
 						已完成

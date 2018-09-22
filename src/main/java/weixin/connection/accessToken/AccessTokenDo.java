@@ -132,7 +132,7 @@ public class AccessTokenDo  extends BaseDao{
 		ResultSet resultSet=null;
 		String st="no";
 		int row=0;
-		String sql="select count(w_corpid) num from insorg where orgcode=? and c_corp=? and (w_corpid=? or d_corpid = ?)";
+		String sql="select count(uuid) as num,uuid from insorg where orgcode=? and c_corp=? and (w_corpid=? or d_corpid = ?)";
 		try{
 			statement=connection.prepareStatement(sql);
 			statement.setString(1,insorg.getOrgcode());
@@ -142,16 +142,13 @@ public class AccessTokenDo  extends BaseDao{
 			resultSet=statement.executeQuery();
 			if(resultSet.next()){
 				int num=resultSet.getInt("num");
+				String uuid = resultSet.getString("uuid");
 				if(num==0){
 					row=insertScm(insorg);
-					if(row==-1)
-						st="no";
-					st="yes";
+					st=insorg.getUuid();
 				}else{
 					row=updateScm(insorg);
-					if(row==-1)
-						st="no";
-					st="yes";
+					st=uuid;
 				}
 			} 
 		}catch(Exception e){
@@ -222,7 +219,7 @@ public class AccessTokenDo  extends BaseDao{
 		PreparedStatement statement=null;
 		ResultSet resultSet=null;
 		String st="";
-		String sql="select count(w_applyid) num from inswaplist where wapno=? and orgcode=? and (w_corpid=? or d_applyid =?)";
+		String sql="select count(uuid) num from inswaplist where wapno=? and orgcode=? and (w_corpid=? or d_applyid =?)";
 		try{
 			statement=connection.prepareStatement(sql);
 			statement.setString(1, list.getWapno());

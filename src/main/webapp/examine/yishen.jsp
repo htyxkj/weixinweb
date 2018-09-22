@@ -58,7 +58,7 @@
                 if (i == 0) {
                     $("#offset").val(data[i].offset);
                 }
-                var state = data[i].lastState;
+                var state = data[i].state;
                 var stateStr;
                 if (state == 0) {
                     stateStr = "待审批";
@@ -103,7 +103,7 @@
                 if (i == 0) {
                     $("#offset").val(data[i].offset);
                 }
-                var state = data[i].lastState;
+                var state = data[i].state;
                 var stateStr;
                 if (state == 0) {
                     stateStr = "待审批";
